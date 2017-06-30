@@ -4,14 +4,14 @@ import com.lixinwei.www.goldennews.ApplicationComponent;
 import com.lixinwei.www.goldennews.util.PerActivity;
 
 import dagger.Component;
+import dagger.Subcomponent;
 
 /**
  * Created by welding on 2017/6/29.
  */
 @PerActivity
-@Component( modules = NewsListModule.class,
-            dependencies = ApplicationComponent.class)
-public interface NewsListComponent {
+@Subcomponent( modules = NewsListModule.class)
+public interface NewsListSubComponent {
 
     void inject(NewsListFragment fragment);
 

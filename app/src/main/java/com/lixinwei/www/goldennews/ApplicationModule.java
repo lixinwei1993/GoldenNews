@@ -10,14 +10,14 @@ import dagger.Provides;
  */
 @Module
 public class ApplicationModule {
-    private final Context mContext;
+    private final GoldenNewsApplication mGoldenNewsApplication;
 
-    ApplicationModule(Context context) {
-        mContext = context;
+    ApplicationModule(GoldenNewsApplication application) {
+        mGoldenNewsApplication = application;
     }
 
     @Provides
     Context provideContext() {
-        return mContext;
+        return mGoldenNewsApplication.getApplicationContext();
     }
 }

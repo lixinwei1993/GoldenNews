@@ -1,9 +1,9 @@
 package com.lixinwei.www.goldennews;
 
-import android.content.Context;
-
 import com.lixinwei.www.goldennews.data.domain.ZhihuApiModule;
-import com.lixinwei.www.goldennews.data.domain.ZhihuService;
+import com.lixinwei.www.goldennews.newslist.NewsListActivity;
+import com.lixinwei.www.goldennews.newslist.NewsListSubComponent;
+import com.lixinwei.www.goldennews.newslist.NewsListModule;
 
 import javax.inject.Singleton;
 
@@ -20,6 +20,7 @@ import dagger.Component;
         }
 )
 public interface ApplicationComponent {
-    ZhihuService getZhihuService();
-    Context getContext();
+    void inject(NewsListActivity activity);
+
+    NewsListSubComponent plus(NewsListModule module);
 }

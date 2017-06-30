@@ -1,5 +1,6 @@
 package com.lixinwei.www.goldennews.newslist;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -35,14 +36,15 @@ public class NewsListFragment extends Fragment implements NewsListContract.View 
     @Inject
     NewsListPresenter mNewsListPresenter;
 
+    //TODO the differences between the getActivity() as context and the application context??
+    @Inject
+    Context mContext;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_news_list, container, false);
 
-        DaggerNewsListComponent.builder()
-                .applicationComponent(((GoldenNewsApplication) getActivity().getApplication()).getApplicationComponent())
-                .newsListModule(new NewsListModule(this))
-                .build()
+        GoldenNewsApplication.getGoldenNewsApplication(getActivity()).getNewsListSubComponent(this)
                 .inject(this);
 
         ButterKnife.bind(this, view);
@@ -66,8 +68,6 @@ public class NewsListFragment extends Fragment implements NewsListContract.View 
     public static NewsListFragment newInstance() {
         return new NewsListFragment();
     }
-
-
 
 
 }
