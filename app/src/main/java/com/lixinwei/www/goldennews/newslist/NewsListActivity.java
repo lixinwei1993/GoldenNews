@@ -2,16 +2,10 @@ package com.lixinwei.www.goldennews.newslist;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-
-import com.lixinwei.www.goldennews.GoldenNewsApplication;
 import com.lixinwei.www.goldennews.R;
 import com.lixinwei.www.goldennews.util.ActivityUtils;
 
-import javax.inject.Inject;
-
 public class NewsListActivity extends AppCompatActivity {
-
-    @Inject NewsListPresenter mNewsListPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,11 +20,6 @@ public class NewsListActivity extends AppCompatActivity {
             newsListFragment, R.id.container_news_list);
         }
 
-        DaggerNewsListComponent.builder()
-                .applicationComponent(((GoldenNewsApplication) getApplication()).getApplicationComponent())
-                .newsListModule(new NewsListModule(newsListFragment))
-                .build()
-                .inject(this);
     }
 
 

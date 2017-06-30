@@ -14,7 +14,6 @@ public interface NewsListContract {
     interface View {
         void showTopStories(List<TopStory> topStoryList);
 
-        void setPresenter(@NonNull NewsListContract.Presenter presenter);
     }
 
     interface Presenter {

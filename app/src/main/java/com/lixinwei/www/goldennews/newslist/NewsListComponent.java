@@ -13,6 +13,7 @@ import dagger.Component;
             dependencies = ApplicationComponent.class)
 public interface NewsListComponent {
 
-    void inject(NewsListActivity activity);
     void inject(NewsListFragment fragment);
+
+    //NewsListAdapter adapter();
 }

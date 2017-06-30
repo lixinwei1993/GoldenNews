@@ -1,5 +1,7 @@
 package com.lixinwei.www.goldennews.newslist;
 
+import com.lixinwei.www.goldennews.data.domain.ZhihuService;
+
 import dagger.Module;
 import dagger.Provides;
 
@@ -20,7 +22,13 @@ public class NewsListModule {
     }
 
     @Provides
+    NewsListPresenter provideNewsListContractPresenter(ZhihuService zhihuService, NewsListContract.View view) {
+        return new NewsListPresenter(zhihuService, view);
+    }
+
+    @Provides
     NewsListAdapter provideNewsListAdapter() {
         return new NewsListAdapter();
     }
+
 }

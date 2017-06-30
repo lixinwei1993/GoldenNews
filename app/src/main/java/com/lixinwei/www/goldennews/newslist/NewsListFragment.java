@@ -1,7 +1,6 @@
 package com.lixinwei.www.goldennews.newslist;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -33,11 +32,8 @@ public class NewsListFragment extends Fragment implements NewsListContract.View 
     @Inject
     NewsListAdapter mNewsListAdapter;
 
-    //set by presenter by public void setPresenter
-    NewsListContract.Presenter mNewsListPresenter;
-    public void setPresenter(@NonNull NewsListContract.Presenter presenter) {
-        mNewsListPresenter = presenter;
-    }
+    @Inject
+    NewsListPresenter mNewsListPresenter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -56,7 +52,7 @@ public class NewsListFragment extends Fragment implements NewsListContract.View 
     }
 
     private void initRecyclerView() {
-        mNewsListAdapter = new NewsListAdapter();
+        //mNewsListAdapter = new NewsListAdapter();
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setAdapter(mNewsListAdapter);
     }
