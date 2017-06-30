@@ -17,11 +17,10 @@ import io.reactivex.schedulers.Schedulers;
 
 public class NewsListPresenter implements NewsListContract.Presenter {
     private final ZhihuService mZhihuService;           //model layer
-    private final NewsListContract.View mNewsListView;  //view layer
+    private NewsListContract.View mNewsListView;  //view layer
 
-    NewsListPresenter(ZhihuService zhihuService, NewsListContract.View view) {
+    NewsListPresenter(ZhihuService zhihuService) {
         mZhihuService = zhihuService;
-        mNewsListView = view;
     }
 
     /**
@@ -39,6 +38,14 @@ public class NewsListPresenter implements NewsListContract.Presenter {
                         mNewsListView.showTopStories(topStories);
                     }
                 });
+    }
+
+    public void bindView(NewsListContract.View view) {
+        mNewsListView = view;
+    }
+
+    public void unbindView() {
+        mNewsListView = null;
     }
 
 

@@ -22,13 +22,8 @@ public class NewsListModule {
     }
 
     @Provides
-    NewsListPresenter provideNewsListContractPresenter(ZhihuService zhihuService, NewsListContract.View view) {
-        return new NewsListPresenter(zhihuService, view);
-    }
-
-    @Provides
-    NewsListAdapter provideNewsListAdapter() {
-        return new NewsListAdapter();
+    NewsListPresenter provideNewsListContractPresenter(ZhihuService zhihuService) {
+        return new NewsListPresenter(zhihuService);
     }
 
 }

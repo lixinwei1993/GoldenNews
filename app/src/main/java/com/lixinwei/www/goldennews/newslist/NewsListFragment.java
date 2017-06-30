@@ -49,6 +49,7 @@ public class NewsListFragment extends Fragment implements NewsListContract.View 
 
         ButterKnife.bind(this, view);
         initRecyclerView();
+        mNewsListPresenter.bindView(this);
         mNewsListPresenter.loadDailyStories();
         return view;
     }
@@ -63,6 +64,13 @@ public class NewsListFragment extends Fragment implements NewsListContract.View 
     @Override
     public void showTopStories(List<TopStory> topStoryList) {
         mNewsListAdapter.updateTopStoriesList(topStoryList);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        mNewsListPresenter.unbindView();
     }
 
     public static NewsListFragment newInstance() {

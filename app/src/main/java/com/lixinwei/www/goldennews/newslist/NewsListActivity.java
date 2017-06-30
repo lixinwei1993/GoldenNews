@@ -26,6 +26,4 @@ public class NewsListActivity extends AppCompatActivity {
 
     }
 
-
-
 }

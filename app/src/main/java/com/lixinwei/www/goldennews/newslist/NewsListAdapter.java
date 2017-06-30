@@ -15,6 +15,8 @@ import com.lixinwei.www.goldennews.data.model.TopStory;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -24,6 +26,11 @@ import butterknife.ButterKnife;
 
 public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsListViewHolder> {
     private final List<TopStory> mTopStories = new ArrayList<>();
+
+    @Inject
+    public NewsListAdapter() {
+
+    }
 
     @Override
     public NewsListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
