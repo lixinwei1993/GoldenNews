@@ -68,6 +68,7 @@ public class NewsListFragment extends BaseFragment implements NewsListContract.V
     public void onDestroy() {
         super.onDestroy();
         mNewsListPresenter.unbindView();
+        GoldenNewsApplication.getGoldenNewsApplication(getActivity()).releaseNewsListSubComponent();
     }
 
     public static NewsListFragment newInstance() {

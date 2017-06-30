@@ -1,5 +1,6 @@
 package com.lixinwei.www.goldennews.newslist;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 
 import com.lixinwei.www.goldennews.R;
@@ -8,6 +9,8 @@ import com.lixinwei.www.goldennews.util.ActivityUtils;
 
 
 public class NewsListActivity extends BaseActivity {
+
+
 
 
     @Override

@@ -13,6 +13,7 @@ import com.lixinwei.www.goldennews.newslist.NewsListSubComponent;
 
 public class GoldenNewsApplication extends Application {
     private ApplicationComponent mApplicationComponent;
+    private NewsListSubComponent mNewsListSubComponent;
 
     public static GoldenNewsApplication getGoldenNewsApplication(Context context) {
         return (GoldenNewsApplication) context.getApplicationContext();
@@ -35,6 +36,14 @@ public class GoldenNewsApplication extends Application {
     }
 
     public NewsListSubComponent getNewsListSubComponent() {
-        return mApplicationComponent.plus(new NewsListModule());
+        if(mNewsListSubComponent == null) {
+            mNewsListSubComponent = mApplicationComponent.plus(new NewsListModule());
+        }
+
+        return mNewsListSubComponent;
+    }
+
+    public void releaseNewsListSubComponent() {
+        mNewsListSubComponent = null;
     }
 }
