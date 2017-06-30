@@ -2,6 +2,8 @@ package com.lixinwei.www.goldennews;
 
 import android.content.Context;
 
+import javax.inject.Singleton;
+
 import dagger.Module;
 import dagger.Provides;
 
@@ -16,6 +18,7 @@ public class ApplicationModule {
         mGoldenNewsApplication = application;
     }
 
+    @Singleton
     @Provides
     Context provideContext() {
         return mGoldenNewsApplication.getApplicationContext();

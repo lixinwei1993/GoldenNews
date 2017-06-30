@@ -34,7 +34,7 @@ public class GoldenNewsApplication extends Application {
         return mApplicationComponent;
     }
 
-    public NewsListSubComponent getNewsListSubComponent(NewsListContract.View view) {
-        return mApplicationComponent.plus(new NewsListModule(view));
+    public NewsListSubComponent getNewsListSubComponent() {
+        return mApplicationComponent.plus(new NewsListModule());
     }
 }

@@ -1,13 +1,13 @@
 package com.lixinwei.www.goldennews.newslist;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.lixinwei.www.goldennews.R;
+import com.lixinwei.www.goldennews.base.BaseActivity;
 import com.lixinwei.www.goldennews.util.ActivityUtils;
 
 
-public class NewsListActivity extends AppCompatActivity {
+public class NewsListActivity extends BaseActivity {
 
 
     @Override

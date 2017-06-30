@@ -1,6 +1,7 @@
 package com.lixinwei.www.goldennews.newslist;
 
 import com.lixinwei.www.goldennews.data.domain.ZhihuService;
+import com.lixinwei.www.goldennews.util.PerFragment;
 
 import dagger.Module;
 import dagger.Provides;
@@ -10,20 +11,10 @@ import dagger.Provides;
  */
 @Module
 public class NewsListModule {
-    private final NewsListContract.View mView;
 
-    public NewsListModule(NewsListContract.View view) {
-        mView = view;
-    }
-
+    @PerFragment
     @Provides
-    NewsListContract.View provideNewsListContractView() {
-        return mView;
+    NewsListContract.Presenter provideNewsListContractPresenter(NewsListPresenter presenter) {
+        return presenter;
     }
-
-    @Provides
-    NewsListPresenter provideNewsListContractPresenter(ZhihuService zhihuService) {
-        return new NewsListPresenter(zhihuService);
-    }
-
 }

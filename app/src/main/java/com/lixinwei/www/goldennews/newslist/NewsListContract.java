@@ -1,7 +1,7 @@
 package com.lixinwei.www.goldennews.newslist;
 
-import android.support.annotation.NonNull;
-
+import com.lixinwei.www.goldennews.base.BasePresenter;
+import com.lixinwei.www.goldennews.base.BaseView;
 import com.lixinwei.www.goldennews.data.model.TopStory;
 
 import java.util.List;
@@ -11,12 +11,13 @@ import java.util.List;
  */
 
 public interface NewsListContract {
-    interface View {
+    interface View extends BaseView {
         void showTopStories(List<TopStory> topStoryList);
-
     }
 
-    interface Presenter {
+    interface Presenter extends BasePresenter<View> {
         void loadDailyStories();
+        void bindView(View view);
+        void unbindView();
     }
 }
