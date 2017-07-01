@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import com.lixinwei.www.goldennews.GoldenNewsApplication;
 import com.lixinwei.www.goldennews.R;
 import com.lixinwei.www.goldennews.base.BaseFragment;
-import com.lixinwei.www.goldennews.data.model.TopStory;
+import com.lixinwei.www.goldennews.data.model.StoryForRealm;
 
 import java.util.List;
 
@@ -60,8 +60,8 @@ public class NewsListFragment extends BaseFragment implements NewsListContract.V
     }
 
     @Override
-    public void showTopStories(List<TopStory> topStoryList) {
-        mNewsListAdapter.updateTopStoriesList(topStoryList);
+    public void showTopStories(List<StoryForRealm> storyList) {
+        mNewsListAdapter.updateStoriesList(storyList);
     }
 
     @Override

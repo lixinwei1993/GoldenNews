@@ -1,5 +1,6 @@
 package com.lixinwei.www.goldennews;
 
+import com.lixinwei.www.goldennews.data.Realm.RealmServiceModule;
 import com.lixinwei.www.goldennews.data.domain.ZhihuApiModule;
 import com.lixinwei.www.goldennews.newslist.NewsListActivity;
 import com.lixinwei.www.goldennews.newslist.NewsListSubComponent;
@@ -16,7 +17,8 @@ import dagger.Component;
 @Component (
         modules = {
                 ApplicationModule.class,
-                ZhihuApiModule.class
+                ZhihuApiModule.class,
+                RealmServiceModule.class
         }
 )
 public interface ApplicationComponent {

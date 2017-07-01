@@ -23,17 +23,17 @@ public interface ZhihuService {
     Observable<DailyStories> getDailyStories();
 
     @GET("news/before/{date}")
-    Observable<DateDailyStories> getDailyBeforeList(@Path("date") String date);
+    Observable<DateDailyStories> getDateDailyStories(@Path("date") String date);
 
     @GET("news/{id}")
-    Observable<StoryDetail> getDetailInfo(@Path("id") int id);
+    Observable<StoryDetail> getStoryDetail(@Path("id") long id);
 
     @GET("story-extra/{id}")
-    Observable<StoryExtra> getDetailExtraInfo(@Path("id") int id);
+    Observable<StoryExtra> getStoryExtra(@Path("id") long id);
 
     @GET("story/{id}/long-comments")
-    Observable<LongComments> getLongCommentInfo(@Path("id") int id);
+    Observable<LongComments> getLongComments(@Path("id") long id);
 
     @GET("story/{id}/short-comments")
-    Observable<ShortComments> getShortCommentInfo(@Path("id") int id);
+    Observable<ShortComments> getShortComments(@Path("id") long id);
 }

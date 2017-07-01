@@ -2,6 +2,7 @@ package com.lixinwei.www.goldennews.newslist;
 
 import com.lixinwei.www.goldennews.base.BasePresenter;
 import com.lixinwei.www.goldennews.base.BaseView;
+import com.lixinwei.www.goldennews.data.model.StoryForRealm;
 import com.lixinwei.www.goldennews.data.model.TopStory;
 
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.List;
 
 public interface NewsListContract {
     interface View extends BaseView {
-        void showTopStories(List<TopStory> topStoryList);
+        void showTopStories(List<StoryForRealm> storyList);
     }
 
     interface Presenter extends BasePresenter<View> {

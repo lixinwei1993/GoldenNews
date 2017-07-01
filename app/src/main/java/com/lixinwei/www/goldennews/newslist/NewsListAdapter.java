@@ -10,7 +10,8 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.lixinwei.www.goldennews.R;
-import com.lixinwei.www.goldennews.data.model.TopStory;
+import com.lixinwei.www.goldennews.data.model.StoryForRealm;
+import com.lixinwei.www.goldennews.data.model.StoryForRealm;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +26,7 @@ import butterknife.ButterKnife;
  */
 
 public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsListViewHolder> {
-    private final List<TopStory> mTopStories = new ArrayList<>();
+    private final List<StoryForRealm> mStories = new ArrayList<>();
 
     @Inject
     public NewsListAdapter() {
@@ -44,19 +45,19 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsLi
 
     @Override
     public void onBindViewHolder(NewsListViewHolder holder, int position) {
-        TopStory topStory = mTopStories.get(position);
+        StoryForRealm storyForRealm = mStories.get(position);
 
-        holder.bind(topStory);
+        holder.bind(storyForRealm);
     }
 
     @Override
     public int getItemCount() {
-        return mTopStories.size();
+        return mStories.size();
     }
 
-    public void updateTopStoriesList(List<TopStory> topStories) {
-        mTopStories.clear();
-        mTopStories.addAll(topStories);
+    public void updateStoriesList(List<StoryForRealm> stories) {
+        mStories.clear();
+        mStories.addAll(stories);
         notifyDataSetChanged();
     }
 
@@ -67,7 +68,6 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsLi
         @BindView(R.id.story_card_title)
         TextView mTitle;
 
-        private TopStory mTopStory;
         private Context mContext;
 
         public NewsListViewHolder(View itemView) {
@@ -77,11 +77,11 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsLi
             mContext = itemView.getContext();
         }
 
-        public void bind(TopStory topStory) {
-            mTitle.setText(topStory.getTitle());
+        public void bind(StoryForRealm storyForRealm) {
+            mTitle.setText(storyForRealm.getTitle() + storyForRealm.getComments());
 
             Glide.with(mContext)
-                    .load(topStory.getImage())
+                    .load(storyForRealm.getImage())
                     .into(mImage);
         }
     }
