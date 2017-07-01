@@ -1,7 +1,7 @@
 package com.lixinwei.www.goldennews.data.domain;
 
 import com.lixinwei.www.goldennews.data.model.DailyStories;
-import com.lixinwei.www.goldennews.data.model.DateDailyNews;
+import com.lixinwei.www.goldennews.data.model.DateDailyStories;
 import com.lixinwei.www.goldennews.data.model.LongComments;
 import com.lixinwei.www.goldennews.data.model.ShortComments;
 import com.lixinwei.www.goldennews.data.model.StoryDetail;
@@ -23,7 +23,7 @@ public interface ZhihuService {
     Observable<DailyStories> getDailyStories();
 
     @GET("news/before/{date}")
-    Observable<DateDailyNews> getDailyBeforeList(@Path("date") String date);
+    Observable<DateDailyStories> getDailyBeforeList(@Path("date") String date);
 
     @GET("news/{id}")
     Observable<StoryDetail> getDetailInfo(@Path("id") int id);

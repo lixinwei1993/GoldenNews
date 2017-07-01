@@ -29,6 +29,8 @@ public class ZhihuApiModule {
         return builder.build();
     }
 
+    /**
+     *
     @Provides
     @Singleton
     public GsonConverterFactory provideGsonConverterFactory() {
@@ -36,16 +38,17 @@ public class ZhihuApiModule {
 
         return GsonConverterFactory.create(gson);
     }
+     */
 
     @Provides
     @Singleton
-    public Retrofit provideRetrofit(OkHttpClient okHttpClient, GsonConverterFactory converterFactory){
+    public Retrofit provideRetrofit(OkHttpClient okHttpClient){
         Retrofit.Builder builder = new Retrofit.Builder();
 
         builder.client(okHttpClient)
                 .baseUrl("https://news-at.zhihu.com/api/4/")
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .addConverterFactory(converterFactory);
+                .addConverterFactory(GsonConverterFactory.create());
 
         return builder.build();
     }
