@@ -79,15 +79,21 @@ public class NewsListPresenter implements NewsListContract.Presenter {
                         return Observable.just(storyForRealm);
                     }
                 })
-                .buffer(5)  //TODO is there a better way to buffer all rather than specific count?
+                .doOnNext(new Consumer<StoryForRealm>() {
+                    @Override
+                    public void accept(@NonNull StoryForRealm storyForRealm) throws Exception {
+                        mRealmService.insertStory(storyForRealm);
+                    }
+                })
+                .buffer(5)  //TODO is there a better way to buffer all rather than specific count? combine with time limit??
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<List<StoryForRealm>>() {
                     @Override
                     public void accept(@NonNull List<StoryForRealm> stories) throws Exception {
                         mNewsListView.showTopStories(stories);
-                        //TODO directly store stories in db is not a good solution, how to cache?
+                        //TODO directly store stories in db is not a good solution, how to cache? the transaction of realm's thread?
                         //TODO cache implement by Http client interceptor
-                        mRealmService.insertStories(stories);
+                        //mRealmService.insertStories(stories);
                     }
                 });
     }

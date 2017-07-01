@@ -24,37 +24,60 @@ import io.realm.RealmConfiguration;
 
 public class RealmServiceImpl implements RealmService {
 
-    private Realm mRealm;
-
 
     public RealmServiceImpl(Context context) {
         Realm.init(context);
-        mRealm = Realm.getDefaultInstance();
     }
 
     @Override
     public void insertStory(StoryForRealm story) {
-        mRealm.beginTransaction();
-        mRealm.copyToRealmOrUpdate(story);
-        mRealm.commitTransaction();
+        Realm realm = null;
+        try { // I could use try-with-resources here
+            realm = Realm.getDefaultInstance();
+            realm.beginTransaction();
+            realm.copyToRealmOrUpdate(story);
+            realm.commitTransaction();
+        } finally {
+            if(realm != null) {
+                realm.close();
+            }
+        }
+
     }
 
     @Override
     public void deleteStory(long id) {
-        StoryForRealm story = mRealm.where(StoryForRealm.class).equalTo("mId", id).findFirst();
-        mRealm.beginTransaction();
-        if(story != null) {
-            story.deleteFromRealm();
+        Realm realm = null;
+        try { // I could use try-with-resources here
+            realm = Realm.getDefaultInstance();
+            StoryForRealm story = realm.where(StoryForRealm.class).equalTo("mId", id).findFirst();
+            realm.beginTransaction();
+            if(story != null) {
+                story.deleteFromRealm();
+            }
+            realm.commitTransaction();
+        } finally {
+            if(realm != null) {
+                realm.close();
+            }
         }
-        mRealm.commitTransaction();
     }
 
     @Override
     public void insertStories(List<StoryForRealm> stories) {
-        mRealm.beginTransaction();
-        for (StoryForRealm story : stories)
-            mRealm.copyToRealmOrUpdate(story);
-        mRealm.commitTransaction();
+
+        Realm realm = null;
+        try { // I could use try-with-resources here
+            realm = Realm.getDefaultInstance();
+            realm.beginTransaction();
+            for (StoryForRealm story : stories)
+                realm.copyToRealmOrUpdate(story);
+            realm.commitTransaction();
+        } finally {
+            if(realm != null) {
+                realm.close();
+            }
+        }
     }
 
 
