@@ -1,47 +1,62 @@
 
 package com.lixinwei.www.goldennews.data.model;
 
-import com.google.gson.annotations.Expose;
+import javax.annotation.Generated;
 import com.google.gson.annotations.SerializedName;
 
+@Generated("net.hexar.json2pojo")
+@SuppressWarnings("unused")
 public class TopStory {
 
-    @SerializedName("image")
-    @Expose
-    private String mImage;
-    @SerializedName("type")
-    @Expose
-    private Integer mType;
-    @SerializedName("id")
-    @Expose
-    private Integer mId;
     @SerializedName("ga_prefix")
-    @Expose
     private String mGaPrefix;
+    @SerializedName("id")
+    private Long mId;
+    @SerializedName("image")
+    private String mImage;
     @SerializedName("title")
-    @Expose
     private String mTitle;
-
-    public String getImage() {
-        return mImage;
-    }
-
-    public Integer getType() {
-        return mType;
-    }
-
-    public Integer getId() {
-        return mId;
-    }
+    @SerializedName("type")
+    private Long mType;
 
     public String getGaPrefix() {
         return mGaPrefix;
     }
 
+    public void setGaPrefix(String gaPrefix) {
+        mGaPrefix = gaPrefix;
+    }
+
+    public Long getId() {
+        return mId;
+    }
+
+    public void setId(Long id) {
+        mId = id;
+    }
+
+    public String getImage() {
+        return mImage;
+    }
+
+    public void setImage(String image) {
+        mImage = image;
+    }
 
     public String getTitle() {
         return mTitle;
     }
 
+    public void setTitle(String title) {
+        mTitle = title;
+    }
+
+    public Long getType() {
+        return mType;
+    }
+
+    public void setType(Long type) {
+        mType = type;
+    }
 
 }

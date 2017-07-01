@@ -7,14 +7,12 @@ import com.google.gson.annotations.SerializedName;
 
 @Generated("net.hexar.json2pojo")
 @SuppressWarnings("unused")
-public class DailyStories {
+public class DateDailyNews {
 
     @SerializedName("date")
     private String mDate;
     @SerializedName("stories")
     private List<Story> mStories;
-    @SerializedName("top_stories")
-    private List<TopStory> mTopStories;
 
     public String getDate() {
         return mDate;
@@ -30,14 +28,6 @@ public class DailyStories {
 
     public void setStories(List<Story> stories) {
         mStories = stories;
-    }
-
-    public List<TopStory> getTopStories() {
-        return mTopStories;
-    }
-
-    public void setTopStories(List<TopStory> topStories) {
-        mTopStories = topStories;
     }
 
 }

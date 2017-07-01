@@ -43,7 +43,7 @@ public class ZhihuApiModule {
         Retrofit.Builder builder = new Retrofit.Builder();
 
         builder.client(okHttpClient)
-                .baseUrl("https://news-at.zhihu.com/api/")
+                .baseUrl("https://news-at.zhihu.com/api/4/")
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(converterFactory);
 

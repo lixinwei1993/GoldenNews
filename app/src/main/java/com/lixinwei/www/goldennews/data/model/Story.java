@@ -1,56 +1,73 @@
 
 package com.lixinwei.www.goldennews.data.model;
 
-import com.google.gson.annotations.Expose;
+import java.util.List;
+import javax.annotation.Generated;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.List;
-
+@Generated("net.hexar.json2pojo")
+@SuppressWarnings("unused")
 public class Story {
 
-    @SerializedName("images")
-    @Expose
-    private List<String> mImages = null;
-
-    @SerializedName("type")
-    @Expose
-    private Integer mType;
-
-    @SerializedName("id")
-    @Expose
-    private Integer mId;
-
     @SerializedName("ga_prefix")
-    @Expose
     private String mGaPrefix;
-
+    @SerializedName("id")
+    private Long mId;
+    @SerializedName("images")
+    private List<String> mImages;
+    @SerializedName("multipic")
+    private Boolean mMultipic;
     @SerializedName("title")
-    @Expose
     private String mTitle;
-
-    public List<String> getImages() {
-        return mImages;
-    }
-
-
-    public Integer getType() {
-        return mType;
-    }
-
-
-    public Integer getId() {
-        return mId;
-    }
-
+    @SerializedName("type")
+    private Long mType;
 
     public String getGaPrefix() {
         return mGaPrefix;
     }
 
+    public void setGaPrefix(String gaPrefix) {
+        mGaPrefix = gaPrefix;
+    }
+
+    public Long getId() {
+        return mId;
+    }
+
+    public void setId(Long id) {
+        mId = id;
+    }
+
+    public List<String> getImages() {
+        return mImages;
+    }
+
+    public void setImages(List<String> images) {
+        mImages = images;
+    }
+
+    public Boolean getMultipic() {
+        return mMultipic;
+    }
+
+    public void setMultipic(Boolean multipic) {
+        mMultipic = multipic;
+    }
 
     public String getTitle() {
         return mTitle;
     }
 
+    public void setTitle(String title) {
+        mTitle = title;
+    }
+
+    public Long getType() {
+        return mType;
+    }
+
+    public void setType(Long type) {
+        mType = type;
+    }
 
 }
