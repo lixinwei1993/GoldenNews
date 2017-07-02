@@ -1,41 +1,32 @@
 package com.lixinwei.www.goldennews.newslist;
 
-import android.util.Log;
-
-import com.lixinwei.www.goldennews.data.Realm.RealmService;
-import com.lixinwei.www.goldennews.data.domain.ZhihuService;
-import com.lixinwei.www.goldennews.data.model.DailyStories;
-import com.lixinwei.www.goldennews.data.model.StoryExtra;
 import com.lixinwei.www.goldennews.data.model.StoryForRealm;
-import com.lixinwei.www.goldennews.data.model.TopStory;
 import com.lixinwei.www.goldennews.util.PerFragment;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
-import io.reactivex.Observable;
-import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by welding on 2017/6/29.
  */
 @PerFragment //how this scope work? link the instance with the same scoped component?
 public class NewsListPresenter implements NewsListContract.Presenter {
-    private final ZhihuService mZhihuService;           //model layer
-    private final RealmService mRealmService;
     private NewsListContract.View mNewsListView;  //view layer
-    private int mTopstoriesSize; //store the #topStory for using in buffer in loadDailyStories
+    private CompositeDisposable mCompositeDisposable;
 
     @Inject
-    NewsListPresenter(ZhihuService zhihuService, RealmService realmService) {
-        mZhihuService = zhihuService;
-        mRealmService = realmService;
+    NewsListObservableManager mNewsListObservableManager;
+
+    @Inject
+    NewsListPresenter() {
+        mCompositeDisposable = new CompositeDisposable();
     }
 
     /**
@@ -43,47 +34,21 @@ public class NewsListPresenter implements NewsListContract.Presenter {
      *      代码的实现，边实时更新activity，fragment（view）以及两个interface
      */
 
+    //TODO 实现replaySubject，以避免频繁索取Observable或进行网络请求
     public void loadDailyStories() {
-        mZhihuService.getDailyStories().subscribeOn(Schedulers.io())
-                .flatMap(new Function<DailyStories, ObservableSource<TopStory>>() {
-                    @Override
-                    public ObservableSource<TopStory> apply(@NonNull DailyStories dailyStories) throws Exception {
-                        List<TopStory> topStories = dailyStories.getTopStories();
-                        mTopstoriesSize = topStories.size();
-                        Log.d("Main", "" + mTopstoriesSize);
-                        return Observable.fromIterable(topStories);
-                    }
-                })
-                .flatMap(new Function<TopStory, ObservableSource<StoryForRealm>>() {
-                    @Override
-                    public ObservableSource<StoryForRealm> apply(@NonNull final TopStory topStory) throws Exception {
-                        return mZhihuService.getStoryExtra(topStory.getId())
-                                .map(new Function<StoryExtra, StoryForRealm>() {
-                                    @Override
-                                    public StoryForRealm apply(@NonNull StoryExtra storyExtra) throws Exception {
-                                        StoryForRealm storyForRealm = new StoryForRealm();
-                                        storyForRealm.setComments(storyExtra.getComments());
-                                        storyForRealm.setPopularity(storyExtra.getPopularity());
-                                        storyForRealm.setImage(topStory.getImage());
-                                        storyForRealm.setId(topStory.getId());
-                                        storyForRealm.setTitle(topStory.getTitle());
-
-                                        return storyForRealm;
-                                    }
-                                });
-                    }
-                })
-                .toList()  //use "to"operator rather than buffer!
+        Disposable disposable = mNewsListObservableManager.loadDailyStories()
+                .toList()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<List<StoryForRealm>>() {
+                    //TODO 对上述operator等upstream发出的exception（使用subscriber的onError功能，不是简单的使用consumer）
                     @Override
                     public void accept(@NonNull List<StoryForRealm> stories) throws Exception {
                         mNewsListView.showTopStories(stories);
-                        //TODO directly store stories in db is not a good solution, how to cache? the transaction of realm's thread?
-                        //TODO cache implement by Http client interceptor
-                        //mRealmService.insertStories(stories);
+                        //TODO how to cache? the transaction of realm's thread?
                     }
                 });
+
+        mCompositeDisposable.add(disposable);
     }
 
     @Override
@@ -93,13 +58,14 @@ public class NewsListPresenter implements NewsListContract.Presenter {
 
     @Override
     public void unbindView() {
-        mNewsListView = null;
+        //why dispose: stop Observable emmit items immediately!! reduce unnecessary workload
+        if(mCompositeDisposable != null && !mCompositeDisposable.isDisposed()) {
+            mCompositeDisposable.dispose();     //dispose main thread's subscription
+        }
+
+        mNewsListObservableManager.dispose();   //dispose ReplaySubject's subscription
+
+        mNewsListView = null;   //deference view to let fragment can be GC
     }
-
-
-
-
-
-
 
 }

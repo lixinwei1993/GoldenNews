@@ -32,10 +32,15 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 @Module
 public class ZhihuApiModule {
+
     private static final String BASE_URL = "https://news-at.zhihu.com/api/4/";
+    //Pragma is the HTTP/1.0 implementation and cache-control is the HTTP/1.1 implementation of the same concept.
+    //They both are meant to prevent the client from caching the response. Older clients may not support HTTP/1.1 which is why that header is still in use.
+    //the three following is HTTP specification, not website specific（即下面是http的专有名词，详细的要看http的相关知识
     private static final String HTTP_CACHE_PATH = "http-cache";
     private static final String CACHE_CONTROL = "Cache-Control";
     private static final String PRAGMA = "Pragma";
+
     private static final int NETWORK_CONNECTION_TIMEOUT = 30; // 30 sec
     private static final int NETWORK_READ_TIMEOUT = 30; //30 sec
     private static final long CACHE_SIZE = 10 * 1024 * 1024; // 10 MB

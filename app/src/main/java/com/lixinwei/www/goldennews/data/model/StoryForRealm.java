@@ -16,9 +16,6 @@ public class StoryForRealm extends RealmObject {
     private String mImage;
     private String mTitle;
 
-    //from StoryDetail
-    private String mBody;
-    private String mImageSource;
 
     //from StoryExtra
     //number of comments: #long + #short
@@ -50,22 +47,6 @@ public class StoryForRealm extends RealmObject {
         mTitle = title;
     }
 
-    public String getBody() {
-        return mBody;
-    }
-
-    public void setBody(String body) {
-        mBody = body;
-    }
-
-
-    public String getImageSource() {
-        return mImageSource;
-    }
-
-    public void setImageSource(String imageSource) {
-        mImageSource = imageSource;
-    }
 
     public Long getComments() {
         return mComments;

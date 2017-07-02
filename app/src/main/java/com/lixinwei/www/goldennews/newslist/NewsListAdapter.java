@@ -11,7 +11,6 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.lixinwei.www.goldennews.R;
 import com.lixinwei.www.goldennews.data.model.StoryForRealm;
-import com.lixinwei.www.goldennews.data.model.StoryForRealm;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -80,6 +79,7 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsLi
         public void bind(StoryForRealm storyForRealm) {
             mTitle.setText(storyForRealm.getTitle() + storyForRealm.getComments());
 
+            //Glide can automatically cache image in memory&disk, if you want to customize the cache pattern, read api
             Glide.with(mContext)
                     .load(storyForRealm.getImage())
                     .into(mImage);
