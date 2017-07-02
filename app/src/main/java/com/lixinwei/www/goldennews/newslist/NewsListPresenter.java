@@ -56,36 +56,24 @@ public class NewsListPresenter implements NewsListContract.Presenter {
                 })
                 .flatMap(new Function<TopStory, ObservableSource<StoryForRealm>>() {
                     @Override
-                    public ObservableSource<StoryForRealm> apply(@NonNull TopStory topStory) throws Exception {
-                        StoryForRealm storyForRealm = new StoryForRealm();
-                        storyForRealm.setId(topStory.getId());
-                        storyForRealm.setImage(topStory.getImage());
-                        storyForRealm.setTitle(topStory.getTitle());
-                        return Observable.just(storyForRealm);
-                    }
-                })
-                .flatMap(new Function<StoryForRealm, ObservableSource<StoryForRealm>>() {
-                    //TODO is there a better way to combine service data rather than use nested subscribe
-                    @Override
-                    public ObservableSource<StoryForRealm> apply(@NonNull final StoryForRealm storyForRealm) throws Exception {
-                        mZhihuService.getStoryExtra(storyForRealm.getId()).subscribe(new Consumer<StoryExtra>() {
-                            @Override
-                            public void accept(@NonNull StoryExtra storyExtra) throws Exception {
-                                storyForRealm.setPopularity(storyExtra.getPopularity());
-                                storyForRealm.setComments(storyExtra.getComments());
-                            }
-                        });
+                    public ObservableSource<StoryForRealm> apply(@NonNull final TopStory topStory) throws Exception {
+                        return mZhihuService.getStoryExtra(topStory.getId())
+                                .map(new Function<StoryExtra, StoryForRealm>() {
+                                    @Override
+                                    public StoryForRealm apply(@NonNull StoryExtra storyExtra) throws Exception {
+                                        StoryForRealm storyForRealm = new StoryForRealm();
+                                        storyForRealm.setComments(storyExtra.getComments());
+                                        storyForRealm.setPopularity(storyExtra.getPopularity());
+                                        storyForRealm.setImage(topStory.getImage());
+                                        storyForRealm.setId(topStory.getId());
+                                        storyForRealm.setTitle(topStory.getTitle());
 
-                        return Observable.just(storyForRealm);
+                                        return storyForRealm;
+                                    }
+                                });
                     }
                 })
-                .doOnNext(new Consumer<StoryForRealm>() {
-                    @Override
-                    public void accept(@NonNull StoryForRealm storyForRealm) throws Exception {
-                        mRealmService.insertStory(storyForRealm);
-                    }
-                })
-                .buffer(5)  //TODO is there a better way to buffer all rather than specific count? combine with time limit??
+                .toList()  //use "to"operator rather than buffer!
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<List<StoryForRealm>>() {
                     @Override
