@@ -2,8 +2,7 @@ package com.lixinwei.www.goldennews.newslist;
 
 import com.lixinwei.www.goldennews.base.BasePresenter;
 import com.lixinwei.www.goldennews.base.BaseView;
-import com.lixinwei.www.goldennews.data.model.StoryForRealm;
-import com.lixinwei.www.goldennews.data.model.TopStory;
+import com.lixinwei.www.goldennews.data.model.StoryForNewsList;
 
 import java.util.List;
 
@@ -13,12 +12,18 @@ import java.util.List;
 
 public interface NewsListContract {
     interface View extends BaseView {
-        void showTopStories(List<StoryForRealm> storyList);
+        void showTopStories(List<StoryForNewsList> storyList);
         void setLoadingIndicator(final boolean active);
+        void showLikedSnackbar();
     }
 
     interface Presenter extends BasePresenter<View> {
         void loadDailyStories();
+        void commentsButtonClicked(android.view.View view, StoryForNewsList story);
+
+        void likeButtonClicked(StoryForNewsList story);
+
+        void moreButtonClicked(android.view.View view, StoryForNewsList story);
         void bindView(View view);
         void unbindView();
     }

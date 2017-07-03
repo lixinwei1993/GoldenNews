@@ -1,6 +1,9 @@
 package com.lixinwei.www.goldennews.newslist;
 
-import com.lixinwei.www.goldennews.data.model.StoryForRealm;
+import android.view.View;
+
+import com.lixinwei.www.goldennews.data.Realm.RealmService;
+import com.lixinwei.www.goldennews.data.model.StoryForNewsList;
 import com.lixinwei.www.goldennews.util.PerFragment;
 
 import java.util.List;
@@ -12,6 +15,7 @@ import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
 
 /**
  * Created by welding on 2017/6/29.
@@ -23,6 +27,8 @@ public class NewsListPresenter implements NewsListContract.Presenter {
 
     @Inject
     NewsListObservableManager mNewsListObservableManager;
+    @Inject
+    RealmService mRealmService;
 
     @Inject
     NewsListPresenter() {
@@ -39,20 +45,30 @@ public class NewsListPresenter implements NewsListContract.Presenter {
         mNewsListView.setLoadingIndicator(true);
 
         Disposable disposable = mNewsListObservableManager.loadDailyStories()
+                .map(new Function<StoryForNewsList, StoryForNewsList>() {
+                    @Override
+                    public StoryForNewsList apply(@NonNull StoryForNewsList storyForNewsList) throws Exception {
+                        Long id = storyForNewsList.getId();
+                        storyForNewsList.setLiked(mRealmService.queryLikedStory(id));
+                        storyForNewsList.setRead(mRealmService.queryStoryRead(id));
+
+                        return storyForNewsList;
+                    }
+                })
                 .toList()
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<List<StoryForRealm>>() {
+                .subscribe(new Consumer<List<StoryForNewsList>>() {
                     //TODO 对上述operator等upstream发出的exception（使用subscriber的onError功能，不是简单的使用consumer）
                     @Override
-                    public void accept(@NonNull List<StoryForRealm> stories) throws Exception {
+                    public void accept(@NonNull List<StoryForNewsList> stories) throws Exception {
                         mNewsListView.showTopStories(stories);
-                        //TODO how to cache? the transaction of realm's thread?
                     }
                 });
         mCompositeDisposable.add(disposable);
 
         mNewsListView.setLoadingIndicator(false);
     }
+
 
     @Override
     public void bindView(NewsListContract.View view) {
@@ -69,6 +85,23 @@ public class NewsListPresenter implements NewsListContract.Presenter {
         mNewsListObservableManager.dispose();   //dispose ReplaySubject's subscription
 
         mNewsListView = null;   //deference view to let fragment can be GC
+    }
+
+    @Override
+    public void commentsButtonClicked(View view, StoryForNewsList story) {
+        //TODO comments screen
+    }
+
+    @Override
+    public void likeButtonClicked(StoryForNewsList story) {
+        story.setLiked(true);
+        mNewsListView.showLikedSnackbar();
+        mRealmService.insertLikedStory(story);
+    }
+
+    @Override
+    public void moreButtonClicked(View view, StoryForNewsList story) {
+        //TODO more button implementation
     }
 
 }

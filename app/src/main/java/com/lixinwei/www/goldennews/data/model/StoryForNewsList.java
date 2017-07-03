@@ -7,21 +7,17 @@ import io.realm.annotations.PrimaryKey;
  * Created by welding on 2017/7/1.
  */
 
-public class StoryForRealm extends RealmObject {
+public class StoryForNewsList {
 
     //from DailyStories or DateDailyStories
     @PrimaryKey
     private Long mId;
-
     private String mImage;
     private String mTitle;
-
-
-    //from StoryExtra
-    //number of comments: #long + #short
     private Long mComments;
-    //number of like
     private Long mPopularity;
+    private boolean mLiked;
+    private boolean mRead;
 
     public Long getId() {
         return mId;
@@ -62,5 +58,21 @@ public class StoryForRealm extends RealmObject {
 
     public void setPopularity(Long popularity) {
         mPopularity = popularity;
+    }
+
+    public boolean isLiked() {
+        return mLiked;
+    }
+
+    public void setLiked(boolean liked) {
+        mLiked = liked;
+    }
+
+    public boolean isRead() {
+        return mRead;
+    }
+
+    public void setRead(boolean read) {
+        mRead = read;
     }
 }

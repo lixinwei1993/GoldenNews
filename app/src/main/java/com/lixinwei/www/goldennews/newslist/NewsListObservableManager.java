@@ -3,7 +3,7 @@ package com.lixinwei.www.goldennews.newslist;
 import com.lixinwei.www.goldennews.data.domain.ZhihuService;
 import com.lixinwei.www.goldennews.data.model.DailyStories;
 import com.lixinwei.www.goldennews.data.model.StoryExtra;
-import com.lixinwei.www.goldennews.data.model.StoryForRealm;
+import com.lixinwei.www.goldennews.data.model.StoryForNewsList;
 import com.lixinwei.www.goldennews.data.model.TopStory;
 
 import java.util.List;
@@ -28,14 +28,14 @@ import io.reactivex.subjects.ReplaySubject;
 public class NewsListObservableManager {
     private ZhihuService mZhihuService;
     private Disposable mDisposable;
-    private ReplaySubject<StoryForRealm> mReplaySubject;
+    private ReplaySubject<StoryForNewsList> mReplaySubject;
 
     @Inject
     public NewsListObservableManager(ZhihuService zhihuService) {
         mZhihuService = zhihuService;
     }
 
-    public Observable<StoryForRealm> loadDailyStories() {
+    public Observable<StoryForNewsList> loadDailyStories() {
         if (mDisposable == null || mDisposable.isDisposed()) //这个if句很重要，常规套路
         {
 
@@ -49,21 +49,20 @@ public class NewsListObservableManager {
                             return Observable.fromIterable(topStories);
                         }
                     })
-                    .flatMap(new Function<TopStory, ObservableSource<StoryForRealm>>() {
+                    .flatMap(new Function<TopStory, ObservableSource<StoryForNewsList>>() {
                         @Override
-                        public ObservableSource<StoryForRealm> apply(@NonNull final TopStory topStory) throws Exception {
+                        public ObservableSource<StoryForNewsList> apply(@NonNull final TopStory topStory) throws Exception {
                             return mZhihuService.getStoryExtra(topStory.getId())
-                                    .map(new Function<StoryExtra, StoryForRealm>() {
+                                    .map(new Function<StoryExtra, StoryForNewsList>() {
                                         @Override
-                                        public StoryForRealm apply(@NonNull StoryExtra storyExtra) throws Exception {
-                                            StoryForRealm storyForRealm = new StoryForRealm();
-                                            storyForRealm.setComments(storyExtra.getComments());
-                                            storyForRealm.setPopularity(storyExtra.getPopularity());
-                                            storyForRealm.setImage(topStory.getImage());
-                                            storyForRealm.setId(topStory.getId());
-                                            storyForRealm.setTitle(topStory.getTitle());
-
-                                            return storyForRealm;
+                                        public StoryForNewsList apply(@NonNull StoryExtra storyExtra) throws Exception {
+                                            StoryForNewsList storyForNewsList = new StoryForNewsList();
+                                            storyForNewsList.setComments(storyExtra.getComments());
+                                            storyForNewsList.setPopularity(storyExtra.getPopularity());
+                                            storyForNewsList.setImage(topStory.getImage());
+                                            storyForNewsList.setId(topStory.getId());
+                                            storyForNewsList.setTitle(topStory.getTitle());
+                                            return storyForNewsList;
                                         }
                                     });
                         }

@@ -1,6 +1,7 @@
 package com.lixinwei.www.goldennews.data.Realm;
 
-import com.lixinwei.www.goldennews.data.model.StoryForRealm;
+import com.lixinwei.www.goldennews.data.model.StoryForNewsList;
+import com.lixinwei.www.goldennews.data.model.StoryLikedForRealm;
 
 import java.util.List;
 
@@ -11,11 +12,14 @@ import java.util.List;
 public interface RealmService {
 
 
-    //used to store liked story
-    void insertStory(StoryForRealm story);
+    //store&&delete liked story
+    void insertLikedStory(StoryForNewsList story);
+    void deleteLikedStory(Long id);
+    boolean queryLikedStory(Long id);
 
-    void deleteStory(long id);
+    void insertStoryRead(Long id);
+    boolean queryStoryRead(Long id);
+    List<StoryLikedForRealm> getLikedList();
+    void changeLikeTime(Long id ,Long time, boolean isPlus);
 
-    //TODO used for cache latest daily top stories
-    void insertStories(List<StoryForRealm> stories);
 }

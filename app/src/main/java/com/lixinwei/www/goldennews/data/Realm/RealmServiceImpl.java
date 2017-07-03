@@ -2,15 +2,16 @@ package com.lixinwei.www.goldennews.data.Realm;
 
 import android.content.Context;
 
-import com.lixinwei.www.goldennews.data.model.StoryForRealm;
+import com.lixinwei.www.goldennews.data.model.StoryForNewsList;
+import com.lixinwei.www.goldennews.data.model.StoryLikedForRealm;
+import com.lixinwei.www.goldennews.data.model.StoryReadForRealm;
 
+import java.util.Calendar;
 import java.util.List;
-
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import java.util.Timer;
 
 import io.realm.Realm;
-import io.realm.RealmConfiguration;
+import io.realm.RealmResults;
 
 /**
  * Created by welding on 2017/7/1.
@@ -30,27 +31,33 @@ public class RealmServiceImpl implements RealmService {
     }
 
     @Override
-    public void insertStory(StoryForRealm story) {
+    public void insertLikedStory(StoryForNewsList story) {
         Realm realm = null;
         try { // I could use try-with-resources here
             realm = Realm.getDefaultInstance();
+
+            StoryLikedForRealm s = new StoryLikedForRealm();
+            s.setId(story.getId());
+            s.setImage(story.getImage());
+            s.setTitle(story.getTitle());
+            s.setLikedime((Calendar.getInstance().getTimeInMillis()));
+
             realm.beginTransaction();
-            realm.copyToRealmOrUpdate(story);
+            realm.copyToRealmOrUpdate(s);
             realm.commitTransaction();
         } finally {
             if(realm != null) {
                 realm.close();
             }
         }
-
     }
 
     @Override
-    public void deleteStory(long id) {
+    public void deleteLikedStory(Long id) {
         Realm realm = null;
         try { // I could use try-with-resources here
             realm = Realm.getDefaultInstance();
-            StoryForRealm story = realm.where(StoryForRealm.class).equalTo("mId", id).findFirst();
+            StoryLikedForRealm story = realm.where(StoryLikedForRealm.class).equalTo("mId", id).findFirst();
             realm.beginTransaction();
             if(story != null) {
                 story.deleteFromRealm();
@@ -64,14 +71,32 @@ public class RealmServiceImpl implements RealmService {
     }
 
     @Override
-    public void insertStories(List<StoryForRealm> stories) {
-
+    public boolean queryLikedStory(Long id) {
         Realm realm = null;
         try { // I could use try-with-resources here
             realm = Realm.getDefaultInstance();
+            StoryLikedForRealm story = realm.where(StoryLikedForRealm.class).equalTo("mId", id).findFirst();
+            if (story == null) {
+                return false;
+            } else {
+                return true;
+            }
+        } finally {
+            if(realm != null) {
+                realm.close();
+            }
+        }
+
+    }
+
+    @Override
+    public void insertStoryRead(Long id) {
+        Realm realm = null;
+        try { // I could use try-with-resources here
+            StoryReadForRealm story = new StoryReadForRealm(id);
+            realm = Realm.getDefaultInstance();
             realm.beginTransaction();
-            for (StoryForRealm story : stories)
-                realm.copyToRealmOrUpdate(story);
+            realm.copyToRealmOrUpdate(story);
             realm.commitTransaction();
         } finally {
             if(realm != null) {
@@ -80,5 +105,40 @@ public class RealmServiceImpl implements RealmService {
         }
     }
 
+    @Override
+    public boolean queryStoryRead(Long id) {
+        Realm realm = null;
+        try { // I could use try-with-resources here
+            realm = Realm.getDefaultInstance();
+            StoryReadForRealm story = realm.where(StoryReadForRealm.class).equalTo("mId", id).findFirst();
+            if (story == null) {
+                return false;
+            } else {
+                return true;
+            }
+        } finally {
+            if(realm != null) {
+                realm.close();
+            }
+        }
+    }
 
+    @Override
+    public List<StoryLikedForRealm> getLikedList() {
+        Realm realm = null;
+        try { // I could use try-with-resources here
+            realm = Realm.getDefaultInstance();
+            RealmResults<StoryLikedForRealm> results = realm.where(StoryLikedForRealm.class).findAllSorted("mLikedTime");
+            return realm.copyFromRealm(results);
+        } finally {
+            if(realm != null) {
+                realm.close();
+            }
+        }
+    }
+
+    @Override
+    public void changeLikeTime(Long id, Long time, boolean isPlus) {
+
+    }
 }

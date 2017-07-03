@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+                                    xmlns:tools="http://schemas.android.com/tools"
                                     android:id="@+id/main_card_view"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
@@ -12,16 +13,116 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <com.lixinwei.www.goldennews.newslist.SquareImageView
-            android:id="@+id/story_card_image"
+        <com.lixinwei.www.goldennews.newslist.GoldenRatioFrameLayout
+            android:id="@+id/story_card_image_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/story_card_image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop" />
+
+            <View
+                android:id="@+id/like_background"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/bg_like_circle_background"
+                android:visibility="invisible"/>
+
+            <ImageView
+                android:id="@+id/like_heart"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_heart_outline_white"
+                android:visibility="invisible"/>
+
+        </com.lixinwei.www.goldennews.newslist.GoldenRatioFrameLayout>
 
         <TextView
             android:id="@+id/story_card_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
+            android:paddingEnd="8dp"
+            android:paddingStart="8dp"
+            android:paddingTop="8dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            android:textSize="18sp"
+            tools:text="没有及时关闭等等，这个代码只能作为辅助，重点看"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="4dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:paddingTop="4dp">
+
+            <ImageButton
+                android:id="@+id/button_like"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@android:color/transparent"
+                android:padding="10dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_heart_outline_grey"/>
+
+            <ImageButton
+                android:id="@+id/button_comments"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@drawable/button_ripple"
+                android:padding="10dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_comment_outline_grey"/>
+
+            <ImageButton
+                android:id="@+id/button_more"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@drawable/button_ripple"
+                android:padding="10dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_more_grey"/>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical|end">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_heart_small_blue"/>
+
+                <TextSwitcher
+                    android:id="@+id/tsLikesCounter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:inAnimation="@anim/slide_in_likes_counter"
+                    android:outAnimation="@anim/slide_out_likes_counter">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="123 likes"
+                        android:textColor="@color/colorAccent"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorAccent"/>
+                </TextSwitcher>
+            </LinearLayout>
+        </LinearLayout>
+
+
     </LinearLayout>
 
 
