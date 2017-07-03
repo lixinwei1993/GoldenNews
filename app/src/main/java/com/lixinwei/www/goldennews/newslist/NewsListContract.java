@@ -14,6 +14,7 @@ import java.util.List;
 public interface NewsListContract {
     interface View extends BaseView {
         void showTopStories(List<StoryForRealm> storyList);
+        void setLoadingIndicator(final boolean active);
     }
 
     interface Presenter extends BasePresenter<View> {

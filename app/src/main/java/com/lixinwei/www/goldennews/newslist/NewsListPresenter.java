@@ -36,6 +36,8 @@ public class NewsListPresenter implements NewsListContract.Presenter {
 
     //TODO 实现replaySubject，以避免频繁索取Observable或进行网络请求
     public void loadDailyStories() {
+        mNewsListView.setLoadingIndicator(true);
+
         Disposable disposable = mNewsListObservableManager.loadDailyStories()
                 .toList()
                 .observeOn(AndroidSchedulers.mainThread())
@@ -47,8 +49,9 @@ public class NewsListPresenter implements NewsListContract.Presenter {
                         //TODO how to cache? the transaction of realm's thread?
                     }
                 });
-
         mCompositeDisposable.add(disposable);
+
+        mNewsListView.setLoadingIndicator(false);
     }
 
     @Override

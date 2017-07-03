@@ -22,6 +22,8 @@ import io.reactivex.subjects.ReplaySubject;
 /**
  * Created by welding on 2017/7/2.
  */
+//TODO 使用singleton有一个坏处就是整个App周期都不会重新进行该项网络请求，是否合理？？还是要弄懂PerFragment的原理或者后期进行优化
+    //如对于获取某一日期的news时除了已有的判断条件还要加一个日期是否相同来决定要不要重新强制进行网络请求，具体以后再说，参考marvel
 @Singleton
 public class NewsListObservableManager {
     private ZhihuService mZhihuService;

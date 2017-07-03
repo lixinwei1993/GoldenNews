@@ -2,9 +2,14 @@ package com.lixinwei.www.goldennews.newslist;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -28,6 +33,9 @@ public class NewsListFragment extends BaseFragment implements NewsListContract.V
 
     @BindView(R.id.recycler_view_news_list)
     RecyclerView mRecyclerView;
+    @BindView(R.id.refresh_layout)
+    SwipeRefreshLayout mSwipeRefreshLayout;
+
 
     @Inject
     NewsListAdapter mNewsListAdapter;
@@ -47,10 +55,54 @@ public class NewsListFragment extends BaseFragment implements NewsListContract.V
                 .inject(this);
 
         ButterKnife.bind(this, view);
+
+        //customize the progress indicator color
+        mSwipeRefreshLayout.setColorSchemeColors(
+                ContextCompat.getColor(getActivity(), R.color.colorPrimary),
+                ContextCompat.getColor(getActivity(), R.color.colorAccent),
+                ContextCompat.getColor(getActivity(), R.color.colorPrimaryDark)
+        );
+
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mNewsListPresenter.loadDailyStories();
+            }
+        });
+
+
+
         initRecyclerView();
         mNewsListPresenter.bindView(this);
         mNewsListPresenter.loadDailyStories();
+
+        setHasOptionsMenu(true);
+
         return view;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.fragment_news_list_menu, menu);
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            //TODO
+        }
+        return true;
+    }
+
+    @Override
+    public void setLoadingIndicator(final boolean active) {
+        if (getView() == null) return;
+
+        mSwipeRefreshLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                mSwipeRefreshLayout.setRefreshing(active);
+            }
+        });
     }
 
     private void initRecyclerView() {
