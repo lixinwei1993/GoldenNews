@@ -1,4 +1,4 @@
-package com.lixinwei.www.goldennews;
+package com.lixinwei.www.goldennews.app;
 
 import com.lixinwei.www.goldennews.data.Realm.RealmServiceModule;
 import com.lixinwei.www.goldennews.data.domain.ZhihuApiModule;

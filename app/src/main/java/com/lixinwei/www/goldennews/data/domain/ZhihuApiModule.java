@@ -77,7 +77,7 @@ public class ZhihuApiModule {
             @Named("retryInterceptor") Interceptor retryInterceptor
     ) {
         final OkHttpClient.Builder builder = new OkHttpClient.Builder();
-        builder.addNetworkInterceptor(cacheInterceptor)
+        builder//.addNetworkInterceptor(cacheInterceptor)
                 .addInterceptor(offlineCacheInterceptor)
                 .addInterceptor(retryInterceptor)
                 .cache(cache)
@@ -180,7 +180,7 @@ public class ZhihuApiModule {
                 }
 
                 // throw last exception
-                if (null == response && null != exception)
+                if (null == response && null != exception)  //TODO process of exception
                     throw exception;
 
                 // otherwise just pass the original response on

@@ -15,7 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.lixinwei.www.goldennews.GoldenNewsApplication;
+import com.lixinwei.www.goldennews.app.GoldenNewsApplication;
 import com.lixinwei.www.goldennews.R;
 import com.lixinwei.www.goldennews.base.BaseFragment;
 import com.lixinwei.www.goldennews.data.model.StoryForNewsList;
@@ -78,7 +78,7 @@ public class NewsListFragment extends BaseFragment implements NewsListContract.V
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                mNewsListPresenter.loadDailyStories();
+                mNewsListPresenter.loadNewDailyStories();
             }
         });
 

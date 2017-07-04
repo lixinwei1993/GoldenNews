@@ -1,4 +1,4 @@
-package com.lixinwei.www.goldennews;
+package com.lixinwei.www.goldennews.app;
 
 import android.content.Context;
 

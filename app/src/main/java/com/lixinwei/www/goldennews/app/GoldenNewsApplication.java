@@ -1,9 +1,9 @@
-package com.lixinwei.www.goldennews;
+package com.lixinwei.www.goldennews.app;
 
 import android.app.Application;
 import android.content.Context;
 
-import com.lixinwei.www.goldennews.newslist.NewsListContract;
+
 import com.lixinwei.www.goldennews.newslist.NewsListModule;
 import com.lixinwei.www.goldennews.newslist.NewsListSubComponent;
 

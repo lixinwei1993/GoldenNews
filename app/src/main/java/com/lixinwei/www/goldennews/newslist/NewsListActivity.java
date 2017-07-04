@@ -1,6 +1,5 @@
 package com.lixinwei.www.goldennews.newslist;
 
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -8,7 +7,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
-import android.view.Gravity;
 import android.view.MenuItem;
 
 import com.lixinwei.www.goldennews.R;
@@ -49,12 +47,12 @@ public class NewsListActivity extends BaseActivity {
         }
 
         NewsListFragment newsListFragment =
-                (NewsListFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);
+                (NewsListFragment) getSupportFragmentManager().findFragmentById(R.id.container_news_list);
 
         if (newsListFragment == null) {
             newsListFragment = NewsListFragment.newInstance();
             ActivityUtils.addFragmentToActivity(getSupportFragmentManager(),
-                newsListFragment, R.id.contentFrame);
+                newsListFragment, R.id.container_news_list);
         }
 
         //TODO
@@ -87,7 +85,8 @@ public class NewsListActivity extends BaseActivity {
                     @Override
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                         switch (item.getItemId()) {
-                            //TODO
+                            case R.id.liked_navigation_menu_item:
+                                //TODO
                         }
 
                         //close the navigation drawer when an item is selected.

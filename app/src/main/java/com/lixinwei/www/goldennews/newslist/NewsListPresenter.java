@@ -70,6 +70,36 @@ public class NewsListPresenter implements NewsListContract.Presenter {
     }
 
 
+    //TODO 实现replaySubject，以避免频繁索取Observable或进行网络请求
+    public void loadNewDailyStories() {
+        mNewsListView.setLoadingIndicator(true);
+
+        Disposable disposable = mNewsListObservableManager.loadNewDailyStories()
+                .map(new Function<StoryForNewsList, StoryForNewsList>() {
+                    @Override
+                    public StoryForNewsList apply(@NonNull StoryForNewsList storyForNewsList) throws Exception {
+                        Long id = storyForNewsList.getId();
+                        storyForNewsList.setLiked(mRealmService.queryLikedStory(id));
+                        storyForNewsList.setRead(mRealmService.queryStoryRead(id));
+
+                        return storyForNewsList;
+                    }
+                })
+                .toList()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<List<StoryForNewsList>>() {
+                    //TODO 对上述operator等upstream发出的exception（使用subscriber的onError功能，不是简单的使用consumer）
+                    @Override
+                    public void accept(@NonNull List<StoryForNewsList> stories) throws Exception {
+                        mNewsListView.showTopStories(stories);
+                    }
+                });
+        mCompositeDisposable.add(disposable);
+
+        mNewsListView.setLoadingIndicator(false);
+    }
+
+
     @Override
     public void bindView(NewsListContract.View view) {
         mNewsListView = view;

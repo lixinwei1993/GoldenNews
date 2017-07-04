@@ -19,6 +19,7 @@ public interface NewsListContract {
 
     interface Presenter extends BasePresenter<View> {
         void loadDailyStories();
+        void loadNewDailyStories();
         void commentsButtonClicked(android.view.View view, StoryForNewsList story);
 
         void likeButtonClicked(StoryForNewsList story);
