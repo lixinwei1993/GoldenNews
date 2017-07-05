@@ -12,7 +12,7 @@ public class StoryLikedForRealm extends RealmObject {
     private Long mId;
     private String mImage;
     private String mTitle;
-    private Long mLikedime;
+    private Long mLikedTime;
 
     public Long getId() {
         return mId;
@@ -38,11 +38,11 @@ public class StoryLikedForRealm extends RealmObject {
         mTitle = title;
     }
 
-    public Long getLikedime() {
-        return mLikedime;
+    public Long getLikedTime() {
+        return mLikedTime;
     }
 
-    public void setLikedime(Long likedime) {
-        mLikedime = likedime;
+    public void setLikedTime(Long likedTime) {
+        mLikedTime = likedTime;
     }
 }

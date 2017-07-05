@@ -66,7 +66,7 @@ public class NewsListFragment extends BaseFragment implements NewsListContract.V
 
         ButterKnife.bind(this, view);
 
-        //TODO更好的设计presenter时该句不必要亦或者是ButterKnife能不能实现这个功能呢
+        //TODO 更好的设计presenter时该句不必要亦或者是ButterKnife能不能实现这个功能呢
         mCoordinatorLayout = getActivity().findViewById(R.id.coordinatorLayout);
 
         //customize the progress indicator color
@@ -93,6 +93,7 @@ public class NewsListFragment extends BaseFragment implements NewsListContract.V
         initRecyclerView();
         mNewsListPresenter.bindView(this);
 
+        //TODO 添加splashactivity 更好的提升用户体验
         if(savedInstanceState == null) {    //ensure configuration change recreate don't show error snack bar again;
             if(!Utils.isConnected(mContext)) showNetworkErrorSnackbar();
             mNewsListPresenter.loadDailyStories(true);
@@ -120,7 +121,7 @@ public class NewsListFragment extends BaseFragment implements NewsListContract.V
 
     @Override
     public void setLoadingIndicator(final boolean active) {
-        //if (getView() == null) return;
+        if (getView() == null) return;
 
         mSwipeRefreshLayout.post(new Runnable() {
             @Override

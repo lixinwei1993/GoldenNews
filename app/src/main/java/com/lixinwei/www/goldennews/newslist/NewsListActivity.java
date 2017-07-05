@@ -1,5 +1,6 @@
 package com.lixinwei.www.goldennews.newslist;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -11,6 +12,7 @@ import android.view.MenuItem;
 
 import com.lixinwei.www.goldennews.R;
 import com.lixinwei.www.goldennews.base.BaseActivity;
+import com.lixinwei.www.goldennews.likedlist.LikedListActivity;
 import com.lixinwei.www.goldennews.util.ActivityUtils;
 
 import butterknife.BindView;
@@ -86,7 +88,9 @@ public class NewsListActivity extends BaseActivity {
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                         switch (item.getItemId()) {
                             case R.id.liked_navigation_menu_item:
-                                //TODO
+                                Intent intent = LikedListActivity.newIntent(NewsListActivity.this);
+                                startActivity(intent);
+                                break;
                         }
 
                         //close the navigation drawer when an item is selected.

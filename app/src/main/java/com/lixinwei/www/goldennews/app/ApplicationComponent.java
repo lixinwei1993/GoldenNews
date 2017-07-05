@@ -2,6 +2,8 @@ package com.lixinwei.www.goldennews.app;
 
 import com.lixinwei.www.goldennews.data.Realm.RealmServiceModule;
 import com.lixinwei.www.goldennews.data.domain.ZhihuApiModule;
+import com.lixinwei.www.goldennews.likedlist.LikedListModule;
+import com.lixinwei.www.goldennews.likedlist.LikedListSubComponent;
 import com.lixinwei.www.goldennews.newslist.NewsListActivity;
 import com.lixinwei.www.goldennews.newslist.NewsListSubComponent;
 import com.lixinwei.www.goldennews.newslist.NewsListModule;
@@ -25,4 +27,6 @@ public interface ApplicationComponent {
     void inject(NewsListActivity activity);
 
     NewsListSubComponent plus(NewsListModule module);
+
+    LikedListSubComponent plus(LikedListModule module);
 }

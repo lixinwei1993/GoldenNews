@@ -16,10 +16,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.observers.DisposableSingleObserver;
-import io.reactivex.subscribers.ResourceSubscriber;
 
 /**
  * Created by welding on 2017/6/29.
@@ -35,6 +33,12 @@ public class NewsListPresenter implements NewsListContract.Presenter {
     NewsListObservableManager mNewsListObservableManager;
     @Inject
     RealmService mRealmService;
+
+    //TODO 此处必须将constructor设为inject，然后在provide时通过参数inject的形式，而不能在provide函数内使用new method。否则上面的inject field无法inject
+    //因为inject的触发必须是通过dagger途径，正常的使用new格式建立该类的object Dagger并不会自动触发这些inject
+    //现在可以理解为什么要在component中建立一个void inject函数了，通过将作为参数传递给Dagger，触发Dagger的inject
+    //因为activity和fragment等都是有系统建立的，并不是dagger inject的，因此需要给dagger一个触发时机，这就是为什么要
+    //显式的建立一次component的原因。这周完成这个项目之后赶快抓紧时间完成库源码阅读和Android书籍的刷题
 
     @Inject
     NewsListPresenter() {

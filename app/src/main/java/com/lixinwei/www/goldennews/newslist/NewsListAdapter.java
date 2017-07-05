@@ -28,7 +28,7 @@ import butterknife.ButterKnife;
  */
 
 public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsListViewHolder> {
-    private final List<StoryForNewsList> mStories = new ArrayList<>();
+    private List<StoryForNewsList> mStories = new ArrayList<>();
 
     public static final String ACTION_LIKE_BUTTON_CLICKED = "action_like_button_button";
     public static final String ACTION_LIKE_IMAGE_CLICKED = "action_like_image_button";

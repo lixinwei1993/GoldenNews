@@ -8,10 +8,10 @@ import com.lixinwei.www.goldennews.data.model.StoryReadForRealm;
 
 import java.util.Calendar;
 import java.util.List;
-import java.util.Timer;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
+import io.realm.Sort;
 
 /**
  * Created by welding on 2017/7/1.
@@ -40,7 +40,7 @@ public class RealmServiceImpl implements RealmService {
             s.setId(story.getId());
             s.setImage(story.getImage());
             s.setTitle(story.getTitle());
-            s.setLikedime((Calendar.getInstance().getTimeInMillis()));
+            s.setLikedTime((Calendar.getInstance().getTimeInMillis()));
 
             realm.beginTransaction();
             realm.copyToRealmOrUpdate(s);
@@ -128,7 +128,7 @@ public class RealmServiceImpl implements RealmService {
         Realm realm = null;
         try { // I could use try-with-resources here
             realm = Realm.getDefaultInstance();
-            RealmResults<StoryLikedForRealm> results = realm.where(StoryLikedForRealm.class).findAllSorted("mLikedTime");
+            RealmResults<StoryLikedForRealm> results = realm.where(StoryLikedForRealm.class).findAllSorted("mLikedTime", Sort.DESCENDING);
             return realm.copyFromRealm(results);
         } finally {
             if(realm != null) {

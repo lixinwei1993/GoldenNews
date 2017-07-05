@@ -6,4 +6,7 @@
 
     <color name="titleUnread">#000000</color>
     <color name="titleRead">#848A8C</color>
+
+    <color name="LikedItemBackground">#EEEEEE</color>
+    <color name="LikedCard">#FFFFFF</color>
 </resources>

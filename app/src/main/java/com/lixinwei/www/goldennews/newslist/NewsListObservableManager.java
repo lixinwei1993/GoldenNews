@@ -5,6 +5,7 @@ import com.lixinwei.www.goldennews.data.model.DailyStories;
 import com.lixinwei.www.goldennews.data.model.StoryExtra;
 import com.lixinwei.www.goldennews.data.model.StoryForNewsList;
 import com.lixinwei.www.goldennews.data.model.TopStory;
+import com.lixinwei.www.goldennews.util.PerFragment;
 
 import java.util.List;
 
@@ -24,7 +25,7 @@ import io.reactivex.subjects.ReplaySubject;
  */
 //TODO 使用singleton有一个坏处就是整个App周期都不会重新进行该项网络请求，是否合理？？还是要弄懂PerFragment的原理或者后期进行优化
     //如对于获取某一日期的news时除了已有的判断条件还要加一个日期是否相同来决定要不要重新强制进行网络请求，具体以后再说，参考marvel
-@Singleton
+@PerFragment
 public class NewsListObservableManager {
     private ZhihuService mZhihuService;
     private Disposable mDisposable;
@@ -36,15 +37,14 @@ public class NewsListObservableManager {
     }
 
     public Observable<StoryForNewsList> loadDailyStories(boolean forceUpdate) {
-        if(forceUpdate) {
-            mReplaySubject = null;
-        }
-        if (mDisposable == null || mDisposable.isDisposed()) //这个if句很重要，常规套路
+
+        if (forceUpdate || mDisposable == null || mDisposable.isDisposed()) //这个if句很重要，常规套路
         {
 
             mReplaySubject = ReplaySubject.create();
 
-            //这里抛出exception的情况还可以再细化，自定义exception，参考GeekNews
+            //这里抛出exception的情况还可以再细化，自定义exception，参考GeekNews或marvel
+
             mZhihuService.getDailyStories().subscribeOn(Schedulers.io())
                     .flatMap(new Function<DailyStories, ObservableSource<TopStory>>() {
                         @Override

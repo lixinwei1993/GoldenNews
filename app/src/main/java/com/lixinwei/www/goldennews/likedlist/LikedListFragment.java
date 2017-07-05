@@ -1,15 +1,26 @@
 package com.lixinwei.www.goldennews.likedlist;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.lixinwei.www.goldennews.R;
+import com.lixinwei.www.goldennews.app.GoldenNewsApplication;
 import com.lixinwei.www.goldennews.base.BaseFragment;
+import com.lixinwei.www.goldennews.data.model.StoryForNewsList;
+import com.lixinwei.www.goldennews.data.model.StoryLikedForRealm;
+import com.lixinwei.www.goldennews.newslist.NewsItemAnimator;
+
+import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -18,12 +29,19 @@ import butterknife.ButterKnife;
  * Created by welding on 2017/7/3.
  */
 
-public class LikedListFragment extends BaseFragment {
+public class LikedListFragment extends BaseFragment implements LikedListContract.View {
 
     @BindView(R.id.recycler_view_liked)
     RecyclerView mRecyclerView;
     @BindView(R.id.refresh_layout_liked)
     SwipeRefreshLayout mSwipeRefreshLayout;
+
+    @Inject
+    LikedAdapter mLikedListAdapter;
+    @Inject
+    LikedListContract.Presenter mLikedListPresenter;
+    @Inject
+    Context mContext;
 
     public static LikedListFragment newInstance() {
         return new LikedListFragment();
@@ -33,6 +51,8 @@ public class LikedListFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_liked_list, container, false);
 
+        GoldenNewsApplication.getGoldenNewsApplication(getActivity()).getLikedListSubComponent()
+                .inject(this);
 
         ButterKnife.bind(this, view);
 
@@ -46,18 +66,50 @@ public class LikedListFragment extends BaseFragment {
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                //TODO mNewsListPresenter.loadLikedStories();
+                mLikedListPresenter.loadLikedStories();
             }
         });
 
 
-
-        /*initRecyclerView();
-        mNewsListPresenter.bindView(this);
-        mNewsListPresenter.loadDailyStories();*/
+        initRecyclerView();
+        mLikedListPresenter.bindView(this);
+        mLikedListPresenter.loadLikedStories();
 
         //setHasOptionsMenu(true);
 
         return view;
+    }
+
+    private void initRecyclerView() {
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mRecyclerView.setAdapter(mLikedListAdapter);
+        //mRecyclerView.setItemAnimator(new NewsItemAnimator());
+    }
+
+    @Override
+    public void showLikedStories(List<StoryLikedForRealm> storyList) {
+        mLikedListAdapter.updateStoriesList(storyList);
+    }
+
+    @Override
+    public void setLoadingIndicator(final boolean active) {
+        if (getView() == null) return;
+
+        mSwipeRefreshLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                mSwipeRefreshLayout.setRefreshing(active);
+            }
+        });
+    }
+
+    @Override
+    public void showLoadErrorSnackbar() {
+        Snackbar.make(mRecyclerView, "Load Error", Snackbar.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showNetworkErrorSnackbar() {
+        Snackbar.make(mRecyclerView, "Load Error", Snackbar.LENGTH_SHORT).show();
     }
 }
