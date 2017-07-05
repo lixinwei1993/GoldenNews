@@ -15,11 +15,12 @@ public interface NewsListContract {
         void showTopStories(List<StoryForNewsList> storyList);
         void setLoadingIndicator(final boolean active);
         void showLikedSnackbar();
+        void showLoadErrorSnackbar();
+        void showNetworkErrorSnackbar();
     }
 
     interface Presenter extends BasePresenter<View> {
-        void loadDailyStories();
-        void loadNewDailyStories();
+        void loadDailyStories(boolean forceUpdate);
         void commentsButtonClicked(android.view.View view, StoryForNewsList story);
 
         void likeButtonClicked(StoryForNewsList story);

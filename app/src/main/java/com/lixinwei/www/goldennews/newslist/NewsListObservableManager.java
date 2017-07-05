@@ -35,12 +35,16 @@ public class NewsListObservableManager {
         mZhihuService = zhihuService;
     }
 
-    public Observable<StoryForNewsList> loadDailyStories() {
+    public Observable<StoryForNewsList> loadDailyStories(boolean forceUpdate) {
+        if(forceUpdate) {
+            mReplaySubject = null;
+        }
         if (mDisposable == null || mDisposable.isDisposed()) //这个if句很重要，常规套路
         {
 
             mReplaySubject = ReplaySubject.create();
 
+            //这里抛出exception的情况还可以再细化，自定义exception，参考GeekNews
             mZhihuService.getDailyStories().subscribeOn(Schedulers.io())
                     .flatMap(new Function<DailyStories, ObservableSource<TopStory>>() {
                         @Override
@@ -71,47 +75,6 @@ public class NewsListObservableManager {
         }
 
         return mReplaySubject;
-    }
-
-    public Observable<StoryForNewsList> loadNewDailyStories() {
-        ReplaySubject replaySubject = ReplaySubject.create();
-
-        if (mDisposable == null || mDisposable.isDisposed()) //这个if句很重要，常规套路
-        {
-
-
-
-            mZhihuService.getDailyStories().subscribeOn(Schedulers.io())
-                    .flatMap(new Function<DailyStories, ObservableSource<TopStory>>() {
-                        @Override
-                        public ObservableSource<TopStory> apply(@NonNull DailyStories dailyStories) throws Exception {
-                            List<TopStory> topStories = dailyStories.getTopStories();
-                            return Observable.fromIterable(topStories);
-                        }
-                    })
-                    .flatMap(new Function<TopStory, ObservableSource<StoryForNewsList>>() {
-                        @Override
-                        public ObservableSource<StoryForNewsList> apply(@NonNull final TopStory topStory) throws Exception {
-                            return mZhihuService.getStoryExtra(topStory.getId())
-                                    .map(new Function<StoryExtra, StoryForNewsList>() {
-                                        @Override
-                                        public StoryForNewsList apply(@NonNull StoryExtra storyExtra) throws Exception {
-                                            StoryForNewsList storyForNewsList = new StoryForNewsList();
-                                            storyForNewsList.setComments(storyExtra.getComments());
-                                            storyForNewsList.setPopularity(storyExtra.getPopularity());
-                                            storyForNewsList.setImage(topStory.getImage());
-                                            storyForNewsList.setId(topStory.getId());
-                                            storyForNewsList.setTitle(topStory.getTitle());
-                                            return storyForNewsList;
-                                        }
-                                    });
-                        }
-                    })
-                    .subscribe(mReplaySubject);
-        }
-
-        return replaySubject;
-
     }
 
     /**

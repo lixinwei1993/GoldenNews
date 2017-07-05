@@ -1,10 +1,12 @@
 package com.lixinwei.www.goldennews.newslist;
 
+import android.content.Context;
 import android.view.View;
 
 import com.lixinwei.www.goldennews.data.Realm.RealmService;
 import com.lixinwei.www.goldennews.data.model.StoryForNewsList;
 import com.lixinwei.www.goldennews.util.PerFragment;
+import com.lixinwei.www.goldennews.util.Utils;
 
 import java.util.List;
 
@@ -16,6 +18,8 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
+import io.reactivex.observers.DisposableSingleObserver;
+import io.reactivex.subscribers.ResourceSubscriber;
 
 /**
  * Created by welding on 2017/6/29.
@@ -25,6 +29,8 @@ public class NewsListPresenter implements NewsListContract.Presenter {
     private NewsListContract.View mNewsListView;  //view layer
     private CompositeDisposable mCompositeDisposable;
 
+    @Inject
+    Context mContext;
     @Inject
     NewsListObservableManager mNewsListObservableManager;
     @Inject
@@ -41,10 +47,10 @@ public class NewsListPresenter implements NewsListContract.Presenter {
      */
 
     //TODO 实现replaySubject，以避免频繁索取Observable或进行网络请求
-    public void loadDailyStories() {
+    public void loadDailyStories(boolean forceUpdate) {
         mNewsListView.setLoadingIndicator(true);
 
-        Disposable disposable = mNewsListObservableManager.loadDailyStories()
+        Disposable disposable = mNewsListObservableManager.loadDailyStories(forceUpdate)
                 .map(new Function<StoryForNewsList, StoryForNewsList>() {
                     @Override
                     public StoryForNewsList apply(@NonNull StoryForNewsList storyForNewsList) throws Exception {
@@ -55,46 +61,27 @@ public class NewsListPresenter implements NewsListContract.Presenter {
                         return storyForNewsList;
                     }
                 })
-                .toList()
+                .toList()   //convert common observable to single
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<List<StoryForNewsList>>() {
-                    //TODO 对上述operator等upstream发出的exception（使用subscriber的onError功能，不是简单的使用consumer）
+                .subscribeWith(new DisposableSingleObserver<List<StoryForNewsList>>() {
                     @Override
-                    public void accept(@NonNull List<StoryForNewsList> stories) throws Exception {
-                        mNewsListView.showTopStories(stories);
+                    public void onSuccess(@NonNull List<StoryForNewsList> storyForNewsLists) {
+                        mNewsListView.showTopStories(storyForNewsLists);
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        mNewsListView.showLoadErrorSnackbar();
                     }
                 });
+
+
         mCompositeDisposable.add(disposable);
 
-        mNewsListView.setLoadingIndicator(false);
-    }
+        if(forceUpdate) {
+            if(!Utils.isConnected(mContext)) mNewsListView.showNetworkErrorSnackbar();
+        }
 
-
-    //TODO 实现replaySubject，以避免频繁索取Observable或进行网络请求
-    public void loadNewDailyStories() {
-        mNewsListView.setLoadingIndicator(true);
-
-        Disposable disposable = mNewsListObservableManager.loadNewDailyStories()
-                .map(new Function<StoryForNewsList, StoryForNewsList>() {
-                    @Override
-                    public StoryForNewsList apply(@NonNull StoryForNewsList storyForNewsList) throws Exception {
-                        Long id = storyForNewsList.getId();
-                        storyForNewsList.setLiked(mRealmService.queryLikedStory(id));
-                        storyForNewsList.setRead(mRealmService.queryStoryRead(id));
-
-                        return storyForNewsList;
-                    }
-                })
-                .toList()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<List<StoryForNewsList>>() {
-                    //TODO 对上述operator等upstream发出的exception（使用subscriber的onError功能，不是简单的使用consumer）
-                    @Override
-                    public void accept(@NonNull List<StoryForNewsList> stories) throws Exception {
-                        mNewsListView.showTopStories(stories);
-                    }
-                });
-        mCompositeDisposable.add(disposable);
 
         mNewsListView.setLoadingIndicator(false);
     }
@@ -114,7 +101,7 @@ public class NewsListPresenter implements NewsListContract.Presenter {
 
         mNewsListObservableManager.dispose();   //dispose ReplaySubject's subscription
 
-        mNewsListView = null;   //deference view to let fragment can be GC
+        mNewsListView = null;   //dereference view to let fragment can be GC
     }
 
     @Override

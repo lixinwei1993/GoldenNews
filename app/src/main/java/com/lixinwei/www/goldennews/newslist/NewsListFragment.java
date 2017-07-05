@@ -19,6 +19,7 @@ import com.lixinwei.www.goldennews.app.GoldenNewsApplication;
 import com.lixinwei.www.goldennews.R;
 import com.lixinwei.www.goldennews.base.BaseFragment;
 import com.lixinwei.www.goldennews.data.model.StoryForNewsList;
+import com.lixinwei.www.goldennews.util.Utils;
 
 import java.util.List;
 
@@ -78,7 +79,12 @@ public class NewsListFragment extends BaseFragment implements NewsListContract.V
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                mNewsListPresenter.loadNewDailyStories();
+                if(!Utils.isConnected(mContext)) {
+                    showNetworkErrorSnackbar();
+                    setLoadingIndicator(false);
+                } else {
+                    mNewsListPresenter.loadDailyStories(true);
+                }
             }
         });
 
@@ -86,7 +92,14 @@ public class NewsListFragment extends BaseFragment implements NewsListContract.V
 
         initRecyclerView();
         mNewsListPresenter.bindView(this);
-        mNewsListPresenter.loadDailyStories();
+
+        if(savedInstanceState == null) {    //ensure configuration change recreate don't show error snack bar again;
+            if(!Utils.isConnected(mContext)) showNetworkErrorSnackbar();
+            mNewsListPresenter.loadDailyStories(true);
+        } else {
+            mNewsListPresenter.loadDailyStories(false);
+        }
+
 
         setHasOptionsMenu(true);
 
@@ -107,7 +120,7 @@ public class NewsListFragment extends BaseFragment implements NewsListContract.V
 
     @Override
     public void setLoadingIndicator(final boolean active) {
-        if (getView() == null) return;
+        //if (getView() == null) return;
 
         mSwipeRefreshLayout.post(new Runnable() {
             @Override
@@ -120,6 +133,15 @@ public class NewsListFragment extends BaseFragment implements NewsListContract.V
     @Override
     public void showLikedSnackbar() {
         Snackbar.make(mCoordinatorLayout, "Saved!", Snackbar.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showLoadErrorSnackbar() {
+        Snackbar.make(mCoordinatorLayout, "Load Error", Snackbar.LENGTH_SHORT).show();
+    }
+
+    public void showNetworkErrorSnackbar() {
+        Snackbar.make(mCoordinatorLayout, "Network Error", Snackbar.LENGTH_SHORT).show();
     }
 
     private void initRecyclerView() {

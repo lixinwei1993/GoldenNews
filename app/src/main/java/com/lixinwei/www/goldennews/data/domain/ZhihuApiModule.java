@@ -77,7 +77,7 @@ public class ZhihuApiModule {
             @Named("retryInterceptor") Interceptor retryInterceptor
     ) {
         final OkHttpClient.Builder builder = new OkHttpClient.Builder();
-        builder//.addNetworkInterceptor(cacheInterceptor)
+        builder.addNetworkInterceptor(cacheInterceptor)
                 .addInterceptor(offlineCacheInterceptor)
                 .addInterceptor(retryInterceptor)
                 .cache(cache)
