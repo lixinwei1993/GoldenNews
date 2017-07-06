@@ -98,13 +98,22 @@ public class NewsListFragment extends BaseFragment implements NewsListContract.V
             if(!Utils.isConnected(mContext)) showNetworkErrorSnackbar();
             mNewsListPresenter.loadDailyStories(true);
         } else {
-            mNewsListPresenter.loadDailyStories(false);
+
         }
 
 
         setHasOptionsMenu(true);
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        //TODO 为啥要在onResume中重新加载数据删除liked的效果才生效呢？
+        // 不是backButton自动会从onCreate执行吗，而onCreate中已经加载过数据了啊，还是说现在backButton的行为已经改变？待解决
+        mNewsListPresenter.loadDailyStories(false);
     }
 
     @Override

@@ -7,6 +7,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +31,8 @@ import butterknife.ButterKnife;
  */
 
 public class LikedListFragment extends BaseFragment implements LikedListContract.View {
+
+    private List<StoryLikedForRealm> mStories;
 
     @BindView(R.id.recycler_view_liked)
     RecyclerView mRecyclerView;
@@ -84,11 +87,34 @@ public class LikedListFragment extends BaseFragment implements LikedListContract
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setAdapter(mLikedListAdapter);
         //mRecyclerView.setItemAnimator(new NewsItemAnimator());
+
+        ItemTouchHelper.SimpleCallback swipeHelper = new ItemTouchHelper.SimpleCallback(0 ,ItemTouchHelper.START) {
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                if(mStories != null) {
+                    int position = viewHolder.getAdapterPosition();
+                    mLikedListPresenter.deleteLikedStory(mStories.get(position).getId());
+                    mStories.remove(position);
+                    mLikedListAdapter.updateStoriesList(mStories);
+                }
+            }
+        };
+
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(swipeHelper);
+        itemTouchHelper.attachToRecyclerView(mRecyclerView);
     }
+
+
 
     @Override
     public void showLikedStories(List<StoryLikedForRealm> storyList) {
-        mLikedListAdapter.updateStoriesList(storyList);
+        mStories = storyList;
+        mLikedListAdapter.updateStoriesList(mStories);
     }
 
     @Override

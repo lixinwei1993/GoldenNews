@@ -33,6 +33,8 @@ public class LikedListPresenter implements LikedListContract.Presenter {
     Context mContext;
     @Inject
     LikedListObservableManager mObservableManager;
+    @Inject
+    RealmService mRealmService;
 
     @Inject
     public LikedListPresenter() {
@@ -59,7 +61,14 @@ public class LikedListPresenter implements LikedListContract.Presenter {
                     }
                 });
 
+        mCompositeDisposable.add(disposable);
+
         mView.setLoadingIndicator(false);
+    }
+
+    @Override
+    public void deleteLikedStory(Long id) {
+        mRealmService.deleteLikedStory(id);
     }
 
     @Override

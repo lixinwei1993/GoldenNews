@@ -21,6 +21,7 @@ public class LikedListContract {
 
     interface Presenter extends BasePresenter<View> {
         void loadLikedStories();
+        void deleteLikedStory(Long id);
         void bindView(View view);
         void unbindView();
     }
