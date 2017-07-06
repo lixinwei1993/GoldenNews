@@ -3,7 +3,10 @@ package com.lixinwei.www.goldennews.likedlist;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.view.GravityCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 
 import com.lixinwei.www.goldennews.R;
 import com.lixinwei.www.goldennews.base.BaseActivity;
@@ -31,6 +34,11 @@ public class LikedListActivity extends BaseActivity {
 
         ButterKnife.bind(this);
 
+        setSupportActionBar(mToolbar);
+        ActionBar ab = getSupportActionBar();
+        ab.setHomeAsUpIndicator(R.drawable.ic_navigation);
+        ab.setDisplayHomeAsUpEnabled(true);
+
         //TODO enable navigation up && singletop model(or model back pressed)
 
         LikedListFragment likedListFragment =
@@ -54,5 +62,16 @@ public class LikedListActivity extends BaseActivity {
         super.onSaveInstanceState(outState);
 
         //TODO
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                //666 Open the navigation drawer when the home icon is selected from the toolbar.
+                onBackPressed();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
