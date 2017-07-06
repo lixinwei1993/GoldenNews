@@ -4,6 +4,8 @@ import android.app.Application;
 import android.content.Context;
 
 
+import com.lixinwei.www.goldennews.commentslist.CommentsModule;
+import com.lixinwei.www.goldennews.commentslist.CommentsSubComponent;
 import com.lixinwei.www.goldennews.likedlist.LikedListModule;
 import com.lixinwei.www.goldennews.likedlist.LikedListSubComponent;
 import com.lixinwei.www.goldennews.newslist.NewsListModule;
@@ -17,6 +19,7 @@ public class GoldenNewsApplication extends Application {
     private ApplicationComponent mApplicationComponent;
     private NewsListSubComponent mNewsListSubComponent;
     private LikedListSubComponent mLikedListSubComponent;
+    private CommentsSubComponent mCommentsSubComponent;
 
     public static GoldenNewsApplication getGoldenNewsApplication(Context context) {
         return (GoldenNewsApplication) context.getApplicationContext();
@@ -37,6 +40,20 @@ public class GoldenNewsApplication extends Application {
     public ApplicationComponent getApplicationComponent() {
         return mApplicationComponent;
     }
+
+    public CommentsSubComponent getCommentsSubComponent() {
+        if(mCommentsSubComponent == null) {
+            mCommentsSubComponent = mApplicationComponent.plus(new CommentsModule());
+        }
+
+        return mCommentsSubComponent;
+    }
+
+    public void releaseCommentsSubComponent() {
+        mCommentsSubComponent = null;
+    }
+
+
 
     public LikedListSubComponent getLikedListSubComponent() {
         if(mLikedListSubComponent == null) {

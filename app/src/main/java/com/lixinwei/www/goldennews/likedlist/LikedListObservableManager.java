@@ -30,7 +30,7 @@ public class LikedListObservableManager {
 
     //TODO 下面这个函数整体上的设计时有问题的，每次都重建了replaysubject。因为mDisposable始终为空
     public Observable<StoryLikedForRealm> loadLikedStories() {
-        if(mDisposable == null || mDisposable.isDisposed()) {
+        if(mReplaySubject == null) {
             mReplaySubject = ReplaySubject.create();
 
             Observable.fromIterable(mRealmService.getLikedList())
@@ -44,9 +44,7 @@ public class LikedListObservableManager {
     }
 
     public void dispose() {
-        if(mDisposable != null && !mDisposable.isDisposed()) {
-            mDisposable.dispose();
-        }
+        mReplaySubject = null;
     }
 
 }

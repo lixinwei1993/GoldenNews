@@ -1,9 +1,8 @@
-package com.lixinwei.www.goldennews.likedlist;
+package com.lixinwei.www.goldennews.commentslist;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.view.GravityCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -16,21 +15,29 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- * Created by welding on 2017/7/3.
+ * Created by welding on 2017/7/6.
  */
 
-public class LikedListActivity extends BaseActivity {
-    @BindView(R.id.toolbar_liked)
+public class CommentsActivity extends BaseActivity {
+    private static final String EXTRA_ID =
+            "com.lixinwei.www.goldennews.commentslist.id";
+
+    private long mId;
+
+    @BindView(R.id.toolbar_comments)
     Toolbar mToolbar;
 
-    public static Intent newIntent(Context context) {
-        return new Intent(context, LikedListActivity.class);
+    public static Intent newIntent(Context context, long id) {
+        Intent intent = new Intent(context, CommentsActivity.class);
+        intent.putExtra(EXTRA_ID, id);
+
+        return intent;
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_liked_list);
+        setContentView(R.layout.activity_comments);
 
         ButterKnife.bind(this);
 
@@ -39,27 +46,23 @@ public class LikedListActivity extends BaseActivity {
         ab.setHomeAsUpIndicator(R.drawable.ic_navigation);
         ab.setDisplayHomeAsUpEnabled(true);
 
-        LikedListFragment likedListFragment =
-                (LikedListFragment) getSupportFragmentManager().findFragmentById(R.id.container_liked);
+        CommentsFragment commentsFragment
+                = (CommentsFragment) getSupportFragmentManager().findFragmentById(R.id.container_comments);
 
-        if(likedListFragment == null) {
-            likedListFragment = LikedListFragment.newInstance();
+        if(commentsFragment == null) {
+            commentsFragment = CommentsFragment.newInstance();
             ActivityUtils.addFragmentToActivity(getSupportFragmentManager(),
-                    likedListFragment, R.id.container_liked);
+                    commentsFragment, R.id.container_comments);
         }
-
-        //TODO
-        if (savedInstanceState != null) {
-
-        }
-
+        mId = getIntent().getLongExtra(EXTRA_ID, 0);    //getIntent总是返回启动该activity的intent，即使是configuration change也是如此
+        commentsFragment.setId(mId);
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        //TODO
+        //outState.putLong(EXTRA_ID, mId);
     }
 
     @Override
@@ -72,4 +75,6 @@ public class LikedListActivity extends BaseActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+
 }

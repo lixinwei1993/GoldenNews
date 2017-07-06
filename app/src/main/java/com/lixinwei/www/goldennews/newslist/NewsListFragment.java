@@ -1,6 +1,7 @@
 package com.lixinwei.www.goldennews.newslist;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
@@ -18,6 +19,7 @@ import android.view.ViewGroup;
 import com.lixinwei.www.goldennews.app.GoldenNewsApplication;
 import com.lixinwei.www.goldennews.R;
 import com.lixinwei.www.goldennews.base.BaseFragment;
+import com.lixinwei.www.goldennews.commentslist.CommentsActivity;
 import com.lixinwei.www.goldennews.data.model.StoryForNewsList;
 import com.lixinwei.www.goldennews.util.Utils;
 
@@ -98,7 +100,7 @@ public class NewsListFragment extends BaseFragment implements NewsListContract.V
             if(!Utils.isConnected(mContext)) showNetworkErrorSnackbar();
             mNewsListPresenter.loadDailyStories(true);
         } else {
-
+            mNewsListPresenter.loadDailyStories(false);
         }
 
 
@@ -154,9 +156,16 @@ public class NewsListFragment extends BaseFragment implements NewsListContract.V
         Snackbar.make(mCoordinatorLayout, "Network Error", Snackbar.LENGTH_SHORT).show();
     }
 
+    @Override
+    public void startCommentsActivity(long id) {
+        Intent intent = CommentsActivity.newIntent(getActivity(), id);
+        startActivity(intent);
+    }
+
     private void initRecyclerView() {
         //mNewsListAdapter = new NewsListAdapter();
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mNewsListAdapter.bindFragment(this);
         mRecyclerView.setAdapter(mNewsListAdapter);
         mRecyclerView.setItemAnimator(new NewsItemAnimator());
     }

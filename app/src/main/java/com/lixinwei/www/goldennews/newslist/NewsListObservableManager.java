@@ -28,7 +28,6 @@ import io.reactivex.subjects.ReplaySubject;
 @PerFragment
 public class NewsListObservableManager {
     private ZhihuService mZhihuService;
-    private Disposable mDisposable;
     private ReplaySubject<StoryForNewsList> mReplaySubject;
 
     @Inject
@@ -38,7 +37,7 @@ public class NewsListObservableManager {
 
     public Observable<StoryForNewsList> loadDailyStories(boolean forceUpdate) {
 
-        if (forceUpdate || mDisposable == null || mDisposable.isDisposed()) //这个if句很重要，常规套路
+        if (forceUpdate || mReplaySubject == null) //这个if句有问题，待解决
         {
 
             mReplaySubject = ReplaySubject.create();
@@ -78,11 +77,10 @@ public class NewsListObservableManager {
     }
 
     /**
-     * used to unsubscribe the ReplaySubject to the Observable
+     * used to unsubscribe the ReplaySubject to the Observable,总感觉这里逻辑有问题，是不是应该手动将mReplay置null呢？但是已经设定了域
+     * 总感觉这个方法可以不要
      */
     public void dispose() {
-        if (mDisposable != null && !mDisposable.isDisposed()) {
-            mDisposable.dispose();
-        }
+        mReplaySubject = null;
     }
 }

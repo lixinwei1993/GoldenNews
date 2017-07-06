@@ -20,6 +20,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".likedlist.LikedListActivity"></activity>
+        <activity android:name=".commentslist.CommentsActivity"
+            android:label="Comments">
+        </activity>
     </application>
 
 </manifest>

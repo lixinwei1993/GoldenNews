@@ -26,7 +26,7 @@ import butterknife.ButterKnife;
  */
 
 public class LikedAdapter extends RecyclerView.Adapter<LikedAdapter.LikedListViewHolder> {
-    private List<StoryLikedForRealm> mLikedStories = new ArrayList<>();// 这种初始化的实机是？
+    private List<StoryLikedForRealm> mLikedStories = new ArrayList<>();//TODO 这种初始化的实机是？
 
     @Inject
     Context mContext;
@@ -79,12 +79,14 @@ public class LikedAdapter extends RecyclerView.Adapter<LikedAdapter.LikedListVie
         TextView mTitle;
 
         private Context mContext;
+
         public LikedListViewHolder(View itemView) {
             super(itemView);
 
             ButterKnife.bind(this, itemView);
-            mContext = itemView.getContext();
+            mContext = itemView.getContext();   //TODO view.getContext 是哪一种context，声明周期怎样的？
         }
+
 
         public void bind(StoryLikedForRealm storyLikedForRealm) {
             mTitle.setText(storyLikedForRealm.getTitle());

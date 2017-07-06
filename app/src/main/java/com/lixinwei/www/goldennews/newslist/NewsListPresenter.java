@@ -111,6 +111,7 @@ public class NewsListPresenter implements NewsListContract.Presenter {
     @Override
     public void commentsButtonClicked(View view, StoryForNewsList story) {
         //TODO comments screen
+        mNewsListView.startCommentsActivity(story.getId());
     }
 
     @Override

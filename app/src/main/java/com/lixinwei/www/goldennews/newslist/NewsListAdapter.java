@@ -2,6 +2,7 @@ package com.lixinwei.www.goldennews.newslist;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +38,9 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsLi
     Context mContext;
     @Inject
     NewsListContract.Presenter mNewsListPresenter;
+
+    //TODO TEST
+    private static NewsListFragment mNewsListFragment;
 
     @Inject
     public NewsListAdapter() {
@@ -154,13 +158,23 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsLi
             mButtonLike.setImageResource(storyForNewsList.isLiked() ? R.drawable.ic_heart_red : R.drawable.ic_heart_outline_grey);
             mTextSwitcher.setCurrentText(storyForNewsList.getPopularity() + "likes");
 
+
+
             //Glide can automatically cache image in memory&disk, if you want to customize the cache pattern, read api
+            //使用log进行调试，不要忘了！！
             //TODO 主要还是一次图片加载失败后，后续不会自动加载，待解决（偶尔出现），还有这里的context最好用fragment，使用一个manager来管理，具体见收集的资料，暂搁置
-            //TODO 使用Dagger，参数传递的问题，要将fragment也设为inject吗，需要传递的参数全部设为inject？inject过多允许吗，fragment不可能设为inject吧，那么他需要作为参数时怎么办呢？？
-            Glide.with(mContext)
+            //也有可能是网的问题，要不要加载图片时为glide的客户端添加retry操作呢？？以后再说
+            // TODO 使用Dagger，参数传递的问题，要将fragment也设为inject吗，需要传递的参数全部设为inject？inject过多允许吗，fragment不可能设为inject吧，那么他需要作为参数时怎么办呢？？
+
+            Log.i("Main", storyForNewsList.getImage());
+            Glide.with(mNewsListFragment)
                     .load(storyForNewsList.getImage())
                     .into(mImage);
         }
 
+    }
+
+    public void bindFragment(NewsListFragment newsListFragment) {
+        mNewsListFragment = newsListFragment;
     }
 }
