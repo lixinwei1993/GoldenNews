@@ -48,8 +48,16 @@ public class DateNewsListAdapter extends RecyclerView.Adapter<DateNewsListAdapte
         return dateNewsListViewHolder;
     }
 
-    private void setupClickableViews(View view, DateNewsListViewHolder viewHolder) {
-        //TODO
+    private void setupClickableViews(final View view, final DateNewsListViewHolder viewHolder) {
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int position = viewHolder.getAdapterPosition();
+                long id = mStoryList.get(position).getId();
+                mPresenter.startDetailActivity(id);
+            }
+        });
+
     }
 
     @Override

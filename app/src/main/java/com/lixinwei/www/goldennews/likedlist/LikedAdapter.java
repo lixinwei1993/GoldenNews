@@ -1,6 +1,7 @@
 package com.lixinwei.www.goldennews.likedlist;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import com.bumptech.glide.Glide;
 import com.lixinwei.www.goldennews.R;
 import com.lixinwei.www.goldennews.data.model.StoryForNewsList;
 import com.lixinwei.www.goldennews.data.model.StoryLikedForRealm;
+import com.lixinwei.www.goldennews.newsDetail.NewsDetailActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +53,14 @@ public class LikedAdapter extends RecyclerView.Adapter<LikedAdapter.LikedListVie
     }
 
     private void setupClickableViews(final View view, final LikedListViewHolder likedListViewHolder) {
-        //TODO: view click start detail activity
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int position = likedListViewHolder.getAdapterPosition();
+                long id = mLikedStories.get(position).getId();
+                mPresenter.startDetailActivity(id);
+            }
+        });
     }
 
     @Override

@@ -86,4 +86,9 @@ public class LikedListPresenter implements LikedListContract.Presenter {
 
         mView = null;
     }
+
+    @Override
+    public void startDetailActivity(long id) {
+        mView.startDetailActivity(id);
+    }
 }

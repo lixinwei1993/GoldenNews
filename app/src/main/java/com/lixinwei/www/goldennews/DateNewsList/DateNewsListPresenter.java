@@ -79,5 +79,10 @@ public class DateNewsListPresenter implements DateNewsListContract.Presenter {
         mView = null;   //dereference view to let fragment can be GC
     }
 
+    @Override
+    public void startDetailActivity(long id) {
+        mView.startDetailActivity(id);
+    }
+
 
 }

@@ -13,11 +13,13 @@ public class DateNewsListContract {
         void setLoadingIndicator(boolean b);
         void showDateStories(List<Story> stories);
         void showLoadErrorSnackbar();
+        void startDetailActivity(long id);
     }
 
     interface Presenter{
         void loadDateStories(String date);
         void bindView(View view);
         void unbindView();
+        void startDetailActivity(long id);
     }
 }

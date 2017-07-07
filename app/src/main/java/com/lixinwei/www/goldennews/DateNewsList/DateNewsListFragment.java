@@ -1,6 +1,7 @@
 package com.lixinwei.www.goldennews.DateNewsList;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
@@ -15,6 +16,7 @@ import com.lixinwei.www.goldennews.R;
 import com.lixinwei.www.goldennews.app.GoldenNewsApplication;
 import com.lixinwei.www.goldennews.base.BaseFragment;
 import com.lixinwei.www.goldennews.data.model.Story;
+import com.lixinwei.www.goldennews.newsDetail.NewsDetailActivity;
 
 import java.util.List;
 
@@ -117,6 +119,12 @@ public class DateNewsListFragment extends BaseFragment implements DateNewsListCo
     @Override
     public void showLoadErrorSnackbar() {
         Snackbar.make(mRecyclerView, "Load Error", Snackbar.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void startDetailActivity(long id) {
+        Intent intent = NewsDetailActivity.newIntent(getActivity(), id);
+        startActivity(intent);
     }
 
 }

@@ -16,6 +16,7 @@ public class LikedListContract {
         void showLikedStories(List<StoryLikedForRealm> storyList);
         void setLoadingIndicator(final boolean active);
         void showLoadErrorSnackbar();
+        void startDetailActivity(long id);
     }
 
     interface Presenter extends BasePresenter<View> {
@@ -23,5 +24,6 @@ public class LikedListContract {
         void deleteLikedStory(Long id);
         void bindView(View view);
         void unbindView();
+        void startDetailActivity(long id);
     }
 }

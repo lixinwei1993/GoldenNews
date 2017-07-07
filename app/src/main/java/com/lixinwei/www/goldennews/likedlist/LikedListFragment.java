@@ -1,6 +1,7 @@
 package com.lixinwei.www.goldennews.likedlist;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
@@ -17,6 +18,7 @@ import com.lixinwei.www.goldennews.app.GoldenNewsApplication;
 import com.lixinwei.www.goldennews.base.BaseFragment;
 import com.lixinwei.www.goldennews.data.model.StoryForNewsList;
 import com.lixinwei.www.goldennews.data.model.StoryLikedForRealm;
+import com.lixinwei.www.goldennews.newsDetail.NewsDetailActivity;
 import com.lixinwei.www.goldennews.newslist.NewsItemAnimator;
 
 import java.util.List;
@@ -72,6 +74,7 @@ public class LikedListFragment extends BaseFragment implements LikedListContract
                 mLikedListPresenter.loadLikedStories();
             }
         });
+
 
 
         initRecyclerView();
@@ -137,6 +140,12 @@ public class LikedListFragment extends BaseFragment implements LikedListContract
     @Override
     public void showLoadErrorSnackbar() {
         Snackbar.make(mRecyclerView, "Load Error", Snackbar.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void startDetailActivity(long id) {
+        Intent intent = NewsDetailActivity.newIntent(getActivity(), id);
+        startActivity(intent);
     }
 
 }
