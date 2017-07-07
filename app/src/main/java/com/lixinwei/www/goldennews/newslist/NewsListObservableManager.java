@@ -2,6 +2,8 @@ package com.lixinwei.www.goldennews.newslist;
 
 import com.lixinwei.www.goldennews.data.domain.ZhihuService;
 import com.lixinwei.www.goldennews.data.model.DailyStories;
+import com.lixinwei.www.goldennews.data.model.Story;
+import com.lixinwei.www.goldennews.data.model.StoryDetail;
 import com.lixinwei.www.goldennews.data.model.StoryExtra;
 import com.lixinwei.www.goldennews.data.model.StoryForNewsList;
 import com.lixinwei.www.goldennews.data.model.TopStory;
@@ -16,6 +18,7 @@ import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.BiFunction;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.ReplaySubject;
@@ -44,27 +47,45 @@ public class NewsListObservableManager {
 
             //这里抛出exception的情况还可以再细化，自定义exception，参考GeekNews或marvel
 
+            //TODO 这里搞这么复杂，其实直接用getDateStories就可以了，不用这么麻烦的！！
+
             mZhihuService.getDailyStories().subscribeOn(Schedulers.io())
                     .flatMap(new Function<DailyStories, ObservableSource<TopStory>>() {
                         @Override
                         public ObservableSource<TopStory> apply(@NonNull DailyStories dailyStories) throws Exception {
                             List<TopStory> topStories = dailyStories.getTopStories();
+
+                            List<Story> stories = dailyStories.getStories();
+
+                            for(Story story : stories) {
+                                boolean alreadyExist = false;
+                                for(TopStory topStory : topStories) {
+                                    if(topStory.getId() == story.getId()) {
+                                        alreadyExist = true;
+                                        break;
+                                    }
+                                }
+                                if( !alreadyExist ) topStories.add(new TopStory(story));
+                            }
+
                             return Observable.fromIterable(topStories);
                         }
                     })
                     .flatMap(new Function<TopStory, ObservableSource<StoryForNewsList>>() {
                         @Override
                         public ObservableSource<StoryForNewsList> apply(@NonNull final TopStory topStory) throws Exception {
-                            return mZhihuService.getStoryExtra(topStory.getId())
-                                    .map(new Function<StoryExtra, StoryForNewsList>() {
+                            return  Observable.zip(mZhihuService.getStoryExtra(topStory.getId()),
+                                    mZhihuService.getStoryDetail(topStory.getId()),
+                                    new BiFunction<StoryExtra, StoryDetail, StoryForNewsList>() {
                                         @Override
-                                        public StoryForNewsList apply(@NonNull StoryExtra storyExtra) throws Exception {
+                                        public StoryForNewsList apply(@NonNull StoryExtra storyExtra, @NonNull StoryDetail storyDetail) throws Exception {
                                             StoryForNewsList storyForNewsList = new StoryForNewsList();
                                             storyForNewsList.setComments(storyExtra.getComments());
                                             storyForNewsList.setPopularity(storyExtra.getPopularity());
-                                            storyForNewsList.setImage(topStory.getImage());
+                                            storyForNewsList.setImage(storyDetail.getImage());
                                             storyForNewsList.setId(topStory.getId());
                                             storyForNewsList.setTitle(topStory.getTitle());
+
                                             return storyForNewsList;
                                         }
                                     });

@@ -3,12 +3,15 @@ package com.lixinwei.www.goldennews.newslist;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.lixinwei.www.goldennews.R;
 import com.lixinwei.www.goldennews.base.BaseActivity;
@@ -20,6 +23,7 @@ import butterknife.ButterKnife;
 
 
 public class NewsListActivity extends BaseActivity {
+    private static final String DIALOG_DATE = "DialogDate";
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
@@ -27,6 +31,8 @@ public class NewsListActivity extends BaseActivity {
     DrawerLayout mDrawerLayout;
     @BindView(R.id.nav_view)
     NavigationView mNavigationView;
+    @BindView(R.id.fab_pick_date)
+    FloatingActionButton mFloatingActionButton;
 
 
     @Override
@@ -56,6 +62,15 @@ public class NewsListActivity extends BaseActivity {
             ActivityUtils.addFragmentToActivity(getSupportFragmentManager(),
                 newsListFragment, R.id.container_news_list);
         }
+
+        mFloatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentManager manager = getSupportFragmentManager();
+                DatePickerFragment dialog = new DatePickerFragment();
+                dialog.show(manager, DIALOG_DATE);
+            }
+        });
 
         //TODO
         if (savedInstanceState != null) {

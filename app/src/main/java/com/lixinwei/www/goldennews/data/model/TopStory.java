@@ -19,6 +19,14 @@ public class TopStory {
     @SerializedName("type")
     private Long mType;
 
+    public TopStory(Story story) {
+        this.mGaPrefix = story.getGaPrefix();
+        this.mId = story.getId();
+        this.mImage = story.getImages().get(0);
+        this.mTitle = story.getTitle();
+        this.mType = story.getType();
+    }
+
     public String getGaPrefix() {
         return mGaPrefix;
     }
@@ -27,7 +35,7 @@ public class TopStory {
         mGaPrefix = gaPrefix;
     }
 
-    public Long getId() {
+    public long getId() {
         return mId;
     }
 

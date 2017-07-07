@@ -22,6 +22,7 @@ public class Story {
     @SerializedName("type")
     private Long mType;
 
+
     public String getGaPrefix() {
         return mGaPrefix;
     }
@@ -30,7 +31,7 @@ public class Story {
         mGaPrefix = gaPrefix;
     }
 
-    public Long getId() {
+    public long getId() {
         return mId;
     }
 
