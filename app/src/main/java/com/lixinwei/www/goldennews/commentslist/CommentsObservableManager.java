@@ -18,6 +18,7 @@ import io.reactivex.ObservableSource;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
+import io.reactivex.subjects.ReplaySubject;
 
 /**
  * Created by welding on 2017/7/6.
@@ -25,24 +26,26 @@ import io.reactivex.schedulers.Schedulers;
 @PerFragment
 public class CommentsObservableManager {
     private ZhihuService mZhihuService;
+    private ReplaySubject<ShortComments> mShortCommentsReplaySubject;
 
     @Inject
     public CommentsObservableManager(ZhihuService zhihuService) {
         mZhihuService = zhihuService;
     }
 
-    public Observable<Comment> loadShortComments(long id) {
+    public Observable<ShortComments> loadShortComments(long id) {
 
-        Log.i("Main", id + "");
+        if(mShortCommentsReplaySubject == null) {
+            Log.i("Main", "comment");
 
-        return mZhihuService.getShortComments(id).subscribeOn(Schedulers.io())
-                .flatMap(new Function<ShortComments, ObservableSource<Comment>>() {
-                    @Override
-                    public ObservableSource<Comment> apply(@NonNull ShortComments shortComments) throws Exception {
-                        return Observable.fromIterable(shortComments.getComments());
-                    }
-                });
+            mShortCommentsReplaySubject = ReplaySubject.create();
+            mZhihuService.getShortComments(id).subscribeOn(Schedulers.io())
+                    .subscribe(mShortCommentsReplaySubject);
+        }
+
+        return mShortCommentsReplaySubject;
     }
+
 
     public Observable<Comment> loadLongComments(long id) {
 
@@ -54,6 +57,10 @@ public class CommentsObservableManager {
                         return Observable.fromIterable(longComments.getComments());
                     }
                 });
+    }
+
+    public void dispose() {
+        mShortCommentsReplaySubject = null;
     }
 
 }

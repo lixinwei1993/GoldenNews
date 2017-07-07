@@ -89,7 +89,7 @@ public class CommentsFragment extends BaseFragment implements CommentsContract.V
     @Override
     public void onDestroy() {
         super.onDestroy();
-
+        mPresenter.unbindView();
         GoldenNewsApplication.getGoldenNewsApplication(getActivity()).releaseLikedListSubComponent();
     }
 

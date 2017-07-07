@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.lixinwei.www.goldennews.data.model.Comment;
+import com.lixinwei.www.goldennews.data.model.ShortComments;
 
 import java.util.List;
 
@@ -13,6 +14,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.observers.DisposableObserver;
 import io.reactivex.observers.DisposableSingleObserver;
 
 /**
@@ -40,18 +42,21 @@ public class CommentsPresenter implements CommentsContract.Presenter {
 
 
         Disposable disposable = mCommentsObservableManager.loadShortComments(id)
-                .toList()
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableSingleObserver<List<Comment>>() {
-
+                .subscribeWith(new DisposableObserver<ShortComments>() {
                     @Override
-                    public void onSuccess(@NonNull List<Comment> comments) {
-                        mView.showShortComments(comments);
+                    public void onNext(@NonNull ShortComments shortComments) {
+                        mView.showShortComments(shortComments.getComments());
                     }
 
                     @Override
                     public void onError(@NonNull Throwable e) {
                         mView.showLoadErrorSnackbar();
+                    }
+
+                    @Override
+                    public void onComplete() {
+
                     }
                 });
 
@@ -64,23 +69,6 @@ public class CommentsPresenter implements CommentsContract.Presenter {
     @Override
     public void loadLongComments(long id) {}
 
-    /*@Override
-    public void loadLongComments(long id) {
-        mView.setLoadingIndicator(true);
-        Disposable disposable = mCommentsObservableManager.loadLongComments(id)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableSingleObserver<List<Comment>>() {
-                    @Override
-                    public void onSuccess(@NonNull List<Comment> comments) {
-                        mView.showLongComments(comments);
-                    }
-                    @Override
-                    public void onError(@NonNull Throwable e) {
-                        mView.showLoadErrorSnackbar();
-                    }
-                });
-    }*/
-
     @Override
     public void bindView(CommentsContract.View view) {
         mView = view;
@@ -88,10 +76,13 @@ public class CommentsPresenter implements CommentsContract.Presenter {
 
     @Override
     public void unbindView() {
+        //TODO 在这里取消注册的话会出现只能在第一次加载comment，后面不能加载comment（comment为空白的情况），待分析，还有好像（不太确定）新版的RxJava建议不要频繁注册与取消注册？？
         //why dispose: stop Observable emmit items immediately!! reduce unnecessary workload
-        if(mCompositeDisposable != null && !mCompositeDisposable.isDisposed()) {
-            mCompositeDisposable.dispose();     //dispose main thread's subscription
-        }
+        //if(mCompositeDisposable != null && !mCompositeDisposable.isDisposed()) {
+          //  mCompositeDisposable.dispose();     //dispose main thread's subscription
+        //}
+
+        mCommentsObservableManager.dispose();
 
         mView = null;
     }
