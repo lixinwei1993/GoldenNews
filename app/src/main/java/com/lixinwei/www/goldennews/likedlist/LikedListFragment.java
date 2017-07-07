@@ -139,8 +139,4 @@ public class LikedListFragment extends BaseFragment implements LikedListContract
         Snackbar.make(mRecyclerView, "Load Error", Snackbar.LENGTH_SHORT).show();
     }
 
-    @Override
-    public void showNetworkErrorSnackbar() {
-        Snackbar.make(mRecyclerView, "Load Error", Snackbar.LENGTH_SHORT).show();
-    }
 }

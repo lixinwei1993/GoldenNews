@@ -1,4 +1,4 @@
-package com.lixinwei.www.goldennews.commentslist;
+package com.lixinwei.www.goldennews.DateNewsList;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 import com.lixinwei.www.goldennews.R;
 import com.lixinwei.www.goldennews.app.GoldenNewsApplication;
 import com.lixinwei.www.goldennews.base.BaseFragment;
-import com.lixinwei.www.goldennews.data.model.Comment;
+import com.lixinwei.www.goldennews.data.model.Story;
 
 import java.util.List;
 
@@ -24,34 +24,40 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- * Created by welding on 2017/7/6.
+ * Created by welding on 2017/7/7.
  */
 
-public class CommentsFragment extends BaseFragment implements CommentsContract.View {
+public class DateNewsListFragment extends BaseFragment implements DateNewsListContract.View {
 
-    @BindView(R.id.recycler_view_comments)
+    @BindView(R.id.recycler_view_date)
     RecyclerView mRecyclerView;
-    @BindView(R.id.refresh_layout_comments)
+    @BindView(R.id.refresh_layout_date)
     SwipeRefreshLayout mSwipeRefreshLayout;
 
     @Inject
-    CommentsAdapter mCommentsAdapter;
+    DateNewsListAdapter mDateNewsListAdapter;
     @Inject
-    CommentsContract.Presenter mPresenter;
+    DateNewsListContract.Presenter mPresenter;
     @Inject
     Context mContext;
 
-    private long mId;
+    private String mDate;
 
-    public static CommentsFragment newInstance() {
-        return new CommentsFragment();
+    public void setDate(String date) {
+        mDate = date;
+    }
+
+    public static DateNewsListFragment newInstance(String date) {
+        DateNewsListFragment fragment = new DateNewsListFragment();
+        fragment.setDate(date);
+        return fragment;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_comments, container, false);
+        View view = inflater.inflate(R.layout.fragment_date_news_list, container, false);
 
-        GoldenNewsApplication.getGoldenNewsApplication(getActivity()).getCommentsSubComponent()
+        GoldenNewsApplication.getGoldenNewsApplication(getActivity()).getDateNewsListSubComponent()
                 .inject(this);
 
         ButterKnife.bind(this, view);
@@ -66,53 +72,46 @@ public class CommentsFragment extends BaseFragment implements CommentsContract.V
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                mPresenter.loadShortComments(mId);
+                mPresenter.loadDateStories(mDate);
             }
         });
 
         initRecyclerView();
         mPresenter.bindView(this);
-        mPresenter.loadShortComments(mId);
+        mPresenter.loadDateStories(mDate);
 
         return view;
     }
 
-    public void setId(long id) {
-        mId = id;
-    }
-
     private void initRecyclerView() {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mRecyclerView.setAdapter(mCommentsAdapter);
+        mRecyclerView.setAdapter(mDateNewsListAdapter);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mPresenter.unbindView();
-        GoldenNewsApplication.getGoldenNewsApplication(getActivity()).releaseCommentsSubComponent();
+
+        GoldenNewsApplication.getGoldenNewsApplication(getActivity()).releaseDateNewsListSubComponent();
+
     }
 
-    @Override
-    public void showShortComments(List<Comment> comments) {
-        mCommentsAdapter.updateComments(comments);
-    }
 
-    @Override
-    public void showLongComments(List<Comment> comments) {
-        //TODO
-    }
 
-    @Override
-    public void setLoadingIndicator(final boolean active) {
+    public void setLoadingIndicator(final boolean b) {
         if (getView() == null) return;
 
         mSwipeRefreshLayout.post(new Runnable() {
             @Override
             public void run() {
-                mSwipeRefreshLayout.setRefreshing(active);
+                mSwipeRefreshLayout.setRefreshing(b);
             }
         });
+    }
+
+    @Override
+    public void showDateStories(List<Story> stories) {
+        mDateNewsListAdapter.updateStoriesList(stories);
     }
 
     @Override
@@ -120,8 +119,4 @@ public class CommentsFragment extends BaseFragment implements CommentsContract.V
         Snackbar.make(mRecyclerView, "Load Error", Snackbar.LENGTH_SHORT).show();
     }
 
-    @Override
-    public void showNetworkErrorSnackbar() {
-        Snackbar.make(mRecyclerView, "NetWork Error", Snackbar.LENGTH_SHORT).show();
-    }
 }

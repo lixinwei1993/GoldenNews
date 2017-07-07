@@ -1,10 +1,8 @@
-package com.lixinwei.www.goldennews.commentslist;
+package com.lixinwei.www.goldennews.DateNewsList;
 
 import android.content.Context;
-import android.util.Log;
 
-import com.lixinwei.www.goldennews.data.model.Comment;
-import com.lixinwei.www.goldennews.data.model.ShortComments;
+import com.lixinwei.www.goldennews.data.model.Story;
 
 import java.util.List;
 
@@ -15,38 +13,36 @@ import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
-import io.reactivex.observers.DisposableSingleObserver;
 
 /**
- * Created by welding on 2017/7/6.
+ * Created by welding on 2017/7/7.
  */
 
-public class CommentsPresenter implements CommentsContract.Presenter {
-    private CommentsContract.View mView;
+public class DateNewsListPresenter implements DateNewsListContract.Presenter {
+
+    private DateNewsListContract.View mView;
     private CompositeDisposable mCompositeDisposable;
 
     @Inject
     Context mContext;
     @Inject
-    CommentsObservableManager mCommentsObservableManager;
+    DateNewsListObservableManager mDateNewsListObservableManager;
 
     @Inject
-    public CommentsPresenter() {
+    DateNewsListPresenter() {
         mCompositeDisposable = new CompositeDisposable();
     }
 
     @Override
-    public void loadShortComments(long id) {
+    public void loadDateStories(String date) {
         mView.setLoadingIndicator(true);
 
-
-
-        Disposable disposable = mCommentsObservableManager.loadShortComments(id)
+        Disposable disposable = mDateNewsListObservableManager.loadDateStorie(date)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableObserver<ShortComments>() {
+                .subscribeWith(new DisposableObserver<List<Story>>() {
                     @Override
-                    public void onNext(@NonNull ShortComments shortComments) {
-                        mView.showShortComments(shortComments.getComments());
+                    public void onNext(@NonNull List<Story> stories) {
+                        mView.showDateStories(stories);
                     }
 
                     @Override
@@ -67,10 +63,7 @@ public class CommentsPresenter implements CommentsContract.Presenter {
     }
 
     @Override
-    public void loadLongComments(long id) {}
-
-    @Override
-    public void bindView(CommentsContract.View view) {
+    public void bindView(DateNewsListContract.View view) {
         mView = view;
     }
 
@@ -78,11 +71,13 @@ public class CommentsPresenter implements CommentsContract.Presenter {
     public void unbindView() {
         //why dispose: stop Observable emmit items immediately!! reduce unnecessary workload
         if(mCompositeDisposable != null && !mCompositeDisposable.isDisposed()) {
-            mCompositeDisposable.dispose();
+            mCompositeDisposable.dispose();     //dispose main thread's subscription
         }
 
-        mCommentsObservableManager.dispose();
+        mDateNewsListObservableManager.dispose();   //dispose ReplaySubject's subscription
 
-        mView = null;
+        mView = null;   //dereference view to let fragment can be GC
     }
+
+
 }

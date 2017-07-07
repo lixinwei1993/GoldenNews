@@ -24,6 +24,7 @@ import com.lixinwei.www.goldennews.data.model.StoryForNewsList;
 import com.lixinwei.www.goldennews.newsDetail.NewsDetailActivity;
 import com.lixinwei.www.goldennews.util.Utils;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -41,9 +42,6 @@ public class NewsListFragment extends BaseFragment implements NewsListContract.V
     RecyclerView mRecyclerView;
     @BindView(R.id.refresh_layout)
     SwipeRefreshLayout mSwipeRefreshLayout;
-
-
-    CoordinatorLayout mCoordinatorLayout;
 
 
     @Inject
@@ -68,9 +66,6 @@ public class NewsListFragment extends BaseFragment implements NewsListContract.V
                 .inject(this);
 
         ButterKnife.bind(this, view);
-
-        //TODO 更好的设计presenter时该句不必要亦或者是ButterKnife能不能实现这个功能呢
-        mCoordinatorLayout = getActivity().findViewById(R.id.coordinatorLayout);
 
         //customize the progress indicator color
         mSwipeRefreshLayout.setColorSchemeColors(
@@ -145,16 +140,16 @@ public class NewsListFragment extends BaseFragment implements NewsListContract.V
 
     @Override
     public void showLikedSnackbar() {
-        Snackbar.make(mCoordinatorLayout, "Saved!", Snackbar.LENGTH_SHORT).show();
+        Snackbar.make(mRecyclerView, "Saved!", Snackbar.LENGTH_SHORT).show();
     }
 
     @Override
     public void showLoadErrorSnackbar() {
-        Snackbar.make(mCoordinatorLayout, "Load Error", Snackbar.LENGTH_SHORT).show();
+        Snackbar.make(mRecyclerView, "Load Error", Snackbar.LENGTH_SHORT).show();
     }
 
     public void showNetworkErrorSnackbar() {
-        Snackbar.make(mCoordinatorLayout, "Network Error", Snackbar.LENGTH_SHORT).show();
+        Snackbar.make(mRecyclerView, "Network Error", Snackbar.LENGTH_SHORT).show();
     }
 
     @Override

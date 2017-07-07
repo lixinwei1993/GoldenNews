@@ -16,7 +16,6 @@ public class LikedListContract {
         void showLikedStories(List<StoryLikedForRealm> storyList);
         void setLoadingIndicator(final boolean active);
         void showLoadErrorSnackbar();
-        void showNetworkErrorSnackbar();
     }
 
     interface Presenter extends BasePresenter<View> {

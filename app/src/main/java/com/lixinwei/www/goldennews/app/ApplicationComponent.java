@@ -1,5 +1,7 @@
 package com.lixinwei.www.goldennews.app;
 
+import com.lixinwei.www.goldennews.DateNewsList.DateNewsListModule;
+import com.lixinwei.www.goldennews.DateNewsList.DateNewsListSubComponent;
 import com.lixinwei.www.goldennews.commentslist.CommentsModule;
 import com.lixinwei.www.goldennews.commentslist.CommentsSubComponent;
 import com.lixinwei.www.goldennews.data.Realm.RealmServiceModule;
@@ -38,4 +40,6 @@ public interface ApplicationComponent {
     CommentsSubComponent plus(CommentsModule module);
 
     NewsDetailSubComponent plus(NewsDetailModule module);
+
+    DateNewsListSubComponent plus(DateNewsListModule module);
 }

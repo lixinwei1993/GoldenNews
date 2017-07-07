@@ -2,6 +2,7 @@ package com.lixinwei.www.goldennews.newslist;
 
 import com.lixinwei.www.goldennews.data.domain.ZhihuService;
 import com.lixinwei.www.goldennews.data.model.DailyStories;
+import com.lixinwei.www.goldennews.data.model.DateDailyStories;
 import com.lixinwei.www.goldennews.data.model.Story;
 import com.lixinwei.www.goldennews.data.model.StoryDetail;
 import com.lixinwei.www.goldennews.data.model.StoryExtra;
@@ -9,6 +10,7 @@ import com.lixinwei.www.goldennews.data.model.StoryForNewsList;
 import com.lixinwei.www.goldennews.data.model.TopStory;
 import com.lixinwei.www.goldennews.util.PerFragment;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -32,15 +34,57 @@ import io.reactivex.subjects.ReplaySubject;
 public class NewsListObservableManager {
     private ZhihuService mZhihuService;
     private ReplaySubject<StoryForNewsList> mReplaySubject;
+    private ReplaySubject<StoryForNewsList> mDateReplaySubject;
 
     @Inject
     public NewsListObservableManager(ZhihuService zhihuService) {
         mZhihuService = zhihuService;
     }
 
+    public Observable<StoryForNewsList> loadDateDailyStories(String date) {
+        if (mDateReplaySubject == null) {
+            //TODO String dateString =
+
+            mDateReplaySubject = ReplaySubject.create();
+            mZhihuService.getDateDailyStories(date).subscribeOn(Schedulers.io())
+                    .flatMap(new Function<DateDailyStories, ObservableSource<Story>>() {
+                        @Override
+                        public ObservableSource<Story> apply(@NonNull DateDailyStories dateDailyStories) throws Exception {
+                            List<Story> stories = dateDailyStories.getStories();
+
+                            return Observable.fromIterable(stories);
+                        }
+                    })
+                    .flatMap(new Function<Story, ObservableSource<StoryForNewsList>>() {
+                        @Override
+                        public ObservableSource<StoryForNewsList> apply(@NonNull final Story story) throws Exception {
+                            return Observable.zip(mZhihuService.getStoryExtra(story.getId()),
+                                    mZhihuService.getStoryDetail(story.getId()),
+                                    new BiFunction<StoryExtra, StoryDetail, StoryForNewsList>() {
+                                        @Override
+                                        public StoryForNewsList apply(@NonNull StoryExtra storyExtra, @NonNull StoryDetail storyDetail) throws Exception {
+                                            StoryForNewsList storyForNewsList = new StoryForNewsList();
+                                            storyForNewsList.setComments(storyExtra.getComments());
+                                            storyForNewsList.setPopularity(storyExtra.getPopularity());
+                                            storyForNewsList.setImage(storyDetail.getImage());
+                                            storyForNewsList.setId(story.getId());
+                                            storyForNewsList.setTitle(story.getTitle());
+
+                                            return storyForNewsList;
+                                        }
+                                    });
+                        }
+                    })
+                    .subscribe(mDateReplaySubject);
+
+        }
+
+        return mDateReplaySubject;
+    }
+
     public Observable<StoryForNewsList> loadDailyStories(boolean forceUpdate) {
 
-        if (forceUpdate || mReplaySubject == null) //这个if句有问题，待解决
+        if (forceUpdate || mReplaySubject == null)
         {
 
             mReplaySubject = ReplaySubject.create();
@@ -103,5 +147,6 @@ public class NewsListObservableManager {
      */
     public void dispose() {
         mReplaySubject = null;
+        mDateReplaySubject = null;
     }
 }

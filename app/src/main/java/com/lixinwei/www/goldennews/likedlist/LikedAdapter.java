@@ -50,8 +50,8 @@ public class LikedAdapter extends RecyclerView.Adapter<LikedAdapter.LikedListVie
         return likedListViewHolder;
     }
 
-    public void setupClickableViews(final View view, final LikedListViewHolder likedListViewHolder) {
-        //TODO: view click start detail activity && long press popup delete menu
+    private void setupClickableViews(final View view, final LikedListViewHolder likedListViewHolder) {
+        //TODO: view click start detail activity
     }
 
     @Override

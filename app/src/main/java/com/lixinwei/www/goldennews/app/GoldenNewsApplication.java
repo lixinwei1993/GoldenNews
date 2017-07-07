@@ -4,6 +4,8 @@ import android.app.Application;
 import android.content.Context;
 
 
+import com.lixinwei.www.goldennews.DateNewsList.DateNewsListModule;
+import com.lixinwei.www.goldennews.DateNewsList.DateNewsListSubComponent;
 import com.lixinwei.www.goldennews.commentslist.CommentsModule;
 import com.lixinwei.www.goldennews.commentslist.CommentsSubComponent;
 import com.lixinwei.www.goldennews.likedlist.LikedListModule;
@@ -23,6 +25,7 @@ public class GoldenNewsApplication extends Application {
     private LikedListSubComponent mLikedListSubComponent;
     private CommentsSubComponent mCommentsSubComponent;
     private NewsDetailSubComponent mNewsDetailSubComponent;
+    private DateNewsListSubComponent mDateNewsListSubComponent;
 
     public static GoldenNewsApplication getGoldenNewsApplication(Context context) {
         return (GoldenNewsApplication) context.getApplicationContext();
@@ -42,6 +45,18 @@ public class GoldenNewsApplication extends Application {
 
     public ApplicationComponent getApplicationComponent() {
         return mApplicationComponent;
+    }
+
+    public DateNewsListSubComponent getDateNewsListSubComponent() {
+        if(mDateNewsListSubComponent == null) {
+            mDateNewsListSubComponent = mApplicationComponent.plus(new DateNewsListModule());
+        }
+
+        return mDateNewsListSubComponent;
+    }
+
+    public void releaseDateNewsListSubComponent() {
+        mDateNewsListSubComponent = null;
     }
 
     public CommentsSubComponent getCommentsSubComponent() {
