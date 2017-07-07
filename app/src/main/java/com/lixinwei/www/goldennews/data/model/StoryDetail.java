@@ -30,7 +30,7 @@ public class StoryDetail {
     private String mImageSource;
     //used for Android WebView
     @SerializedName("js")
-    private List<Object> mJs;
+    private List<String> mJs;
 
     @SerializedName("share_url")
     private String mShareUrl;
@@ -88,11 +88,11 @@ public class StoryDetail {
         mImageSource = imageSource;
     }
 
-    public List<Object> getJs() {
+    public List<String> getJs() {
         return mJs;
     }
 
-    public void setJs(List<Object> js) {
+    public void setJs(List<String> js) {
         mJs = js;
     }
 

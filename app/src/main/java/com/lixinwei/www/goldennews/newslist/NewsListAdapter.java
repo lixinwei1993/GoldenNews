@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.lixinwei.www.goldennews.R;
 import com.lixinwei.www.goldennews.data.model.StoryForNewsList;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -166,10 +167,16 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsLi
             //也有可能是网的问题，要不要加载图片时为glide的客户端添加retry操作呢？？以后再说
             // TODO 使用Dagger，参数传递的问题，要将fragment也设为inject吗，需要传递的参数全部设为inject？inject过多允许吗，fragment不可能设为inject吧，那么他需要作为参数时怎么办呢？？
 
-            Log.i("Main", storyForNewsList.getImage());
-            Glide.with(mNewsListFragment)
+            //Log.i("Main", storyForNewsList.getImage());
+
+            Picasso.with(mNewsListFragment.getActivity())
                     .load(storyForNewsList.getImage())
                     .into(mImage);
+
+            //TODO 用appContext会好一些？？暂时这样用先，实在不行换picasso
+            /*Glide.with(mContext)
+                    .load(storyForNewsList.getImage())
+                    .into(mImage);*/
         }
 
     }

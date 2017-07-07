@@ -90,7 +90,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Commen
 
             Glide.with(mContext)
                     .load(comment.getAvatar())
-                    .apply(RequestOptions.circleCropTransform())
+                    .apply(RequestOptions.centerCropTransform())
                     .into(mUserAvatar);
         }
     }

@@ -6,6 +6,9 @@ import com.lixinwei.www.goldennews.data.Realm.RealmServiceModule;
 import com.lixinwei.www.goldennews.data.domain.ZhihuApiModule;
 import com.lixinwei.www.goldennews.likedlist.LikedListModule;
 import com.lixinwei.www.goldennews.likedlist.LikedListSubComponent;
+import com.lixinwei.www.goldennews.newsDetail.NewsDetailModule;
+import com.lixinwei.www.goldennews.newsDetail.NewsDetailObservableManager;
+import com.lixinwei.www.goldennews.newsDetail.NewsDetailSubComponent;
 import com.lixinwei.www.goldennews.newslist.NewsListActivity;
 import com.lixinwei.www.goldennews.newslist.NewsListSubComponent;
 import com.lixinwei.www.goldennews.newslist.NewsListModule;
@@ -33,4 +36,6 @@ public interface ApplicationComponent {
     LikedListSubComponent plus(LikedListModule module);
 
     CommentsSubComponent plus(CommentsModule module);
+
+    NewsDetailSubComponent plus(NewsDetailModule module);
 }

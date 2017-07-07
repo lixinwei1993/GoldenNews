@@ -23,6 +23,8 @@
         <activity android:name=".commentslist.CommentsActivity"
             android:label="Comments">
         </activity>
+        <activity android:name=".newsDetail.NewsDetailActivity"
+            android:theme="@style/DetailActivityTheme"></activity>
     </application>
 
 </manifest>

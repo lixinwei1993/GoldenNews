@@ -5,6 +5,7 @@ import android.view.View;
 
 import com.lixinwei.www.goldennews.data.Realm.RealmService;
 import com.lixinwei.www.goldennews.data.model.StoryForNewsList;
+import com.lixinwei.www.goldennews.newsDetail.NewsDetailActivity;
 import com.lixinwei.www.goldennews.util.PerFragment;
 import com.lixinwei.www.goldennews.util.Utils;
 
@@ -52,7 +53,10 @@ public class NewsListPresenter implements NewsListContract.Presenter {
 
     //TODO 实现replaySubject，以避免频繁索取Observable或进行网络请求
     public void loadDailyStories(boolean forceUpdate) {
-        mNewsListView.setLoadingIndicator(true);
+        if(forceUpdate) {
+            mNewsListView.setLoadingIndicator(true);
+        }
+
 
         Disposable disposable = mNewsListObservableManager.loadDailyStories(forceUpdate)
                 .map(new Function<StoryForNewsList, StoryForNewsList>() {
@@ -124,6 +128,7 @@ public class NewsListPresenter implements NewsListContract.Presenter {
     @Override
     public void moreButtonClicked(View view, StoryForNewsList story) {
         //TODO more button implementation
+        mNewsListView.startDetailActivity(story.getId());
     }
 
 }

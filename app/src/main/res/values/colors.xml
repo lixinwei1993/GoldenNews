@@ -9,4 +9,8 @@
 
     <color name="LikedItemBackground">#EEEEEE</color>
     <color name="LikedCard">#FFFFFF</color>
+
+    <color name="bottom_text">#a9a9a9</color>
+
+    <color name="black_bg">#d0000000</color>
 </resources>

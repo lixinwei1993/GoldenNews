@@ -8,6 +8,8 @@ import com.lixinwei.www.goldennews.commentslist.CommentsModule;
 import com.lixinwei.www.goldennews.commentslist.CommentsSubComponent;
 import com.lixinwei.www.goldennews.likedlist.LikedListModule;
 import com.lixinwei.www.goldennews.likedlist.LikedListSubComponent;
+import com.lixinwei.www.goldennews.newsDetail.NewsDetailModule;
+import com.lixinwei.www.goldennews.newsDetail.NewsDetailSubComponent;
 import com.lixinwei.www.goldennews.newslist.NewsListModule;
 import com.lixinwei.www.goldennews.newslist.NewsListSubComponent;
 
@@ -20,6 +22,7 @@ public class GoldenNewsApplication extends Application {
     private NewsListSubComponent mNewsListSubComponent;
     private LikedListSubComponent mLikedListSubComponent;
     private CommentsSubComponent mCommentsSubComponent;
+    private NewsDetailSubComponent mNewsDetailSubComponent;
 
     public static GoldenNewsApplication getGoldenNewsApplication(Context context) {
         return (GoldenNewsApplication) context.getApplicationContext();
@@ -53,6 +56,17 @@ public class GoldenNewsApplication extends Application {
         mCommentsSubComponent = null;
     }
 
+    public NewsDetailSubComponent getNewsDetailSubComponent() {
+        if(mNewsDetailSubComponent == null) {
+            mNewsDetailSubComponent = mApplicationComponent.plus(new NewsDetailModule());
+        }
+
+        return mNewsDetailSubComponent;
+    }
+
+    public void releaseNewsDetailSubComponent() {
+        mNewsDetailSubComponent = null;
+    }
 
 
     public LikedListSubComponent getLikedListSubComponent() {

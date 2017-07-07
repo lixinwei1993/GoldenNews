@@ -67,16 +67,13 @@ public class CommentsPresenter implements CommentsContract.Presenter {
     /*@Override
     public void loadLongComments(long id) {
         mView.setLoadingIndicator(true);
-
         Disposable disposable = mCommentsObservableManager.loadLongComments(id)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(new DisposableSingleObserver<List<Comment>>() {
-
                     @Override
                     public void onSuccess(@NonNull List<Comment> comments) {
                         mView.showLongComments(comments);
                     }
-
                     @Override
                     public void onError(@NonNull Throwable e) {
                         mView.showLoadErrorSnackbar();

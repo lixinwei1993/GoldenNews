@@ -21,6 +21,7 @@ import com.lixinwei.www.goldennews.R;
 import com.lixinwei.www.goldennews.base.BaseFragment;
 import com.lixinwei.www.goldennews.commentslist.CommentsActivity;
 import com.lixinwei.www.goldennews.data.model.StoryForNewsList;
+import com.lixinwei.www.goldennews.newsDetail.NewsDetailActivity;
 import com.lixinwei.www.goldennews.util.Utils;
 
 import java.util.List;
@@ -159,6 +160,12 @@ public class NewsListFragment extends BaseFragment implements NewsListContract.V
     @Override
     public void startCommentsActivity(long id) {
         Intent intent = CommentsActivity.newIntent(getActivity(), id);
+        startActivity(intent);
+    }
+
+    @Override
+    public void startDetailActivity(long id) {
+        Intent intent = NewsDetailActivity.newIntent(getActivity(), id);
         startActivity(intent);
     }
 

@@ -18,6 +18,7 @@ public interface NewsListContract {
         void showLoadErrorSnackbar();
         void showNetworkErrorSnackbar();
         void startCommentsActivity(long id);
+        void startDetailActivity(long id);
     }
 
     interface Presenter extends BasePresenter<View> {
