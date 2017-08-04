@@ -6,7 +6,7 @@ package com.lixinwei.www.goldennews.base;
 
 public interface BasePresenter<T> {
 
-    public void bindView(T view);
-    public void unbindView();
+    void bindView(T view);
+    void unbindView();
 
 }

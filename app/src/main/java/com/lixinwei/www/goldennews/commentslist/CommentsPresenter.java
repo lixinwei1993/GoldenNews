@@ -66,8 +66,6 @@ public class CommentsPresenter implements CommentsContract.Presenter {
 
     }
 
-    @Override
-    public void loadLongComments(long id) {}
 
     @Override
     public void bindView(CommentsContract.View view) {

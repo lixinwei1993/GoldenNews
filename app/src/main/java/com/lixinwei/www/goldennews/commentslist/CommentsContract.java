@@ -13,15 +13,12 @@ import java.util.List;
 public class CommentsContract {
     interface View extends BaseView {
         void showShortComments(List<Comment> comments);
-        void showLongComments(List<Comment> comments);
         void setLoadingIndicator(final boolean active);
         void showLoadErrorSnackbar();
-        void showNetworkErrorSnackbar();
     }
 
     interface Presenter extends BasePresenter<View> {
         void loadShortComments(long id);
-        void loadLongComments(long id);
         void bindView(View view);
         void unbindView();
     }

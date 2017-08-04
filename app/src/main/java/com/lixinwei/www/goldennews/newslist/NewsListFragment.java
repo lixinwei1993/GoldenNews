@@ -93,7 +93,8 @@ public class NewsListFragment extends BaseFragment implements NewsListContract.V
 
         //TODO 添加splashactivity 更好的提升用户体验
         if(savedInstanceState == null) {    //ensure configuration change recreate don't show error snack bar again;
-            if(!Utils.isConnected(mContext)) showNetworkErrorSnackbar();
+            //if(!Utils.isConnected(mContext))
+                //showNetworkErrorSnackbar();
             mNewsListPresenter.loadDailyStories(true);
         } else {
             mNewsListPresenter.loadDailyStories(false);
@@ -149,7 +150,8 @@ public class NewsListFragment extends BaseFragment implements NewsListContract.V
     }
 
     public void showNetworkErrorSnackbar() {
-        Snackbar.make(mRecyclerView, "Network Error", Snackbar.LENGTH_SHORT).show();
+        Snackbar.make(getActivity().findViewById(android.R.id.content), "Network Error", Snackbar.LENGTH_LONG).show();
+        //Snackbar.make(mRecyclerView, "Network Error", Snackbar.LENGTH_SHORT).show();
     }
 
     @Override

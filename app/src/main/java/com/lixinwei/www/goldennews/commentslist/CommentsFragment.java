@@ -98,10 +98,6 @@ public class CommentsFragment extends BaseFragment implements CommentsContract.V
         mCommentsAdapter.updateComments(comments);
     }
 
-    @Override
-    public void showLongComments(List<Comment> comments) {
-        //TODO
-    }
 
     @Override
     public void setLoadingIndicator(final boolean active) {
@@ -120,8 +116,4 @@ public class CommentsFragment extends BaseFragment implements CommentsContract.V
         Snackbar.make(mRecyclerView, "Load Error", Snackbar.LENGTH_SHORT).show();
     }
 
-    @Override
-    public void showNetworkErrorSnackbar() {
-        Snackbar.make(mRecyclerView, "NetWork Error", Snackbar.LENGTH_SHORT).show();
-    }
 }

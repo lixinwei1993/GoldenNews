@@ -73,7 +73,6 @@ public class DateNewsListActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                //666 Open the navigation drawer when the home icon is selected from the toolbar.
                 onBackPressed();
                 return true;
         }

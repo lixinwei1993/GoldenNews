@@ -31,7 +31,6 @@ import dagger.Component;
         }
 )
 public interface ApplicationComponent {
-    void inject(NewsListActivity activity);
 
     NewsListSubComponent plus(NewsListModule module);
 

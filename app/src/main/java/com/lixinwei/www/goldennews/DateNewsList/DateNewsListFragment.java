@@ -71,6 +71,10 @@ public class DateNewsListFragment extends BaseFragment implements DateNewsListCo
                 ContextCompat.getColor(getActivity(), R.color.colorPrimaryDark)
         );
 
+        if(savedInstanceState != null) {
+            mDate = savedInstanceState.getString("DATE");
+        }
+
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -83,6 +87,12 @@ public class DateNewsListFragment extends BaseFragment implements DateNewsListCo
         mPresenter.loadDateStories(mDate);
 
         return view;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("DATE", mDate);
     }
 
     private void initRecyclerView() {

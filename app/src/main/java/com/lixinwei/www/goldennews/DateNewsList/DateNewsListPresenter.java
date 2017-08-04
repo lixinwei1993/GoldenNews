@@ -2,6 +2,7 @@ package com.lixinwei.www.goldennews.DateNewsList;
 
 import android.content.Context;
 
+import com.lixinwei.www.goldennews.data.Realm.RealmService;
 import com.lixinwei.www.goldennews.data.model.Story;
 
 import java.util.List;

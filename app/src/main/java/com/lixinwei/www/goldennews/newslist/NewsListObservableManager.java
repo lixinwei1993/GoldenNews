@@ -1,5 +1,6 @@
 package com.lixinwei.www.goldennews.newslist;
 
+import com.lixinwei.www.goldennews.data.Realm.RealmService;
 import com.lixinwei.www.goldennews.data.domain.ZhihuService;
 import com.lixinwei.www.goldennews.data.model.DailyStories;
 import com.lixinwei.www.goldennews.data.model.DateDailyStories;
@@ -32,13 +33,16 @@ import io.reactivex.subjects.ReplaySubject;
     //如对于获取某一日期的news时除了已有的判断条件还要加一个日期是否相同来决定要不要重新强制进行网络请求，具体以后再说，参考marvel
 @PerFragment
 public class NewsListObservableManager {
-    private ZhihuService mZhihuService;
+    @Inject
+    public ZhihuService mZhihuService;
+    @Inject
+    public RealmService mRealmService;
+
     private ReplaySubject<StoryForNewsList> mReplaySubject;
     private ReplaySubject<StoryForNewsList> mDateReplaySubject;
 
     @Inject
-    public NewsListObservableManager(ZhihuService zhihuService) {
-        mZhihuService = zhihuService;
+    public NewsListObservableManager(){
     }
 
     public Observable<StoryForNewsList> loadDateDailyStories(String date) {
@@ -55,6 +59,7 @@ public class NewsListObservableManager {
                             return Observable.fromIterable(stories);
                         }
                     })
+                    //首先这里要增加一个observeOn来切换线程，其次考虑自己再组合非topStory与图片时能否使用线程池来加快速度
                     .flatMap(new Function<Story, ObservableSource<StoryForNewsList>>() {
                         @Override
                         public ObservableSource<StoryForNewsList> apply(@NonNull final Story story) throws Exception {
@@ -73,6 +78,16 @@ public class NewsListObservableManager {
                                             return storyForNewsList;
                                         }
                                     });
+                        }
+                    })
+                    .map(new Function<StoryForNewsList, StoryForNewsList>() {
+                        @Override
+                        public StoryForNewsList apply(@NonNull StoryForNewsList storyForNewsList) throws Exception {
+                            Long id = storyForNewsList.getId();
+                            storyForNewsList.setLiked(mRealmService.queryLikedStory(id));
+                            storyForNewsList.setRead(mRealmService.queryStoryRead(id));
+
+                            return storyForNewsList;
                         }
                     })
                     .subscribe(mDateReplaySubject);

@@ -54,22 +54,19 @@ public class CommentsActivity extends BaseActivity {
             ActivityUtils.addFragmentToActivity(getSupportFragmentManager(),
                     commentsFragment, R.id.container_comments);
         }
-        mId = getIntent().getLongExtra(EXTRA_ID, 0);    //getIntent总是返回启动该activity的intent，即使是configuration change也是如此
+        mId = getIntent().getLongExtra(EXTRA_ID, 0);    //TODO 面试// getIntent总是返回启动该activity的intent，即使是configuration change也是如此
         commentsFragment.setId(mId);
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-
-        //outState.putLong(EXTRA_ID, mId);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                //666 Open the navigation drawer when the home icon is selected from the toolbar.
                 onBackPressed();
                 return true;
         }
