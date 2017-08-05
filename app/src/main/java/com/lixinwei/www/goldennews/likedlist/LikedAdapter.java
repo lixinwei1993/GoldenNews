@@ -1,7 +1,6 @@
 package com.lixinwei.www.goldennews.likedlist;
 
 import android.content.Context;
-import android.content.Intent;
 //TODO 使用support库中的popoupMenu会出错。
 import android.view.ContextThemeWrapper;
 import android.widget.PopupMenu;
@@ -15,9 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.lixinwei.www.goldennews.R;
-import com.lixinwei.www.goldennews.data.model.StoryForNewsList;
 import com.lixinwei.www.goldennews.data.model.StoryLikedForRealm;
-import com.lixinwei.www.goldennews.newsDetail.NewsDetailActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -73,7 +70,7 @@ public class LikedAdapter extends RecyclerView.Adapter<LikedAdapter.LikedListVie
             public void onClick(View view) {
                 Context wrapper = new ContextThemeWrapper(mContext, R.style.popupMenuStyle);
                 PopupMenu popupMenu = new PopupMenu(wrapper, view);
-                popupMenu.inflate(R.menu.menu_popup);
+                popupMenu.inflate(R.menu.menu_popup_liked);
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     int position;
 

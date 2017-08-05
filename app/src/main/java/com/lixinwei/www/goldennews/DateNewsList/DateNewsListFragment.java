@@ -15,7 +15,10 @@ import android.view.ViewGroup;
 import com.lixinwei.www.goldennews.R;
 import com.lixinwei.www.goldennews.app.GoldenNewsApplication;
 import com.lixinwei.www.goldennews.base.BaseFragment;
+import com.lixinwei.www.goldennews.commentslist.CommentsActivity;
 import com.lixinwei.www.goldennews.data.model.Story;
+import com.lixinwei.www.goldennews.data.model.StoryForNewsList;
+import com.lixinwei.www.goldennews.data.model.StoryLikedForRealm;
 import com.lixinwei.www.goldennews.newsDetail.NewsDetailActivity;
 
 import java.util.List;
@@ -137,9 +140,29 @@ public class DateNewsListFragment extends BaseFragment implements DateNewsListCo
     }
 
     @Override
+    public void showLikedSnackbar() {
+        Snackbar.make(mRecyclerView, "Saved", Snackbar.LENGTH_SHORT).show();
+    }
+
+    @Override
     public void startDetailActivity(long id) {
         Intent intent = NewsDetailActivity.newIntent(getActivity(), id);
         startActivity(intent);
+    }
+
+    @Override
+    public void startCommentsActivity(long id) {
+        Intent intent = CommentsActivity.newIntent(getActivity(), id);
+        startActivity(intent);
+    }
+
+    @Override
+    public void shareNews(Story story) {
+        Intent i = new Intent(Intent.ACTION_SEND);
+        i.setType("text/plain");
+        i.putExtra(Intent.EXTRA_SUBJECT, story.getTitle());
+        i.putExtra(Intent.EXTRA_TEXT, "https://news-at.zhihu.com/api/4/news/" + story.getId());
+        startActivity(Intent.createChooser(i, getResources().getString(R.string.chooser_title)));
     }
 
 }

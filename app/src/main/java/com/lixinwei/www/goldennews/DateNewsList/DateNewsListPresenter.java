@@ -5,6 +5,8 @@ import android.util.Log;
 
 import com.lixinwei.www.goldennews.data.Realm.RealmService;
 import com.lixinwei.www.goldennews.data.model.Story;
+import com.lixinwei.www.goldennews.data.model.StoryForNewsList;
+import com.lixinwei.www.goldennews.data.model.StoryLikedForRealm;
 
 import java.util.List;
 
@@ -29,6 +31,8 @@ public class DateNewsListPresenter implements DateNewsListContract.Presenter {
     Context mContext;
     @Inject
     DateNewsListObservableManager mDateNewsListObservableManager;
+    @Inject
+    RealmService mRealmService;
 
     @Inject
     DateNewsListPresenter() {
@@ -85,6 +89,22 @@ public class DateNewsListPresenter implements DateNewsListContract.Presenter {
     @Override
     public void startDetailActivity(long id) {
         mView.startDetailActivity(id);
+    }
+
+    @Override
+    public void shareItemClicked(Story story) {
+        mView.shareNews(story);
+    }
+
+    @Override
+    public void commentsItemClicked(long id) {
+        mView.startCommentsActivity(id);
+    }
+
+    @Override
+    public void likeItemClicked(Story story) {
+        mView.showLikedSnackbar();
+        mRealmService.insertLikedStory(story);
     }
 
 

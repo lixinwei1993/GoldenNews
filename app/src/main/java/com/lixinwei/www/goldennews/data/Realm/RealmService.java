@@ -1,5 +1,6 @@
 package com.lixinwei.www.goldennews.data.Realm;
 
+import com.lixinwei.www.goldennews.data.model.Story;
 import com.lixinwei.www.goldennews.data.model.StoryForNewsList;
 import com.lixinwei.www.goldennews.data.model.StoryLikedForRealm;
 
@@ -14,6 +15,7 @@ public interface RealmService {
 
     //store&&delete liked story
     void insertLikedStory(StoryForNewsList story);
+    void insertLikedStory(Story story);
     void deleteLikedStory(Long id);
     boolean queryLikedStory(Long id);
 

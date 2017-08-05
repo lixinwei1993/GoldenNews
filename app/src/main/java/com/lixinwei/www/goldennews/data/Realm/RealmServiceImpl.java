@@ -2,6 +2,7 @@ package com.lixinwei.www.goldennews.data.Realm;
 
 import android.content.Context;
 
+import com.lixinwei.www.goldennews.data.model.Story;
 import com.lixinwei.www.goldennews.data.model.StoryForNewsList;
 import com.lixinwei.www.goldennews.data.model.StoryLikedForRealm;
 import com.lixinwei.www.goldennews.data.model.StoryReadForRealm;
@@ -39,6 +40,28 @@ public class RealmServiceImpl implements RealmService {
             StoryLikedForRealm s = new StoryLikedForRealm();
             s.setId(story.getId());
             s.setImage(story.getImage());
+            s.setTitle(story.getTitle());
+            s.setLikedTime((Calendar.getInstance().getTimeInMillis()));
+
+            realm.beginTransaction();
+            realm.copyToRealmOrUpdate(s);
+            realm.commitTransaction();
+        } finally {
+            if(realm != null) {
+                realm.close();
+            }
+        }
+    }
+
+    @Override
+    public void insertLikedStory(Story story) {
+        Realm realm = null;
+        try {
+            realm = Realm.getDefaultInstance();
+
+            StoryLikedForRealm s = new StoryLikedForRealm();
+            s.setId(story.getId());
+            s.setImage(story.getImages().get(0));
             s.setTitle(story.getTitle());
             s.setLikedTime((Calendar.getInstance().getTimeInMillis()));
 

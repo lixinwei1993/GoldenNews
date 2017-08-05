@@ -3,10 +3,14 @@ package com.lixinwei.www.goldennews.DateNewsList;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.lixinwei.www.goldennews.R;
@@ -59,6 +63,41 @@ public class DateNewsListAdapter extends RecyclerView.Adapter<DateNewsListAdapte
             }
         });
 
+        viewHolder.mImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Context wrapper = new ContextThemeWrapper(mContext, R.style.popupMenuStyle);
+                PopupMenu popupMenu = new PopupMenu(wrapper, view);
+                popupMenu.inflate(R.menu.menu_popup_date_news);
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    int position;
+
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch(item.getItemId()) {
+                            case R.id.item_share:
+                                position = viewHolder.getAdapterPosition();
+                                Story story = mStoryList.get(position);
+                                mPresenter.shareItemClicked(story);
+                                break;
+                            case R.id.item_comments:
+                                position = viewHolder.getAdapterPosition();
+                                mPresenter.commentsItemClicked(mStoryList.get(position).getId());
+                                break;
+                            case R.id.item_like:
+                                position = viewHolder.getAdapterPosition();
+                                Story story2 = mStoryList.get(position);
+                                mPresenter.likeItemClicked(story2);
+                                break;
+                        }
+
+                        return false;
+                    }
+                });
+                popupMenu.show();
+            }
+        });
+
     }
 
     @Override
@@ -85,6 +124,8 @@ public class DateNewsListAdapter extends RecyclerView.Adapter<DateNewsListAdapte
         ImageView mImageView;
         @BindView(R.id.liked_item_title)
         TextView mTitle;
+        @BindView(R.id.button_more)
+        ImageButton mImageButton;
 
         private Context mContext;
 
