@@ -3,7 +3,9 @@ package com.lixinwei.www.goldennews.newslist;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -60,6 +62,32 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsLi
     }
 
     private void setupClickableViews(final View view, final NewsListViewHolder newsListViewHolder) {
+
+        GestureDetector.SimpleOnGestureListener gestureDetectorListener = new GestureDetector.SimpleOnGestureListener(){
+
+            @Override
+            public boolean onSingleTapConfirmed(MotionEvent e) {
+                int position = newsListViewHolder.getAdapterPosition();
+                mNewsListPresenter.imageSingleClicked(mStories.get(position));
+                return super.onSingleTapUp(e);
+            }
+
+            @Override
+            public boolean onDoubleTap(MotionEvent e) {
+                int position = newsListViewHolder.getAdapterPosition();
+                StoryForNewsList story = mStories.get(position);
+                if(!story.isLiked())
+                {
+                    mNewsListPresenter.likeButtonClicked(story);
+                }
+                notifyItemChanged(position, ACTION_LIKE_IMAGE_CLICKED);
+
+                return super.onDoubleTap(e);
+            }
+        };
+
+        final GestureDetector gestureDetector = new GestureDetector(mContext, gestureDetectorListener);
+
         newsListViewHolder.mButtonComments.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -82,27 +110,28 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsLi
             }
         });
 
-        newsListViewHolder.mImage.setOnClickListener(new View.OnClickListener() {
+        newsListViewHolder.mImage.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View view) {
-                int position = newsListViewHolder.getAdapterPosition();
-                StoryForNewsList story = mStories.get(position);
-                if(!story.isLiked())
-                {
-                    mNewsListPresenter.likeButtonClicked(story);
-                }
-                notifyItemChanged(position, ACTION_LIKE_IMAGE_CLICKED);
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                gestureDetector.onTouchEvent(motionEvent);
+
+                // 一定要返回true，不然获取不到完整的事件
+                return true;
             }
+
+
         });
 
         newsListViewHolder.mButtonMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int position = newsListViewHolder.getAdapterPosition();
-                mNewsListPresenter.moreButtonClicked(view, mStories.get(position));
+
             }
         });
+
+
     }
+
 
 
     @Override
@@ -123,7 +152,7 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsLi
         notifyDataSetChanged();
     }
 
-    public static class NewsListViewHolder extends RecyclerView.ViewHolder {
+    public static class NewsListViewHolder extends RecyclerView.ViewHolder{
         @BindView(R.id.story_card_image)
         ImageView mImage;
         @BindView(R.id.story_card_title)
@@ -144,6 +173,7 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsLi
         FrameLayout mFrameLayout;
 
         private Context mContext;
+
 
         public NewsListViewHolder(View itemView) {
             super(itemView);

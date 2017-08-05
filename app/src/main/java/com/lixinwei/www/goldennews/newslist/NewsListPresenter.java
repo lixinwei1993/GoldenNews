@@ -112,7 +112,14 @@ public class NewsListPresenter implements NewsListContract.Presenter {
     @Override
     public void moreButtonClicked(View view, StoryForNewsList story) {
         //TODO more button implementation
+
+    }
+
+    @Override
+    public void imageSingleClicked(StoryForNewsList story) {
         mNewsListView.startDetailActivity(story.getId());
     }
+
+
 
 }

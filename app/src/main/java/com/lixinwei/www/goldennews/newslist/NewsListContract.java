@@ -28,6 +28,7 @@ public interface NewsListContract {
         void likeButtonClicked(StoryForNewsList story);
 
         void moreButtonClicked(android.view.View view, StoryForNewsList story);
+        void imageSingleClicked(StoryForNewsList story);
         void bindView(View view);
         void unbindView();
     }
