@@ -3,13 +3,18 @@ package com.lixinwei.www.goldennews.DateNewsList;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.lixinwei.www.goldennews.R;
 import com.lixinwei.www.goldennews.base.BaseActivity;
 import com.lixinwei.www.goldennews.likedlist.LikedListActivity;
+import com.lixinwei.www.goldennews.newslist.DatePickerFragment;
 import com.lixinwei.www.goldennews.util.ActivityUtils;
 
 import java.util.Date;
@@ -23,8 +28,14 @@ import butterknife.ButterKnife;
 
 public class DateNewsListActivity extends BaseActivity {
     private static final String EXTRA_DATE = "com.lixinwei.www.goldennews.DateNewsList.date";
+    private static final String DIALOG_DATE = "DialogDate";
+
     @BindView(R.id.toolbar_date)
     Toolbar mToolbar;
+    @BindView(R.id.fab_pick_date)
+    FloatingActionButton mFloatingActionButton;
+
+    DateNewsListFragment mDateNewsListFragment;
 
     public static Intent newIntent(Context context, String date) {
         Intent intent = new Intent(context, DateNewsListActivity.class);
@@ -44,22 +55,39 @@ public class DateNewsListActivity extends BaseActivity {
         ab.setHomeAsUpIndicator(R.drawable.ic_navigation);
         ab.setDisplayHomeAsUpEnabled(true);
 
-        DateNewsListFragment likedListFragment =
+        mDateNewsListFragment =
                 (DateNewsListFragment) getSupportFragmentManager().findFragmentById(R.id.container_date);
 
         //TODO
-        if(likedListFragment == null) {
+        if(mDateNewsListFragment == null) {
             String date = getIntent().getStringExtra(EXTRA_DATE);
-            likedListFragment = DateNewsListFragment.newInstance(date);
+            mDateNewsListFragment = DateNewsListFragment.newInstance(date);
             ActivityUtils.addFragmentToActivity(getSupportFragmentManager(),
-                    likedListFragment, R.id.container_date);
+                    mDateNewsListFragment, R.id.container_date);
         }
+
+        mFloatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentManager manager = getSupportFragmentManager();
+                DatePickerFragment dialog = new DatePickerFragment();
+                dialog.show(manager, DIALOG_DATE);
+            }
+        });
 
         //TODO
         if (savedInstanceState != null) {
 
         }
 
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        String date = intent.getStringExtra(EXTRA_DATE);
+
+        mDateNewsListFragment.dateChanged(date);
     }
 
     @Override

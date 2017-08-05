@@ -1,6 +1,7 @@
 package com.lixinwei.www.goldennews.DateNewsList;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.lixinwei.www.goldennews.data.Realm.RealmService;
 import com.lixinwei.www.goldennews.data.model.Story;
@@ -43,6 +44,7 @@ public class DateNewsListPresenter implements DateNewsListContract.Presenter {
                 .subscribeWith(new DisposableObserver<List<Story>>() {
                     @Override
                     public void onNext(@NonNull List<Story> stories) {
+
                         mView.showDateStories(stories);
                     }
 

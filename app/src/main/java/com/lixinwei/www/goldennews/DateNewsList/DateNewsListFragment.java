@@ -49,6 +49,11 @@ public class DateNewsListFragment extends BaseFragment implements DateNewsListCo
         mDate = date;
     }
 
+    public void dateChanged(String date) {
+        mDate = date;
+        mPresenter.loadDateStories(mDate);
+    }
+
     public static DateNewsListFragment newInstance(String date) {
         DateNewsListFragment fragment = new DateNewsListFragment();
         fragment.setDate(date);

@@ -23,6 +23,7 @@ public class DateNewsListObservableManager {
     ZhihuService mZhihuService;
 
     private ReplaySubject<List<Story>> mReplaySubject;
+    private String mDate;
 
     @Inject
     public DateNewsListObservableManager() {
@@ -30,10 +31,11 @@ public class DateNewsListObservableManager {
     }
 
     public Observable<List<Story>> loadDateStorie(String date) {
-        if(mReplaySubject == null) {
+        if(mReplaySubject == null || !mDate.equals(date)) {
+            mDate = date;
             mReplaySubject = ReplaySubject.create();
 
-            mZhihuService.getDateDailyStories(date)
+            mZhihuService.getDateDailyStories(mDate)
                     .subscribeOn(Schedulers.io())
                     .map(new Function<DateDailyStories, List<Story>>() {
                         @Override

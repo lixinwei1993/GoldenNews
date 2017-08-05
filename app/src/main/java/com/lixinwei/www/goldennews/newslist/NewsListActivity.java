@@ -39,6 +39,7 @@ public class NewsListActivity extends BaseActivity {
     }
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,6 +82,8 @@ public class NewsListActivity extends BaseActivity {
 
         }
     }
+
+
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
