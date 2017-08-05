@@ -21,7 +21,9 @@ import com.lixinwei.www.goldennews.R;
 import com.lixinwei.www.goldennews.base.BaseFragment;
 import com.lixinwei.www.goldennews.commentslist.CommentsActivity;
 import com.lixinwei.www.goldennews.data.model.StoryForNewsList;
+import com.lixinwei.www.goldennews.likedlist.LikedListActivity;
 import com.lixinwei.www.goldennews.newsDetail.NewsDetailActivity;
+import com.lixinwei.www.goldennews.services.PollService;
 import com.lixinwei.www.goldennews.util.Utils;
 
 import java.util.Date;
@@ -100,6 +102,7 @@ public class NewsListFragment extends BaseFragment implements NewsListContract.V
             mNewsListPresenter.loadDailyStories(false);
         }
 
+        PollService.setServiceAlarm(getActivity(), true);
 
         setHasOptionsMenu(true);
 
@@ -110,7 +113,7 @@ public class NewsListFragment extends BaseFragment implements NewsListContract.V
     public void onResume() {
         super.onResume();
 
-        //TODO 为啥要在onResume中重新加载数据删除liked的效果才生效呢？
+        //TODO 为啥要在onResume中重新加载数据删除liked的效果才生效呢？ 通知recyclerView刷新！！
         // 不是backButton自动会从onCreate执行吗，而onCreate中已经加载过数据了啊，还是说现在backButton的行为已经改变？待解决
         mNewsListPresenter.loadDailyStories(false);
     }
@@ -122,7 +125,10 @@ public class NewsListFragment extends BaseFragment implements NewsListContract.V
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            //TODO
+            case R.id.action_liked:
+                Intent intent = LikedListActivity.newIntent(getActivity());
+                startActivity(intent);
+                break;
         }
         return true;
     }

@@ -14,6 +14,7 @@ import com.lixinwei.www.goldennews.newsDetail.NewsDetailSubComponent;
 import com.lixinwei.www.goldennews.newslist.NewsListActivity;
 import com.lixinwei.www.goldennews.newslist.NewsListSubComponent;
 import com.lixinwei.www.goldennews.newslist.NewsListModule;
+import com.lixinwei.www.goldennews.services.PollService;
 
 import javax.inject.Singleton;
 
@@ -31,6 +32,8 @@ import dagger.Component;
         }
 )
 public interface ApplicationComponent {
+
+    void inject(PollService service);
 
     NewsListSubComponent plus(NewsListModule module);
 

@@ -1,5 +1,5 @@
 package com.lixinwei.www.goldennews.newslist;
-
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -33,6 +33,10 @@ public class NewsListActivity extends BaseActivity {
     NavigationView mNavigationView;
     @BindView(R.id.fab_pick_date)
     FloatingActionButton mFloatingActionButton;
+
+    public static Intent newIntent(Context context) {
+        return new Intent(context, NewsListActivity.class);
+    }
 
 
     @Override
@@ -97,6 +101,7 @@ public class NewsListActivity extends BaseActivity {
     }
 
     private void setupDrawerContent() {
+        mNavigationView.setItemIconTintList(null); //TODO 为了让item的图片显示原色，而不是根据状态显示颜色
         mNavigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
@@ -109,7 +114,7 @@ public class NewsListActivity extends BaseActivity {
                         }
 
                         //close the navigation drawer when an item is selected.
-                        item.setChecked(true);
+                        //item.setChecked(true);
                         mDrawerLayout.closeDrawers();
                         return true;
                     }

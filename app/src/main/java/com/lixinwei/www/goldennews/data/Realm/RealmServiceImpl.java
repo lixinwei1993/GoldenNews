@@ -33,7 +33,7 @@ public class RealmServiceImpl implements RealmService {
     @Override
     public void insertLikedStory(StoryForNewsList story) {
         Realm realm = null;
-        try { // I could use try-with-resources here
+        try {
             realm = Realm.getDefaultInstance();
 
             StoryLikedForRealm s = new StoryLikedForRealm();
@@ -55,7 +55,7 @@ public class RealmServiceImpl implements RealmService {
     @Override
     public void deleteLikedStory(Long id) {
         Realm realm = null;
-        try { // I could use try-with-resources here
+        try {
             realm = Realm.getDefaultInstance();
             StoryLikedForRealm story = realm.where(StoryLikedForRealm.class).equalTo("mId", id).findFirst();
             realm.beginTransaction();
@@ -73,7 +73,7 @@ public class RealmServiceImpl implements RealmService {
     @Override
     public boolean queryLikedStory(Long id) {
         Realm realm = null;
-        try { // I could use try-with-resources here
+        try {
             realm = Realm.getDefaultInstance();
             StoryLikedForRealm story = realm.where(StoryLikedForRealm.class).equalTo("mId", id).findFirst();
             if (story == null) {
@@ -92,7 +92,7 @@ public class RealmServiceImpl implements RealmService {
     @Override
     public void insertStoryRead(Long id) {
         Realm realm = null;
-        try { // I could use try-with-resources here
+        try {
             StoryReadForRealm story = new StoryReadForRealm(id);
             realm = Realm.getDefaultInstance();
             realm.beginTransaction();
@@ -108,7 +108,7 @@ public class RealmServiceImpl implements RealmService {
     @Override
     public boolean queryStoryRead(Long id) {
         Realm realm = null;
-        try { // I could use try-with-resources here
+        try {
             realm = Realm.getDefaultInstance();
             StoryReadForRealm story = realm.where(StoryReadForRealm.class).equalTo("mId", id).findFirst();
             if (story == null) {
@@ -126,7 +126,7 @@ public class RealmServiceImpl implements RealmService {
     @Override
     public List<StoryLikedForRealm> getLikedList() {
         Realm realm = null;
-        try { // I could use try-with-resources here
+        try {
             realm = Realm.getDefaultInstance();
             RealmResults<StoryLikedForRealm> results = realm.where(StoryLikedForRealm.class).findAllSorted("mLikedTime", Sort.DESCENDING);
             return realm.copyFromRealm(results);

@@ -4,8 +4,8 @@
       xmlns:tools="http://schemas.android.com/tools"
       tools:context=".newslist.NewsListActivity">
     <item
-        android:id="@+id/action_inbox"
-        android:icon="@drawable/ic_add"
+        android:id="@+id/action_liked"
+        android:icon="@drawable/ic_bookmark_white_24dp"
         android:title="Inbox"
         app:showAsAction="always" />
 </menu>

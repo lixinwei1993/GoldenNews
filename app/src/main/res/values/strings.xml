@@ -2,4 +2,6 @@
     <string name="app_name">GoldenNews</string>
 
     <string name="date_picker_title">Date of news</string>
+
+    <string name="new_story_title">Have new stories!</string>
 </resources>
