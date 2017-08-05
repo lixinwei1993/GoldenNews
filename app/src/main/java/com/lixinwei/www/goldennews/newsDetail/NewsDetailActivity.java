@@ -13,13 +13,14 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
+
 import com.lixinwei.www.goldennews.R;
 import com.lixinwei.www.goldennews.app.GoldenNewsApplication;
 import com.lixinwei.www.goldennews.base.BaseActivity;
 import com.lixinwei.www.goldennews.data.model.StoryDetail;
 import com.lixinwei.www.goldennews.util.HtmlUtil;
 import com.lixinwei.www.goldennews.util.Utils;
+import com.squareup.picasso.Picasso;
 import com.tencent.smtt.sdk.WebSettings;
 import com.tencent.smtt.sdk.WebView;
 import com.tencent.smtt.sdk.WebViewClient;
@@ -147,7 +148,7 @@ public class NewsDetailActivity extends BaseActivity implements NewsDetailContra
     public void showStoryDetail(StoryDetail storyDetail) {
         Log.i("Main", "Hello");
 
-        Glide.with(this)
+        Picasso.with(this)
                 .load(storyDetail.getImage())
                 .into(mBarImageView);
 
@@ -159,7 +160,7 @@ public class NewsDetailActivity extends BaseActivity implements NewsDetailContra
     }
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) { //TODO 目的是？？
+    public boolean onKeyDown(int keyCode, KeyEvent event) { //TODO 目的是实现网页的返回功能，即优先网页返回再activity返回
         if ((keyCode == KeyEvent.KEYCODE_BACK) && mWebView.canGoBack()) {
             mWebView.goBack();
             return true;

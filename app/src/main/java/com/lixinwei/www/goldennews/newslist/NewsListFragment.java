@@ -94,14 +94,7 @@ public class NewsListFragment extends BaseFragment implements NewsListContract.V
         initRecyclerView();
         mNewsListPresenter.bindView(this);
 
-        //TODO 添加splashactivity 更好的提升用户体验
-        if(savedInstanceState == null) {    //ensure configuration change recreate don't show error snack bar again;
-            //if(!Utils.isConnected(mContext))
-                //showNetworkErrorSnackbar();
-            mNewsListPresenter.loadDailyStories(true);
-        } else {
-            mNewsListPresenter.loadDailyStories(false);
-        }
+        mNewsListPresenter.loadDailyStories(false);
 
         PollService.setServiceAlarm(getActivity(), true);
 
@@ -183,8 +176,16 @@ public class NewsListFragment extends BaseFragment implements NewsListContract.V
     }
 
     private void initRecyclerView() {
-        //mNewsListAdapter = new NewsListAdapter();
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        //TODO 面试点 由于recyclerView中单个item比较大，一次只加载两个item，而又由于图片的加载过程较慢，这样在正常的滑动
+        //过程中就会看到下方条目的图片是空白的，覆盖LinearLayoutManager中getExtraSpace方法来增加recyclerView的加载条目
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity()){
+            @Override
+            protected int getExtraLayoutSpace(RecyclerView.State state) {
+                return 300;
+            }
+        };
+
+        mRecyclerView.setLayoutManager(linearLayoutManager);
         mNewsListAdapter.bindFragment(this);
         mRecyclerView.setAdapter(mNewsListAdapter);
         mRecyclerView.setItemAnimator(new NewsItemAnimator());

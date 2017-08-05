@@ -8,10 +8,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.lixinwei.www.goldennews.R;
 import com.lixinwei.www.goldennews.data.model.Comment;
+import com.lixinwei.www.goldennews.util.PicassoTransforms;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -88,9 +88,9 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Commen
             mContent.setText(comment.getContent());
             mUserName.setText(comment.getAuthor());
 
-            Glide.with(mContext)
+            Picasso.with(mContext)
                     .load(comment.getAvatar())
-                    .apply(RequestOptions.centerCropTransform())
+                    .transform(new PicassoTransforms.CircleTransform())
                     .into(mUserAvatar);
         }
     }

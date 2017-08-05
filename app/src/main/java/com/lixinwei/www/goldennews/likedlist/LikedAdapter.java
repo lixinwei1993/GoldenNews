@@ -9,11 +9,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.lixinwei.www.goldennews.R;
 import com.lixinwei.www.goldennews.data.model.StoryForNewsList;
 import com.lixinwei.www.goldennews.data.model.StoryLikedForRealm;
 import com.lixinwei.www.goldennews.newsDetail.NewsDetailActivity;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -100,8 +100,7 @@ public class LikedAdapter extends RecyclerView.Adapter<LikedAdapter.LikedListVie
         public void bind(StoryLikedForRealm storyLikedForRealm) {
             mTitle.setText(storyLikedForRealm.getTitle());
 
-            //Glide can automatically cache image in memory&disk, if you want to customize the cache pattern, read api
-            Glide.with(mContext)
+            Picasso.with(mContext)
                     .load(storyLikedForRealm.getImage())
                     .into(mImageView);
         }

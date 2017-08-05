@@ -14,7 +14,6 @@ import android.widget.ImageView;
 import android.widget.TextSwitcher;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.lixinwei.www.goldennews.R;
 import com.lixinwei.www.goldennews.data.model.StoryForNewsList;
 import com.squareup.picasso.Picasso;
@@ -193,11 +192,6 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsLi
             Picasso.with(mNewsListFragment.getActivity())
                     .load(storyForNewsList.getImage())
                     .into(mImage);
-
-            //TODO picasso
-            /*Glide.with(mContext)
-                    .load(storyForNewsList.getImage())
-                    .into(mImage);*/
         }
 
     }

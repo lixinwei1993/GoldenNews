@@ -9,9 +9,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.lixinwei.www.goldennews.R;
 import com.lixinwei.www.goldennews.data.model.Story;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -99,8 +99,7 @@ public class DateNewsListAdapter extends RecyclerView.Adapter<DateNewsListAdapte
         public void bind(Story story) {
             mTitle.setText(story.getTitle());
 
-            //Glide can automatically cache image in memory&disk, if you want to customize the cache pattern, read api
-            Glide.with(mContext)
+            Picasso.with(mContext)
                     .load(story.getImages().get(0))
                     .into(mImageView);
         }

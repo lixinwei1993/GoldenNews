@@ -14,12 +14,17 @@ import com.lixinwei.www.goldennews.newsDetail.NewsDetailModule;
 import com.lixinwei.www.goldennews.newsDetail.NewsDetailSubComponent;
 import com.lixinwei.www.goldennews.newslist.NewsListModule;
 import com.lixinwei.www.goldennews.newslist.NewsListSubComponent;
+import com.squareup.picasso.Downloader;
+import com.squareup.picasso.OkHttpDownloader;
+import com.squareup.picasso.Picasso;
 
 /**
  * Created by welding on 2017/6/29.
  */
 
 public class GoldenNewsApplication extends Application {
+    private static final long PICASSO_DISK_CACHE_SIZE = 1024 * 1024 * 50;
+
     private ApplicationComponent mApplicationComponent;
     private NewsListSubComponent mNewsListSubComponent;
     private LikedListSubComponent mLikedListSubComponent;
@@ -35,6 +40,12 @@ public class GoldenNewsApplication extends Application {
     public void onCreate() {
         super.onCreate();
         initAppComponent();
+
+        //TODO 面试点：加大picasso的磁盘缓存大小，以便在没有网的时候能够把NEWSLIST页面即主页面的所有大图都显示出来
+        Downloader downloader = new OkHttpDownloader(getApplicationContext(),
+                PICASSO_DISK_CACHE_SIZE);
+        Picasso picasso = new Picasso.Builder(getApplicationContext())
+                .downloader(downloader).build();
     }
 
     private void initAppComponent() {

@@ -1,5 +1,7 @@
 package com.lixinwei.www.goldennews.newslist;
 
+import android.content.Context;
+
 import com.lixinwei.www.goldennews.data.Realm.RealmService;
 import com.lixinwei.www.goldennews.data.domain.ZhihuService;
 import com.lixinwei.www.goldennews.data.model.DailyStories;
@@ -10,6 +12,7 @@ import com.lixinwei.www.goldennews.data.model.StoryExtra;
 import com.lixinwei.www.goldennews.data.model.StoryForNewsList;
 import com.lixinwei.www.goldennews.data.model.TopStory;
 import com.lixinwei.www.goldennews.util.PerFragment;
+import com.squareup.picasso.Picasso;
 
 import java.util.Date;
 import java.util.List;
@@ -37,6 +40,8 @@ public class NewsListObservableManager {
     public ZhihuService mZhihuService;
     @Inject
     public RealmService mRealmService;
+    @Inject
+    public Context mContext;
 
     private ReplaySubject<StoryForNewsList> mReplaySubject;
     private ReplaySubject<StoryForNewsList> mDateReplaySubject;
@@ -134,6 +139,8 @@ public class NewsListObservableManager {
                                             storyForNewsList.setImage(storyDetail.getImage());
                                             storyForNewsList.setId(topStory.getId());
                                             storyForNewsList.setTitle(topStory.getTitle());
+
+                                            Picasso.with(mContext).load(storyForNewsList.getImage());
 
                                             return storyForNewsList;
                                         }

@@ -1,5 +1,6 @@
 package com.lixinwei.www.goldennews.newslist;
 
+import com.lixinwei.www.goldennews.splash.SplashActivity;
 import com.lixinwei.www.goldennews.util.PerFragment;
 
 import dagger.Subcomponent;
@@ -12,4 +13,5 @@ import dagger.Subcomponent;
 public interface NewsListSubComponent {
 
     void inject(NewsListFragment fragment);
+    void inject(SplashActivity activity);
 }
