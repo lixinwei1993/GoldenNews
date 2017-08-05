@@ -80,16 +80,6 @@ public class NewsListObservableManager {
                                     });
                         }
                     })
-                    .map(new Function<StoryForNewsList, StoryForNewsList>() {
-                        @Override
-                        public StoryForNewsList apply(@NonNull StoryForNewsList storyForNewsList) throws Exception {
-                            Long id = storyForNewsList.getId();
-                            storyForNewsList.setLiked(mRealmService.queryLikedStory(id));
-                            storyForNewsList.setRead(mRealmService.queryStoryRead(id));
-
-                            return storyForNewsList;
-                        }
-                    })
                     .subscribe(mDateReplaySubject);
 
         }

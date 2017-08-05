@@ -79,13 +79,13 @@
                 android:src="@drawable/ic_comment_outline_grey"/>
 
             <ImageButton
-                android:id="@+id/button_more"
+                android:id="@+id/button_share"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:background="@drawable/button_ripple"
                 android:padding="10dp"
                 android:scaleType="fitCenter"
-                android:src="@drawable/ic_more_grey"/>
+                android:src="@drawable/ic_share"/>
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -97,7 +97,7 @@
                     android:layout_width="24dp"
                     android:layout_height="match_parent"
                     android:scaleType="fitCenter"
-                    android:src="@drawable/ic_heart_small_blue"/>
+                    android:src="@drawable/ic_thumb_up"/>
 
                 <TextSwitcher
                     android:id="@+id/tsLikesCounter"
@@ -112,7 +112,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="123 likes"
-                        android:textColor="@color/colorAccent"/>
+                        android:textColor="@color/bottom_text"/>
 
                     <TextView
                         android:layout_width="wrap_content"

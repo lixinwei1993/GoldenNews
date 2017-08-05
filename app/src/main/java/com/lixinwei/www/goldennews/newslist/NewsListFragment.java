@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ShareCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -164,6 +165,15 @@ public class NewsListFragment extends BaseFragment implements NewsListContract.V
     public void startCommentsActivity(long id) {
         Intent intent = CommentsActivity.newIntent(getActivity(), id);
         startActivity(intent);
+    }
+
+    @Override
+    public void shareNews(StoryForNewsList story) {
+        Intent i = new Intent(Intent.ACTION_SEND);
+        i.setType("text/plain");
+        i.putExtra(Intent.EXTRA_SUBJECT, story.getTitle());
+        i.putExtra(Intent.EXTRA_TEXT, "https://news-at.zhihu.com/api/4/news/" + story.getId());
+        startActivity(Intent.createChooser(i, getResources().getString(R.string.chooser_title)));
     }
 
     @Override

@@ -54,6 +54,16 @@ public class NewsListPresenter implements NewsListContract.Presenter {
         }
 
         Disposable disposable = mNewsListObservableManager.loadDailyStories(forceUpdate)
+                .map(new Function<StoryForNewsList, StoryForNewsList>() {
+                    @Override
+                    public StoryForNewsList apply(@NonNull StoryForNewsList storyForNewsList) throws Exception {
+                        Long id = storyForNewsList.getId();
+                        storyForNewsList.setLiked(mRealmService.queryLikedStory(id));
+                        storyForNewsList.setRead(mRealmService.queryStoryRead(id));
+
+                        return storyForNewsList;
+                    }
+                })
                 .toList()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(new DisposableSingleObserver<List<StoryForNewsList>>() {
@@ -110,13 +120,14 @@ public class NewsListPresenter implements NewsListContract.Presenter {
     }
 
     @Override
-    public void moreButtonClicked(View view, StoryForNewsList story) {
+    public void shareButtonClicked(View view, StoryForNewsList story) {
         //TODO more button implementation
-
+        mNewsListView.shareNews(story);
     }
 
     @Override
     public void imageSingleClicked(StoryForNewsList story) {
+        mRealmService.insertStoryRead(story.getId());
         mNewsListView.startDetailActivity(story.getId());
     }
 

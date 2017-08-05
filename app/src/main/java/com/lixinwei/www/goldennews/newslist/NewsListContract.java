@@ -19,6 +19,7 @@ public interface NewsListContract {
         void showNetworkErrorSnackbar();
         void startCommentsActivity(long id);
         void startDetailActivity(long id);
+        void shareNews(StoryForNewsList story);
     }
 
     interface Presenter extends BasePresenter<View> {
@@ -27,7 +28,7 @@ public interface NewsListContract {
 
         void likeButtonClicked(StoryForNewsList story);
 
-        void moreButtonClicked(android.view.View view, StoryForNewsList story);
+        void shareButtonClicked(android.view.View view, StoryForNewsList story);
         void imageSingleClicked(StoryForNewsList story);
         void bindView(View view);
         void unbindView();

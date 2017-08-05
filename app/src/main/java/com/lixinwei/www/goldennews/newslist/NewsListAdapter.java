@@ -122,10 +122,11 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsLi
 
         });
 
-        newsListViewHolder.mButtonMore.setOnClickListener(new View.OnClickListener() {
+        newsListViewHolder.mButtonShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                int position = newsListViewHolder.getAdapterPosition();
+                mNewsListPresenter.shareButtonClicked(view, mStories.get(position));
             }
         });
 
@@ -161,8 +162,8 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsLi
         ImageButton mButtonComments;
         @BindView(R.id.button_like)
         ImageButton mButtonLike;
-        @BindView(R.id.button_more)
-        ImageButton mButtonMore;
+        @BindView(R.id.button_share)
+        ImageButton mButtonShare;
         @BindView(R.id.like_background)
         View mLikeBackground;
         @BindView(R.id.like_heart)
@@ -186,7 +187,7 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsLi
             mTitle.setText(storyForNewsList.getTitle());
             mTitle.setTextColor(storyForNewsList.isRead() ? mContext.getResources().getColor(R.color.titleRead) : mContext.getResources().getColor(R.color.titleUnread));
             mButtonLike.setImageResource(storyForNewsList.isLiked() ? R.drawable.ic_heart_red : R.drawable.ic_heart_outline_grey);
-            mTextSwitcher.setCurrentText(storyForNewsList.getPopularity() + "likes");
+            mTextSwitcher.setCurrentText(storyForNewsList.getPopularity() + "赞");
 
 
             Picasso.with(mNewsListFragment.getActivity())
