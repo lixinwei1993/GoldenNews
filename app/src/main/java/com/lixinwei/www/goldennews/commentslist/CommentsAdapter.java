@@ -90,7 +90,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Commen
 
             Picasso.with(mContext)
                     .load(comment.getAvatar())
-                    .transform(new PicassoTransforms.CircleTransform())
+                    //.transform(new PicassoTransforms.CircleTransform())
                     .into(mUserAvatar);
         }
     }

@@ -17,6 +17,8 @@ public class LikedListContract {
         void setLoadingIndicator(final boolean active);
         void showLoadErrorSnackbar();
         void startDetailActivity(long id);
+        void shareNews(StoryLikedForRealm story);
+        void startCommentsActivity(long id);
     }
 
     interface Presenter extends BasePresenter<View> {
@@ -25,5 +27,7 @@ public class LikedListContract {
         void bindView(View view);
         void unbindView();
         void startDetailActivity(long id);
+        void shareItemClicked(StoryLikedForRealm story);
+        void commentsItemClicked(long id);
     }
 }

@@ -22,6 +22,12 @@
         <item name="android:windowTranslucentStatus">true</item>
     </style>
 
+    <style name="popupMenuStyle" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:textColor">@color/titleUnread</item>
+        <item name="android:itemBackground">@color/LikedCard</item>
+    </style>
+
+
     <style name="Toolbar" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="TextAppearance.ExpandedTitle"

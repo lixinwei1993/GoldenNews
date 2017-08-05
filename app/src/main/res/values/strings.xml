@@ -2,7 +2,9 @@
     <string name="app_name">GoldenNews</string>
 
     <string name="date_picker_title">Date of news</string>
-
     <string name="new_story_title">Have new stories!</string>
     <string name="chooser_title">share to</string>
+
+    <string name="popup_menu_share">Share</string>
+    <string name="popup_menu_Comments">Comments</string>
 </resources>

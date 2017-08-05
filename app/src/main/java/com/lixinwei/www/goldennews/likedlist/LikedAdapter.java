@@ -2,10 +2,15 @@ package com.lixinwei.www.goldennews.likedlist;
 
 import android.content.Context;
 import android.content.Intent;
+//TODO 使用support库中的popoupMenu会出错。
+import android.view.ContextThemeWrapper;
+import android.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -53,12 +58,42 @@ public class LikedAdapter extends RecyclerView.Adapter<LikedAdapter.LikedListVie
     }
 
     private void setupClickableViews(final View view, final LikedListViewHolder likedListViewHolder) {
+
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 int position = likedListViewHolder.getAdapterPosition();
                 long id = mLikedStories.get(position).getId();
                 mPresenter.startDetailActivity(id);
+            }
+        });
+
+        likedListViewHolder.mImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Context wrapper = new ContextThemeWrapper(mContext, R.style.popupMenuStyle);
+                PopupMenu popupMenu = new PopupMenu(wrapper, view);
+                popupMenu.inflate(R.menu.menu_popup);
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    int position;
+
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch(item.getItemId()) {
+                            case R.id.item_share:
+                                position = likedListViewHolder.getAdapterPosition();
+                                StoryLikedForRealm story = mLikedStories.get(position);
+                                mPresenter.shareItemClicked(story);
+                                break;
+                            case R.id.item_comments:
+                                position = likedListViewHolder.getAdapterPosition();
+                                mPresenter.commentsItemClicked(mLikedStories.get(position).getId());
+                        }
+
+                        return false;
+                    }
+                });
+                popupMenu.show();
             }
         });
     }
@@ -86,7 +121,8 @@ public class LikedAdapter extends RecyclerView.Adapter<LikedAdapter.LikedListVie
         ImageView mImageView;
         @BindView(R.id.liked_item_title)
         TextView mTitle;
-
+        @BindView(R.id.button_more)
+        ImageButton mImageButton;
         private Context mContext;
 
         public LikedListViewHolder(View itemView) {

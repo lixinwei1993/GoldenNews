@@ -33,7 +33,7 @@ import io.reactivex.observers.DisposableObserver;
 
 public class PollService extends IntentService {
     private static final String TAG = "PollService";
-    private static final int POLL_INTERVAL = 1000 * 60;
+    private static final int POLL_INTERVAL = 1000 * 60 *60;
 
     public static final String ACTION_SHOW_NOTIFICATION =
             "com.lixinwei.www.GoldenNewsApplication.SHOW_NOTIFICATION";

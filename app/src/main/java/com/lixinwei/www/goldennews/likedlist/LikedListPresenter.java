@@ -88,6 +88,16 @@ public class LikedListPresenter implements LikedListContract.Presenter {
     }
 
     @Override
+    public void shareItemClicked(StoryLikedForRealm story) {
+        mView.shareNews(story);
+    }
+
+    @Override
+    public void commentsItemClicked(long id) {
+        mView.startCommentsActivity(id);
+    }
+
+    @Override
     public void startDetailActivity(long id) {
         mView.startDetailActivity(id);
     }
