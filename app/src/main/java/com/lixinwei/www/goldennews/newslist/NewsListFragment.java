@@ -22,6 +22,7 @@ import com.lixinwei.www.goldennews.R;
 import com.lixinwei.www.goldennews.base.BaseFragment;
 import com.lixinwei.www.goldennews.commentslist.CommentsActivity;
 import com.lixinwei.www.goldennews.data.model.StoryForNewsList;
+import com.lixinwei.www.goldennews.data.sharedPreferences.PreferencesServiceImpl;
 import com.lixinwei.www.goldennews.likedlist.LikedListActivity;
 import com.lixinwei.www.goldennews.newsDetail.NewsDetailActivity;
 import com.lixinwei.www.goldennews.services.PollService;
@@ -96,7 +97,7 @@ public class NewsListFragment extends BaseFragment implements NewsListContract.V
 
         mNewsListPresenter.loadDailyStories(false);
 
-        PollService.setServiceAlarm(getActivity(), true);
+        PollService.setServiceAlarm(getActivity(), PreferencesServiceImpl.isAlarmOn(getActivity()));
 
         setHasOptionsMenu(true);
 

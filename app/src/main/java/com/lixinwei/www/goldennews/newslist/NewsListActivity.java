@@ -23,7 +23,9 @@ import android.widget.ToggleButton;
 
 import com.lixinwei.www.goldennews.R;
 import com.lixinwei.www.goldennews.base.BaseActivity;
+import com.lixinwei.www.goldennews.data.sharedPreferences.PreferencesServiceImpl;
 import com.lixinwei.www.goldennews.likedlist.LikedListActivity;
+import com.lixinwei.www.goldennews.services.PollService;
 import com.lixinwei.www.goldennews.util.ActivityUtils;
 
 import butterknife.BindView;
@@ -144,12 +146,12 @@ public class NewsListActivity extends BaseActivity {
         MenuItem notificationSwitchItem = menu.findItem(R.id.notification_switch);
         View notificationAction = MenuItemCompat.getActionView(notificationSwitchItem);
         SwitchCompat notificationSwitch = notificationAction.findViewById(R.id.switch_compat);
+        notificationSwitch.setChecked(PreferencesServiceImpl.isAlarmOn(getApplicationContext()));
         notificationSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if(b)
-                    Log.i("MAIN", "HIIIII");
-
+                PreferencesServiceImpl.setAlarmOn(NewsListActivity.this, b);
+                PollService.setServiceAlarm(NewsListActivity.this, b);
             }
         });
 
