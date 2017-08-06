@@ -3,9 +3,10 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="background">#EEEEEE</color>
 
-    <color name="titleUnread">#000000</color>
-    <color name="titleRead">#848A8C</color>
+    <color name="textColorPrimary">#000000</color>
+    <color name="textColorSecondary">#848A8C</color>
 
     <color name="LikedItemBackground">#EEEEEE</color>
     <color name="LikedCard">#FFFFFF</color>

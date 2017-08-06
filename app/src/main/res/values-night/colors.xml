@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#212121</color>
+    <color name="colorPrimaryDark">#424242</color>
+    <color name="colorAccent">#757575</color>
+    <color name="textColorPrimary">#ffffff</color>
+    <color name="textColorSecondary">#999999</color>
+    <color name="background">#555555</color>
+
+    <color name="LikedItemBackground">#555555</color>
+    <color name="LikedCard">#555555</color>
+</resources>

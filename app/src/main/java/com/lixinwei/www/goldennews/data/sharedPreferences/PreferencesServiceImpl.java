@@ -14,6 +14,7 @@ import com.lixinwei.www.goldennews.services.PollService;
 public class PreferencesServiceImpl {
     private static final String PREF_NEWEST_STORY = "newestStory";
     private static final String PREF_IS_ALARM_ON = "isAlarmOn";
+    private static final String PREF_IS_NIGHT_MODE_ON = "isNightModeOn";
     public static final String PREF_NOTIFICATION_FREQ = "pref_notification_frequency";
 
     public static long getNewestStory(Context context) {
@@ -25,6 +26,17 @@ public class PreferencesServiceImpl {
         PreferenceManager.getDefaultSharedPreferences(context)
                 .edit()
                 .putLong(PREF_NEWEST_STORY, id)
+                .apply();
+    }
+
+    public static boolean isNightModeOn(Context context) {
+        return PreferenceManager.getDefaultSharedPreferences(context)
+                .getBoolean(PREF_IS_NIGHT_MODE_ON, false);
+    }
+    public static void setNightModeOn(Context context, boolean isOn) {
+        PreferenceManager.getDefaultSharedPreferences(context)
+                .edit()
+                .putBoolean(PREF_IS_NIGHT_MODE_ON, isOn)
                 .apply();
     }
 

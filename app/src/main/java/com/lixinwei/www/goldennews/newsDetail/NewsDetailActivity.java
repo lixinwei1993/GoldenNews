@@ -18,6 +18,7 @@ import com.lixinwei.www.goldennews.R;
 import com.lixinwei.www.goldennews.app.GoldenNewsApplication;
 import com.lixinwei.www.goldennews.base.BaseActivity;
 import com.lixinwei.www.goldennews.data.model.StoryDetail;
+import com.lixinwei.www.goldennews.data.sharedPreferences.PreferencesServiceImpl;
 import com.lixinwei.www.goldennews.util.HtmlUtil;
 import com.lixinwei.www.goldennews.util.Utils;
 import com.squareup.picasso.Picasso;
@@ -117,6 +118,7 @@ public class NewsDetailActivity extends BaseActivity implements NewsDetailContra
         settings.setLoadWithOverviewMode(true);
         settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
         settings.setSupportZoom(true);
+        mWebView.setDayOrNight(!PreferencesServiceImpl.isNightModeOn(this));
         mWebView.setWebViewClient(new WebViewClient(){
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {

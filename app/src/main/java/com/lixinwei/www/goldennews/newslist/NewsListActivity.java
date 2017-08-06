@@ -3,6 +3,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
@@ -14,6 +15,7 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -31,7 +33,6 @@ import com.lixinwei.www.goldennews.util.ActivityUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
 
 public class NewsListActivity extends BaseActivity {
     private static final String DIALOG_DATE = "DialogDate";
@@ -72,6 +73,13 @@ public class NewsListActivity extends BaseActivity {
             setupDrawerContent();    //set up listener
         }
 
+        if(PreferencesServiceImpl.isNightModeOn(this))
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        else
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+
+
+
         //used to Animate the Hamburger Icon
         mDrawerToggle =
                 new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar, R.string.drawer_open,  R.string.drawer_close);
@@ -109,7 +117,6 @@ public class NewsListActivity extends BaseActivity {
 
                         if(s.equals("pref_notification_frequency")) {
                             PreferencesServiceImpl.notificationFreqChanged(NewsListActivity.this);
-
                         }
                     }
                 }
@@ -150,11 +157,20 @@ public class NewsListActivity extends BaseActivity {
         MenuItem nightSwitchItem = menu.findItem(R.id.night_mode_switch);
         View nightAction = MenuItemCompat.getActionView(nightSwitchItem);
         SwitchCompat nightSwitch = nightAction.findViewById(R.id.switch_compat);
+        nightSwitch.setChecked(PreferencesServiceImpl.isNightModeOn(NewsListActivity.this));
         nightSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if(b)
-                    Log.i("MAIN", "HELLO");
+                PreferencesServiceImpl.setNightModeOn(NewsListActivity.this, b);
+                final Intent intent = new Intent(NewsListActivity.this, NewsListActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                //TODO 面试点：通过延迟开启activity，来消除switchButton的卡顿现象
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        startActivity(intent);
+                    }
+                }, 200);
 
             }
         });

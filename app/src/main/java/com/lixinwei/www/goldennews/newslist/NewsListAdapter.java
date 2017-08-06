@@ -184,7 +184,7 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsLi
 
         public void bind(StoryForNewsList storyForNewsList) {
             mTitle.setText(storyForNewsList.getTitle());
-            mTitle.setTextColor(storyForNewsList.isRead() ? mContext.getResources().getColor(R.color.titleRead) : mContext.getResources().getColor(R.color.titleUnread));
+            mTitle.setTextColor(storyForNewsList.isRead() ? mContext.getResources().getColor(R.color.textColorSecondary) : mContext.getResources().getColor(R.color.textColorPrimary));
             mButtonLike.setImageResource(storyForNewsList.isLiked() ? R.drawable.ic_heart_red : R.drawable.ic_heart_outline_grey);
             mTextSwitcher.setCurrentText(storyForNewsList.getPopularity() + "赞");
 
