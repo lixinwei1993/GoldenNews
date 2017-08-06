@@ -33,7 +33,6 @@ import io.reactivex.observers.DisposableObserver;
 
 public class PollService extends IntentService {
     private static final String TAG = "PollService";
-    private static final int POLL_INTERVAL = 1000 * 60 *1;
 
     public static final String ACTION_SHOW_NOTIFICATION =
             "com.lixinwei.www.GoldenNewsApplication.SHOW_NOTIFICATION";
@@ -56,7 +55,7 @@ public class PollService extends IntentService {
                 context.getSystemService(Context.ALARM_SERVICE);
         if (isOn) {
             alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME,
-                    SystemClock.elapsedRealtime(), POLL_INTERVAL, pi);
+                    SystemClock.elapsedRealtime(), PreferencesServiceImpl.getNotificationFrequency(context), pi);
         } else {
             alarmManager.cancel(pi);
             pi.cancel();

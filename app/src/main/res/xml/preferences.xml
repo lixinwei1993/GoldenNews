@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <ListPreference
+        android:entries="@array/notification_frequency"
+        android:entryValues="@array/notification_frequency_value"
+        android:key="pref_notification_frequency"
+        android:title="@string/notification_frequency"
+        android:summary="@string/notification_frequency_description"
+        android:persistent="true"
+        android:defaultValue="3"/>
+
+
+</PreferenceScreen>

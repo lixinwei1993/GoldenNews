@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="notification_frequency">
+        <item>1 min</item>
+        <item>1 hour</item>
+        <item>4 hour</item>
+        <item>8 hour</item>
+        <item>24 hour</item>
+    </string-array>
+
+    <string-array name="notification_frequency_value">
+        <item>60000</item>
+        <item>3600000</item>
+        <item>14400000</item>
+        <item>28800000</item>
+        <item>86400000</item>
+    </string-array>
+</resources>

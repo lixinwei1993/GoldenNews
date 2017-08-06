@@ -1,11 +1,13 @@
 package com.lixinwei.www.goldennews.newslist;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceFragment;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
@@ -19,13 +21,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CompoundButton;
-import android.widget.ToggleButton;
 
 import com.lixinwei.www.goldennews.R;
 import com.lixinwei.www.goldennews.base.BaseActivity;
 import com.lixinwei.www.goldennews.data.sharedPreferences.PreferencesServiceImpl;
-import com.lixinwei.www.goldennews.likedlist.LikedListActivity;
 import com.lixinwei.www.goldennews.services.PollService;
+import com.lixinwei.www.goldennews.settings.SettingsActivity;
 import com.lixinwei.www.goldennews.util.ActivityUtils;
 
 import butterknife.BindView;
@@ -98,6 +99,21 @@ public class NewsListActivity extends BaseActivity {
         if (savedInstanceState != null) {
 
         }
+
+        PollService.setServiceAlarm(this, PreferencesServiceImpl.isAlarmOn(this));
+
+        PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(
+                new SharedPreferences.OnSharedPreferenceChangeListener() {
+                    @Override
+                    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
+
+                        if(s.equals("pref_notification_frequency")) {
+                            PreferencesServiceImpl.notificationFreqChanged(NewsListActivity.this);
+
+                        }
+                    }
+                }
+        );
     }
 
     @Override
@@ -167,7 +183,8 @@ public class NewsListActivity extends BaseActivity {
                                 mDrawerLayout.closeDrawers();
                                 break;
                             case R.id.action_settings:
-
+                                Intent i = SettingsActivity.newIntent(NewsListActivity.this);
+                                startActivity(i);
                                 mDrawerLayout.closeDrawers();
                                 break;
                         }

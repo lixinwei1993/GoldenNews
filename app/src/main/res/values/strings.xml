@@ -11,4 +11,7 @@
 
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
+
+    <string name="notification_frequency">Notification Frequency</string>
+    <string name="notification_frequency_description">改变通知推送频率为1分钟，1小时，4小时，8小时等</string>
 </resources>
