@@ -5,13 +5,21 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CompoundButton;
+import android.widget.ToggleButton;
 
 import com.lixinwei.www.goldennews.R;
 import com.lixinwei.www.goldennews.base.BaseActivity;
@@ -33,6 +41,8 @@ public class NewsListActivity extends BaseActivity {
     NavigationView mNavigationView;
     @BindView(R.id.fab_pick_date)
     FloatingActionButton mFloatingActionButton;
+
+    ActionBarDrawerToggle mDrawerToggle; //used to Animate the Hamburger Icon
 
     public static Intent newIntent(Context context) {
         return new Intent(context, NewsListActivity.class);
@@ -59,6 +69,11 @@ public class NewsListActivity extends BaseActivity {
             setupDrawerContent();    //set up listener
         }
 
+        //used to Animate the Hamburger Icon
+        mDrawerToggle =
+                new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar, R.string.drawer_open,  R.string.drawer_close);
+        mDrawerLayout.addDrawerListener(mDrawerToggle);
+
         NewsListFragment newsListFragment =
                 (NewsListFragment) getSupportFragmentManager().findFragmentById(R.id.container_news_list);
 
@@ -83,6 +98,13 @@ public class NewsListActivity extends BaseActivity {
         }
     }
 
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        // Sync the toggle state after onRestoreInstanceState has occurred.
+        mDrawerToggle.syncState();
+    }
+
 
 
     @Override
@@ -105,20 +127,50 @@ public class NewsListActivity extends BaseActivity {
 
     private void setupDrawerContent() {
         mNavigationView.setItemIconTintList(null); //TODO 为了让item的图片显示原色，而不是根据状态显示颜色
+
+        Menu menu = mNavigationView.getMenu();
+        MenuItem nightSwitchItem = menu.findItem(R.id.night_mode_switch);
+        View nightAction = MenuItemCompat.getActionView(nightSwitchItem);
+        SwitchCompat nightSwitch = nightAction.findViewById(R.id.switch_compat);
+        nightSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(b)
+                    Log.i("MAIN", "HELLO");
+
+            }
+        });
+
+        MenuItem notificationSwitchItem = menu.findItem(R.id.notification_switch);
+        View notificationAction = MenuItemCompat.getActionView(notificationSwitchItem);
+        SwitchCompat notificationSwitch = notificationAction.findViewById(R.id.switch_compat);
+        notificationSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(b)
+                    Log.i("MAIN", "HIIIII");
+
+            }
+        });
+
+
+
         mNavigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                         switch (item.getItemId()) {
-                            case R.id.liked_navigation_menu_item:
-                                Intent intent = LikedListActivity.newIntent(NewsListActivity.this);
-                                startActivity(intent);
+                            case R.id.action_about:
+
+                                mDrawerLayout.closeDrawers();
+                                break;
+                            case R.id.action_settings:
+
+                                mDrawerLayout.closeDrawers();
                                 break;
                         }
 
-                        //close the navigation drawer when an item is selected.
-                        //item.setChecked(true);
-                        mDrawerLayout.closeDrawers();
+
                         return true;
                     }
                 }
