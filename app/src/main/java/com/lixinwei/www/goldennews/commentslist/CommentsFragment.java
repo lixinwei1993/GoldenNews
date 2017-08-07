@@ -72,9 +72,17 @@ public class CommentsFragment extends BaseFragment implements CommentsContract.V
 
         initRecyclerView();
         mPresenter.bindView(this);
+
         mPresenter.loadShortComments(mId);
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        //TODO 为了动画效果在不同网络环境下的统一，把数据请求放在onResume中进行，但是这样的话在低网速情况下数据显示延迟的问题，因此因寻求更好的解决办法
+        //mPresenter.loadShortComments(mId);
     }
 
     public void setId(long id) {

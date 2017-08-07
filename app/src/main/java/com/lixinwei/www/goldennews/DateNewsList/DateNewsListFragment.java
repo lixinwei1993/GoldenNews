@@ -154,6 +154,7 @@ public class DateNewsListFragment extends BaseFragment implements DateNewsListCo
     public void startCommentsActivity(long id) {
         Intent intent = CommentsActivity.newIntent(getActivity(), id);
         startActivity(intent);
+        getActivity().overridePendingTransition(0, 0);
     }
 
     @Override

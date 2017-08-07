@@ -53,6 +53,8 @@ public class NewsListPresenter implements NewsListContract.Presenter {
             mNewsListView.setLoadingIndicator(true);
         }
 
+        //TODO 面试点：layoutanimation不如预期的原因（不同开启情况下动画表现形式不同，因为这个的网络请求是由后台开始的，而
+        //网络环境不同则表现行为就不同，合适的做法应该是把这里的网络请求结果保存下来，在onResume中进行显示
         Disposable disposable = mNewsListObservableManager.loadDailyStories(forceUpdate)
                 .map(new Function<StoryForNewsList, StoryForNewsList>() {
                     @Override

@@ -1,21 +1,28 @@
 package com.lixinwei.www.goldennews.DateNewsList;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewTreeObserver;
+import android.view.animation.AccelerateInterpolator;
 
 import com.lixinwei.www.goldennews.R;
 import com.lixinwei.www.goldennews.base.BaseActivity;
 import com.lixinwei.www.goldennews.likedlist.LikedListActivity;
 import com.lixinwei.www.goldennews.newslist.DatePickerFragment;
 import com.lixinwei.www.goldennews.util.ActivityUtils;
+import com.lixinwei.www.goldennews.util.Utils;
 
 import java.util.Date;
 
@@ -34,6 +41,8 @@ public class DateNewsListActivity extends BaseActivity {
     Toolbar mToolbar;
     @BindView(R.id.fab_pick_date)
     FloatingActionButton mFloatingActionButton;
+    @BindView(R.id.coordinatorLayout)
+    CoordinatorLayout mContentRoot;
 
     DateNewsListFragment mDateNewsListFragment;
 
@@ -77,9 +86,51 @@ public class DateNewsListActivity extends BaseActivity {
 
         //TODO
         if (savedInstanceState != null) {
+            if (savedInstanceState == null) {
+                mContentRoot.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+                    @Override
+                    public boolean onPreDraw() {
+                        mContentRoot.getViewTreeObserver().removeOnPreDrawListener(this);
+                        startIntroAnimation();
+                        return true;
+                    }
+                });
+            }
 
         }
+    }
 
+    private void startIntroAnimation() {
+        mContentRoot.setScaleY(0.1f);
+        mContentRoot.setPivotY(-10);
+        //llAddComment.setTranslationY(100);
+
+        mContentRoot.animate()
+                .scaleY(1)
+                .setDuration(200)
+                .setInterpolator(new AccelerateInterpolator())
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        ViewCompat.setElevation(mToolbar, Utils.dpToPx(8));
+                    }
+                })
+                .start();
+    }
+
+    @Override
+    public void onBackPressed() {
+        mContentRoot.animate()
+                .translationY(Utils.getScreenHeight(this))
+                .setDuration(200)
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        DateNewsListActivity.super.onBackPressed();
+                        overridePendingTransition(0, 0);
+                    }
+                })
+                .start();
     }
 
     @Override

@@ -187,6 +187,7 @@ public class LikedListFragment extends BaseFragment implements LikedListContract
     public void startCommentsActivity(long id) {
         Intent intent = CommentsActivity.newIntent(getActivity(), id);
         startActivity(intent);
+        getActivity().overridePendingTransition(0, 0);
     }
 
     @Override

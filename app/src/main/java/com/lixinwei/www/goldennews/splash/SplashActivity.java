@@ -47,7 +47,9 @@ public class SplashActivity extends BaseActivity {
 
                     @Override
                     public void onError(@NonNull Throwable e) {
-                        Log.i("NoNONONO", "ONERROR");
+                        Intent intent = NewsListActivity.newIntent(SplashActivity.this);
+                        startActivity(intent);
+                        finish();
                     }
 
                     @Override

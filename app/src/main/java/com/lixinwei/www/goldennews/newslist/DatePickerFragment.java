@@ -55,6 +55,8 @@ public class DatePickerFragment extends DialogFragment {
 
 
                                 startActivity(intent);
+
+                                getActivity().overridePendingTransition(0, 0);
                             }
                         })
                 .create();

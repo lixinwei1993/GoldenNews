@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 
 import com.lixinwei.www.goldennews.R;
 import com.lixinwei.www.goldennews.data.model.StoryForNewsList;
+import com.lixinwei.www.goldennews.util.Utils;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -35,6 +37,11 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsLi
 
     public static final String ACTION_LIKE_BUTTON_CLICKED = "action_like_button_button";
     public static final String ACTION_LIKE_IMAGE_CLICKED = "action_like_image_button";
+
+    private int lastAnimatedPosition = -1;
+    private static final int ANIMATED_ITEMS_COUNT = 4;
+
+    private boolean mIsAllowAnimation = true;
 
     @Inject
     Context mContext;
@@ -58,6 +65,22 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsLi
         setupClickableViews(view, newsListViewHolder);
 
         return newsListViewHolder;
+    }
+
+    private void runEnterAnimation(View view, int position) {
+        if (position >= ANIMATED_ITEMS_COUNT - 1) {
+            return;
+        }
+
+        if (position > lastAnimatedPosition) {
+            lastAnimatedPosition = position;
+            view.setTranslationY(Utils.getScreenHeight(mContext));
+            view.animate()
+                    .translationY(0)
+                    .setInterpolator(new DecelerateInterpolator(3.f))
+                    .setDuration(700)
+                    .start();
+        }
     }
 
     private void setupClickableViews(final View view, final NewsListViewHolder newsListViewHolder) {
@@ -136,6 +159,8 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsLi
 
     @Override
     public void onBindViewHolder(NewsListViewHolder holder, int position) {
+        //runEnterAnimation(holder.itemView, position);
+
         StoryForNewsList storyForNewsList = mStories.get(position);
 
         holder.bind(storyForNewsList);
@@ -149,7 +174,17 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsLi
     public void updateStoriesList(List<StoryForNewsList> stories) {
         mStories.clear();
         mStories.addAll(stories);
-        notifyDataSetChanged();
+        //TODO 解释notifyItemRangeInserted表示在某个位置插入了几个item，对于真个datasetchange的变化不能使用该方法，会出现数组越界等错误
+        //参考：https://stackoverflow.com/a/44004438
+        if(mIsAllowAnimation)
+        {
+            mIsAllowAnimation = false;
+            notifyItemRangeInserted(0, stories.size());
+        }
+        else
+            notifyDataSetChanged();
+
+
     }
 
     public static class NewsListViewHolder extends RecyclerView.ViewHolder{

@@ -1,5 +1,7 @@
 package com.lixinwei.www.goldennews.DateNewsList;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -8,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
@@ -40,6 +43,9 @@ public class DateNewsListAdapter extends RecyclerView.Adapter<DateNewsListAdapte
     public DateNewsListAdapter() {
 
     }
+
+    private int lastAnimatedPosition = -1;
+    private static final int ANIMATED_ITEMS_COUNT = 10;
 
     public DateNewsListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view;
@@ -102,9 +108,34 @@ public class DateNewsListAdapter extends RecyclerView.Adapter<DateNewsListAdapte
 
     @Override
     public void onBindViewHolder(DateNewsListViewHolder holder, int position) {
+        runEnterAnimation(holder.itemView, position);
         Story story = mStoryList.get(position);
 
         holder.bind(story);
+    }
+
+    private void runEnterAnimation(View view, int position) {
+        if (position >= ANIMATED_ITEMS_COUNT - 1) {
+            return;
+        }
+
+        if (position > lastAnimatedPosition) {
+            lastAnimatedPosition = position;
+            view.setTranslationY(100);
+            view.setAlpha(0.f);
+            view.animate()
+                    .translationY(0).alpha(1.f)
+                    .setStartDelay(20 * (position))
+                    .setInterpolator(new DecelerateInterpolator(2.f))
+                    .setDuration(300)
+                    .setListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            // animationsLocked = true;
+                        }
+                    })
+                    .start();
+        }
     }
 
     @Override
@@ -114,9 +145,10 @@ public class DateNewsListAdapter extends RecyclerView.Adapter<DateNewsListAdapte
 
     public void updateStoriesList(List<Story> stories) {
         mStoryList.clear();
-        mStoryList.addAll(stories);
-        Log.i("XXXXX", "new Date");
         notifyDataSetChanged();
+        mStoryList.addAll(stories);
+        //TODO 重要知识点，只有使用notifyItemRangeInserted或notifyItemInserted()才会触发animator中的动画，使用notifyDatasetChange是不会触发的，这点要注意
+        notifyItemRangeInserted(0, stories.size());
     }
 
     public static class DateNewsListViewHolder extends RecyclerView.ViewHolder {

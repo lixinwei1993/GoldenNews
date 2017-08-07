@@ -28,7 +28,7 @@ public class NewsItemAnimator extends DefaultItemAnimator {
     private static final AccelerateInterpolator ACCELERATE_INTERPOLATOR = new AccelerateInterpolator();
     private static final OvershootInterpolator OVERSHOOT_INTERPOLATOR = new OvershootInterpolator(4);
 
-    private int lastAddAnimatedItem = -2;
+    private int lastAddAnimatedItem = -4;
 
     Map<RecyclerView.ViewHolder, AnimatorSet> likeAnimationsMap = new HashMap<>();
     Map<RecyclerView.ViewHolder, AnimatorSet> heartAnimationsMap = new HashMap<>();
