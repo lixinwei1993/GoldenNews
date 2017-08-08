@@ -40,7 +40,7 @@ public class ZhihuApiModule {
 
     private static final int NETWORK_CONNECTION_TIMEOUT = 30; // 30 sec
     private static final int NETWORK_READ_TIMEOUT = 30; //30 sec
-    private static final long CACHE_SIZE = 10 * 1024 * 1024; // 10 MB
+    private static final long CACHE_SIZE = 40 * 1024 * 1024; // 40 MB
     private static final int CACHE_MAX_AGE = 2; // 2 min
     private static final int CACHE_MAX_STALE = 7; // 7 day
     private static final int RETRY_COUNT = 3;   // 3 times

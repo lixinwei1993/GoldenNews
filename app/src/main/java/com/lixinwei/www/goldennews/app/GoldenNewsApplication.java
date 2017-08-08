@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 
 
+import com.jakewharton.picasso.OkHttp3Downloader;
 import com.lixinwei.www.goldennews.DateNewsList.DateNewsListModule;
 import com.lixinwei.www.goldennews.DateNewsList.DateNewsListSubComponent;
 import com.lixinwei.www.goldennews.commentslist.CommentsModule;
@@ -18,19 +19,24 @@ import com.squareup.picasso.Downloader;
 import com.squareup.picasso.OkHttpDownloader;
 import com.squareup.picasso.Picasso;
 
+import javax.inject.Inject;
+
+import okhttp3.OkHttpClient;
+
 /**
  * Created by welding on 2017/6/29.
  */
 
 public class GoldenNewsApplication extends Application {
-    private static final long PICASSO_DISK_CACHE_SIZE = 1024 * 1024 * 50;
-
     private ApplicationComponent mApplicationComponent;
     private NewsListSubComponent mNewsListSubComponent;
     private LikedListSubComponent mLikedListSubComponent;
     private CommentsSubComponent mCommentsSubComponent;
     private NewsDetailSubComponent mNewsDetailSubComponent;
     private DateNewsListSubComponent mDateNewsListSubComponent;
+
+    @Inject
+    OkHttpClient mClient;
 
     public static GoldenNewsApplication getGoldenNewsApplication(Context context) {
         return (GoldenNewsApplication) context.getApplicationContext();
@@ -41,9 +47,9 @@ public class GoldenNewsApplication extends Application {
         super.onCreate();
         initAppComponent();
 
-        //TODO 面试点：加大picasso的磁盘缓存大小，以便在没有网的时候能够把NEWSLIST页面即主页面的所有大图都显示出来
-        Downloader downloader = new OkHttpDownloader(getApplicationContext(),
-                PICASSO_DISK_CACHE_SIZE);
+        //TODO 面试 Picasso缓存问题 首先统一访问客户端，使其与retrofit共用网络客户端，达到共用图片缓存的目的，减少网络流量
+        mApplicationComponent.inject(this);
+        Downloader downloader = new OkHttp3Downloader(mClient);
         Picasso picasso = new Picasso.Builder(getApplicationContext())
                 .downloader(downloader).build();
     }

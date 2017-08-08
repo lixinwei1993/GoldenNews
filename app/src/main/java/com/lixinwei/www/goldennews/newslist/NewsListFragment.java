@@ -173,7 +173,6 @@ public class NewsListFragment extends BaseFragment implements NewsListContract.V
         };
 
         mRecyclerView.setLayoutManager(linearLayoutManager);
-        mNewsListAdapter.bindFragment(this);
         mRecyclerView.setAdapter(mNewsListAdapter);
         mRecyclerView.setItemAnimator(new NewsItemAnimator());
     }
