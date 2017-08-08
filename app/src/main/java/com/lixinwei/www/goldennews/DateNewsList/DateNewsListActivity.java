@@ -126,7 +126,7 @@ public class DateNewsListActivity extends BaseActivity {
                 .setListener(new AnimatorListenerAdapter() {
                     @Override
                     public void onAnimationEnd(Animator animation) {
-                        DateNewsListActivity.super.onBackPressed();
+                        finish();
                         overridePendingTransition(0, 0);
                     }
                 })

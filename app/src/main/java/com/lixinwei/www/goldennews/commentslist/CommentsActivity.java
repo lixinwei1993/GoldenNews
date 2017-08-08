@@ -88,7 +88,10 @@ public class CommentsActivity extends BaseActivity {
                 .setListener(new AnimatorListenerAdapter() {
                     @Override
                     public void onAnimationEnd(Animator animation) {
-                        CommentsActivity.super.onBackPressed();
+                        //CommentsActivity.super.onBackPressed();
+                        //应该使用finish，而不适用onBackPressed！！
+                        //TODO Reference:https://stackoverflow.com/a/32390821
+                        finish();
                         overridePendingTransition(0, 0);
                     }
                 })

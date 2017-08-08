@@ -88,7 +88,7 @@ public class LikedListActivity extends BaseActivity {
                 .setListener(new AnimatorListenerAdapter() {
                     @Override
                     public void onAnimationEnd(Animator animation) {
-                        LikedListActivity.super.onBackPressed();
+                        finish();
                         overridePendingTransition(0, 0);
                     }
                 })
