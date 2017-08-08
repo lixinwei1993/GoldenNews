@@ -243,7 +243,7 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsLi
                             //Try again online if cache failed
                             Picasso.with(mContext)
                                     .load(storyForNewsList.getImage())
-                                    .error(R.drawable.taylor_swift_error)
+                                    .error(R.mipmap.ic_launcher)
                                     .into(mImage, new Callback() {
                                         @Override
                                         public void onSuccess() {

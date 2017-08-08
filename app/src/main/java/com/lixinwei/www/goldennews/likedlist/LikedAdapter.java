@@ -2,6 +2,7 @@ package com.lixinwei.www.goldennews.likedlist;
 
 import android.content.Context;
 //TODO 使用support库中的popoupMenu会出错。
+import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
@@ -15,6 +16,8 @@ import android.widget.TextView;
 
 import com.lixinwei.www.goldennews.R;
 import com.lixinwei.www.goldennews.data.model.StoryLikedForRealm;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -130,12 +133,41 @@ public class LikedAdapter extends RecyclerView.Adapter<LikedAdapter.LikedListVie
         }
 
 
-        public void bind(StoryLikedForRealm storyLikedForRealm) {
+        public void bind(final StoryLikedForRealm storyLikedForRealm) {
             mTitle.setText(storyLikedForRealm.getTitle());
+
+            /*Picasso.with(mContext)
+                    .load(storyLikedForRealm.getImage())
+                    .into(mImageView);*/
 
             Picasso.with(mContext)
                     .load(storyLikedForRealm.getImage())
-                    .into(mImageView);
+                    .networkPolicy(NetworkPolicy.OFFLINE)
+                    .into(mImageView, new Callback() {
+                        @Override
+                        public void onSuccess() {
+
+                        }
+
+                        @Override
+                        public void onError() {
+                            //Try again online if cache failed
+                            Picasso.with(mContext)
+                                    .load(storyLikedForRealm.getImage())
+                                    .error(R.mipmap.ic_launcher)
+                                    .into(mImageView, new Callback() {
+                                        @Override
+                                        public void onSuccess() {
+
+                                        }
+
+                                        @Override
+                                        public void onError() {
+                                            Log.v("Picasso","Could not fetch image");
+                                        }
+                                    });
+                        }
+                    });
         }
     }
 }

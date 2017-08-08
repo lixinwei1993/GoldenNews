@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,8 @@ import com.lixinwei.www.goldennews.R;
 import com.lixinwei.www.goldennews.data.model.Comment;
 import com.lixinwei.www.goldennews.util.PicassoTransforms;
 import com.lixinwei.www.goldennews.util.Utils;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -116,14 +119,43 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Commen
             mContext = itemView.getContext();
         }
 
-        public void bindView(Comment comment) {
+        public void bindView(final Comment comment) {
             mContent.setText(comment.getContent());
             mUserName.setText(comment.getAuthor());
 
-            Picasso.with(mContext)
+            /*Picasso.with(mContext)
                     .load(comment.getAvatar())
                     //.transform(new PicassoTransforms.CircleTransform())
-                    .into(mUserAvatar);
+                    .into(mUserAvatar);*/
+
+            Picasso.with(mContext)
+                    .load(comment.getAvatar())
+                    .networkPolicy(NetworkPolicy.OFFLINE)
+                    .into(mUserAvatar, new Callback() {
+                        @Override
+                        public void onSuccess() {
+
+                        }
+
+                        @Override
+                        public void onError() {
+                            //Try again online if cache failed
+                            Picasso.with(mContext)
+                                    .load(comment.getAvatar())
+                                    .error(R.mipmap.ic_launcher)
+                                    .into(mUserAvatar, new Callback() {
+                                        @Override
+                                        public void onSuccess() {
+
+                                        }
+
+                                        @Override
+                                        public void onError() {
+                                            Log.v("Picasso","Could not fetch image");
+                                        }
+                                    });
+                        }
+                    });
         }
     }
 }

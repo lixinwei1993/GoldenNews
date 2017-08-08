@@ -42,7 +42,8 @@ public class SplashActivity extends BaseActivity {
                 .subscribe(new DisposableObserver<StoryForNewsList>() {
                     @Override
                     public void onNext(@NonNull StoryForNewsList storyForNewsList) {
-
+                        Picasso.with(SplashActivity.this)
+                                .load(storyForNewsList.getImage());
                     }
 
                     @Override

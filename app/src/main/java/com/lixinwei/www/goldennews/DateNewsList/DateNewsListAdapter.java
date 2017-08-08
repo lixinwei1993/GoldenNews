@@ -18,6 +18,8 @@ import android.widget.TextView;
 
 import com.lixinwei.www.goldennews.R;
 import com.lixinwei.www.goldennews.data.model.Story;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -169,12 +171,41 @@ public class DateNewsListAdapter extends RecyclerView.Adapter<DateNewsListAdapte
         }
 
 
-        public void bind(Story story) {
+        public void bind(final Story story) {
             mTitle.setText(story.getTitle());
+
+            /*Picasso.with(mContext)
+                    .load(story.getImages().get(0))
+                    .into(mImageView);*/
 
             Picasso.with(mContext)
                     .load(story.getImages().get(0))
-                    .into(mImageView);
+                    .networkPolicy(NetworkPolicy.OFFLINE)
+                    .into(mImageView, new Callback() {
+                        @Override
+                        public void onSuccess() {
+
+                        }
+
+                        @Override
+                        public void onError() {
+                            //Try again online if cache failed
+                            Picasso.with(mContext)
+                                    .load(story.getImages().get(0))
+                                    .error(R.mipmap.ic_launcher)
+                                    .into(mImageView, new Callback() {
+                                        @Override
+                                        public void onSuccess() {
+
+                                        }
+
+                                        @Override
+                                        public void onError() {
+                                            Log.v("Picasso","Could not fetch image");
+                                        }
+                                    });
+                        }
+                    });
         }
     }
 }
