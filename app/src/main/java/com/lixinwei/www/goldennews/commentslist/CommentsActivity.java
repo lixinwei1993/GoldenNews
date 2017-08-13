@@ -1,15 +1,24 @@
 package com.lixinwei.www.goldennews.commentslist;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.ViewTreeObserver;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
+import android.widget.LinearLayout;
 
 import com.lixinwei.www.goldennews.R;
 import com.lixinwei.www.goldennews.base.BaseActivity;
 import com.lixinwei.www.goldennews.util.ActivityUtils;
+import com.lixinwei.www.goldennews.util.Utils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -24,6 +33,8 @@ public class CommentsActivity extends BaseActivity {
 
     private long mId;
 
+    @BindView(R.id.content_root)
+    CoordinatorLayout mContentRoot;
     @BindView(R.id.toolbar_comments)
     Toolbar mToolbar;
 
@@ -46,6 +57,17 @@ public class CommentsActivity extends BaseActivity {
         ab.setHomeAsUpIndicator(R.drawable.ic_navigation);
         ab.setDisplayHomeAsUpEnabled(true);
 
+        if (savedInstanceState == null) {
+            mContentRoot.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+                @Override
+                public boolean onPreDraw() {
+                    mContentRoot.getViewTreeObserver().removeOnPreDrawListener(this);
+                    startIntroAnimation();
+                    return true;
+                }
+            });
+        }
+
         CommentsFragment commentsFragment
                 = (CommentsFragment) getSupportFragmentManager().findFragmentById(R.id.container_comments);
 
@@ -57,6 +79,45 @@ public class CommentsActivity extends BaseActivity {
         mId = getIntent().getLongExtra(EXTRA_ID, 0);    //TODO 面试// getIntent总是返回启动该activity的intent，即使是configuration change也是如此
         commentsFragment.setId(mId);
     }
+
+    @Override
+    public void onBackPressed() {
+        mContentRoot.animate()
+                .translationY(Utils.getScreenHeight(this))
+                .setDuration(200)
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        //CommentsActivity.super.onBackPressed();
+                        //应该使用finish，而不适用onBackPressed！！
+                        //TODO Reference:https://stackoverflow.com/a/32390821
+                        finish();
+                        overridePendingTransition(0, 0);
+                    }
+                })
+                .start();
+    }
+
+    private void startIntroAnimation() {
+        mContentRoot.setScaleY(0.1f);
+        mContentRoot.setPivotY(-10);
+        //llAddComment.setTranslationY(100);
+
+        mContentRoot.animate()
+                .scaleY(1)
+                .setDuration(200)
+                .setInterpolator(new AccelerateInterpolator())
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        ViewCompat.setElevation(mToolbar, Utils.dpToPx(8));
+                    }
+                })
+                .start();
+    }
+
+
+
 
     @Override
     public void onSaveInstanceState(Bundle outState) {

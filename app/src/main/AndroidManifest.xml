@@ -33,10 +33,13 @@
             android:name=".newslist.NewsListActivity"
             >
         </activity>
-        <activity android:name=".likedlist.LikedListActivity">
+        <activity android:name=".likedlist.LikedListActivity"
+            android:theme="@style/AppTheme.Transparent"
+            >
         </activity>
         <activity
             android:name=".commentslist.CommentsActivity"
+            android:theme="@style/AppTheme.Transparent"
             android:label="Comments">
         </activity>
         <activity
@@ -45,6 +48,7 @@
         </activity>
         <activity
             android:name=".DateNewsList.DateNewsListActivity"
+            android:theme="@style/AppTheme.Transparent"
             android:launchMode="singleTop">
         </activity>
         <activity android:name=".settings.SettingsActivity"/>

@@ -28,7 +28,6 @@ import okhttp3.OkHttpClient;
  */
 
 public class GoldenNewsApplication extends Application {
-
     private ApplicationComponent mApplicationComponent;
     private NewsListSubComponent mNewsListSubComponent;
     private LikedListSubComponent mLikedListSubComponent;
@@ -37,7 +36,7 @@ public class GoldenNewsApplication extends Application {
     private DateNewsListSubComponent mDateNewsListSubComponent;
 
     @Inject
-    OkHttpClient mOkHttpClient;
+    OkHttpClient mClient;
 
     public static GoldenNewsApplication getGoldenNewsApplication(Context context) {
         return (GoldenNewsApplication) context.getApplicationContext();
@@ -48,18 +47,17 @@ public class GoldenNewsApplication extends Application {
         super.onCreate();
         initAppComponent();
 
-        //TODO 面试点：加大picasso的磁盘缓存大小，以便在没有网的时候能够把NEWSLIST页面即主页面的所有大图都显示出来
-        //与Retrofit共用一个okhttpClient， 使二者能够缓存共享
+        //TODO 面试 Picasso缓存问题 首先统一访问客户端，使其与retrofit共用网络客户端，达到共用图片缓存的目的，减少网络流量
+        mApplicationComponent.inject(this);
+        Downloader downloader = new OkHttp3Downloader(mClient);
         Picasso picasso = new Picasso.Builder(getApplicationContext())
-                .downloader(new OkHttp3Downloader(mOkHttpClient)).build();
+                .downloader(downloader).build();
     }
 
     private void initAppComponent() {
         mApplicationComponent = DaggerApplicationComponent.builder()
                 .applicationModule(new ApplicationModule(this))
                 .build();
-
-        mApplicationComponent.inject(this);
     }
 
     public ApplicationComponent getApplicationComponent() {

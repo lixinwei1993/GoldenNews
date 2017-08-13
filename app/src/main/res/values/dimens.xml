@@ -11,4 +11,6 @@
     <dimen name="detail_image_height">260dp</dimen>
     <dimen name="detail_bottom_height">56dp</dimen>
 
+    <dimen name="btn_fab_size">200dp</dimen>
+
 </resources>

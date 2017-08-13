@@ -1,10 +1,11 @@
 package com.lixinwei.www.goldennews.newslist;
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
-import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -18,18 +19,20 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.OvershootInterpolator;
 import android.widget.CompoundButton;
 
 import com.lixinwei.www.goldennews.R;
 import com.lixinwei.www.goldennews.base.BaseActivity;
 import com.lixinwei.www.goldennews.data.sharedPreferences.PreferencesServiceImpl;
+import com.lixinwei.www.goldennews.likedlist.LikedListActivity;
 import com.lixinwei.www.goldennews.services.PollService;
 import com.lixinwei.www.goldennews.settings.SettingsActivity;
 import com.lixinwei.www.goldennews.util.ActivityUtils;
+import com.lixinwei.www.goldennews.util.Utils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -103,7 +106,6 @@ public class NewsListActivity extends BaseActivity {
             }
         });
 
-        //TODO
         if (savedInstanceState != null) {
 
         }
@@ -121,7 +123,24 @@ public class NewsListActivity extends BaseActivity {
                     }
                 }
         );
+
+        mFloatingActionButton.animate()
+                .translationY(0)
+                .setInterpolator(new OvershootInterpolator(1.f))
+                .setStartDelay(300)
+                .setDuration(400)
+                .start();
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.activity_news_list_menu, menu);
+
+        return true;
+    }
+
+
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
@@ -145,8 +164,13 @@ public class NewsListActivity extends BaseActivity {
             case android.R.id.home:
                 //666 Open the navigation drawer when the home icon is selected from the toolbar.
                 mDrawerLayout.openDrawer(GravityCompat.START);
-                return true;
+                break;
+            case R.id.action_liked:
+                Intent intent = LikedListActivity.newIntent(this);
+                startActivity(intent);
+                break;
         }
+
         return super.onOptionsItemSelected(item);
     }
 

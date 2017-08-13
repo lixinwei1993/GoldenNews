@@ -1,8 +1,11 @@
 package com.lixinwei.www.goldennews.likedlist;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.view.GravityCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
@@ -10,7 +13,9 @@ import android.view.MenuItem;
 
 import com.lixinwei.www.goldennews.R;
 import com.lixinwei.www.goldennews.base.BaseActivity;
+import com.lixinwei.www.goldennews.commentslist.CommentsActivity;
 import com.lixinwei.www.goldennews.util.ActivityUtils;
+import com.lixinwei.www.goldennews.util.Utils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -22,6 +27,8 @@ import butterknife.ButterKnife;
 public class LikedListActivity extends BaseActivity {
     @BindView(R.id.toolbar_liked)
     Toolbar mToolbar;
+    @BindView(R.id.coordinatorLayout)
+    CoordinatorLayout mContentRoot;
 
     public static Intent newIntent(Context context) {
         return new Intent(context, LikedListActivity.class);
@@ -71,5 +78,20 @@ public class LikedListActivity extends BaseActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        mContentRoot.animate()
+                .translationY(Utils.getScreenHeight(this))
+                .setDuration(200)
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        finish();
+                        overridePendingTransition(0, 0);
+                    }
+                })
+                .start();
     }
 }

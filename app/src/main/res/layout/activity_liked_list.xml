@@ -22,6 +22,7 @@
 
     <android.support.design.widget.CoordinatorLayout
         android:id="@+id/coordinatorLayout"
+        android:background="@color/background"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -29,16 +30,6 @@
             android:id="@+id/container_liked"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
-
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab_add_task"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/fab_margin"
-            android:src="@drawable/ic_add"
-            app:fabSize="normal"
-            app:layout_anchor="@id/container_liked"
-            app:layout_anchorGravity="bottom|right|end" />
     </android.support.design.widget.CoordinatorLayout>
 
 </LinearLayout>

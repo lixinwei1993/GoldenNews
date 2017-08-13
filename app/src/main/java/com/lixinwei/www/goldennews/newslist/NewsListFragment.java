@@ -95,7 +95,7 @@ public class NewsListFragment extends BaseFragment implements NewsListContract.V
         initRecyclerView();
         mNewsListPresenter.bindView(this);
 
-        mNewsListPresenter.loadDailyStories(false);
+        //mNewsListPresenter.loadDailyStories(false);
 
         PollService.setServiceAlarm(getActivity(), PreferencesServiceImpl.isAlarmOn(getActivity()));
 
@@ -111,21 +111,6 @@ public class NewsListFragment extends BaseFragment implements NewsListContract.V
         //TODO 为啥要在onResume中重新加载数据删除liked的效果才生效呢？ 通知recyclerView刷新！！
         // 不是backButton自动会从onCreate执行吗，而onCreate中已经加载过数据了啊，还是说现在backButton的行为已经改变？待解决
         mNewsListPresenter.loadDailyStories(false);
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.fragment_news_list_menu, menu);
-    }
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_liked:
-                Intent intent = LikedListActivity.newIntent(getActivity());
-                startActivity(intent);
-                break;
-        }
-        return true;
     }
 
     @Override
@@ -159,6 +144,7 @@ public class NewsListFragment extends BaseFragment implements NewsListContract.V
     public void startCommentsActivity(long id) {
         Intent intent = CommentsActivity.newIntent(getActivity(), id);
         startActivity(intent);
+        getActivity().overridePendingTransition(0, 0);
     }
 
     @Override
@@ -187,7 +173,6 @@ public class NewsListFragment extends BaseFragment implements NewsListContract.V
         };
 
         mRecyclerView.setLayoutManager(linearLayoutManager);
-        mNewsListAdapter.bindFragment(this);
         mRecyclerView.setAdapter(mNewsListAdapter);
         mRecyclerView.setItemAnimator(new NewsItemAnimator());
     }
