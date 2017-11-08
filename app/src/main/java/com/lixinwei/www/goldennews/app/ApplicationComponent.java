@@ -36,7 +36,6 @@ public interface ApplicationComponent {
     void inject(PollService service);
     void inject(GoldenNewsApplication application);
 
-    void inject(GoldenNewsApplication application);
 
     NewsListSubComponent plus(NewsListModule module);
 

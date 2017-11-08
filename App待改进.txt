@@ -1,0 +1,5 @@
+图片加载或下载只下载所需的分辨率不下载全分辨率
+
+在splashActivity中值加载Mainactivity视野中可见的前两个图片，后面的图片在进入Main中再加载（进入activity在实现异步缓存，或者扩大extraLayout的大小）
+
+Splash中开启一个startService进行图片的后台下载怎么样？可以试一下，现在确实启动速度太慢了
